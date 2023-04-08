@@ -1,10 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import useMenuToggle from '../hooks/useMenuToggle'
 
 export const Footer = () => {
+  const {menu} = useMenuToggle();
   return (
     <>
-      <footer id="footer" className="footer mb-5">
+      <footer id="footer" className="footer mb-5" style={{  marginLeft: menu ? '': '0px' }}>
         <div className="row text-center">
           <div className="col">
             <Link to="to:0998113580" className="contact-me">

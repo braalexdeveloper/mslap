@@ -2,13 +2,14 @@ import React from "react";
 import { Header } from "../Header";
 import { Footer } from "../Footer";
 import { Sidebar } from "../Sidebar";
+import useMenuToggle from '../../hooks/useMenuToggle';
 
 export const Operarios = () => {
   return (
     <>
       <Header />
       <Sidebar />
-      <main id="main" className="main">
+      <main id="main" className="main" style={{  marginLeft: menu ? '': '0px' }}>
         <section className="section dashboard">
           <div className="pagetitle">
             <h1>Operarios</h1>
