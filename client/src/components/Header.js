@@ -1,8 +1,9 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import useMenuToggle from '../hooks/useMenuToggle';
 
 export const Header = () => {
-  const { menu,setMenu }=useMenuToggle();
+  const { menu, setMenu } = useMenuToggle();
  const btnMenu=(value)=>{
   setMenu(value);
   console.log(menu)
@@ -10,7 +11,6 @@ export const Header = () => {
  console.log(menu)
   return (
     <header id="header" className="header fixed-top d-flex align-items-center">
-
     <div className="d-flex align-items-center justify-content-between">
       <a href="index.html" className="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt=""/>

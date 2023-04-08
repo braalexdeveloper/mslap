@@ -1,10 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { AuthProvider } from './context/AuthProvider';
+import './index.css';
+import "../src/assets/css/style.css";
+import "../src/assets/vendor/bootstrap-icons/bootstrap-icons.css";
+import App from './App';
+import reportWebVitals from './reportWebVitals';
 
 // Importar assets 
 /*import "./assets/vendor/bootstrap/css/bootstrap.min.css";
@@ -20,7 +22,6 @@ import "./assets/css/style.css";
 import "./assets/vendor/bootstrap/js/bootstrap.bundle.min.js";
 
 //import "./assets/js/main.js";*/
-
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

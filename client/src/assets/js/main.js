@@ -46,7 +46,4 @@
       select('body').classList.toggle('toggle-sidebar')
     })
   }
-
-  
-
 })();

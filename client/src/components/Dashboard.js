@@ -13,12 +13,9 @@ export const Dashboard = () => {
       <Header/>
       <Sidebar/>
       <main id="main" className="main" style={{  marginLeft: menu ? '': '0px' }}>
-
         <section className="section dashboard">
-        dashboard
-          
+          dashboard       
         </section>
-
       </main>
       <Footer />
     </>
