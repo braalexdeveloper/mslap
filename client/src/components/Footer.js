@@ -1,9 +1,11 @@
 import React from 'react'
+import useMenuToggle from '../hooks/useMenuToggle'
 
 export const Footer = () => {
+  const {menu}=useMenuToggle();
   return (
     <>
-    <footer id="footer" className="footer">
+    <footer id="footer" className="footer" style={{  marginLeft: menu ? '': '0px' }}>
     <div className="copyright">
       &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
     </div>

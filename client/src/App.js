@@ -12,18 +12,24 @@ import { Cargos } from './components/cargos/Cargos';
 
 
 
+
+
 function App() {
+  
+  
   return (
     <>
       <Routes>
         <Route exact path="/" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard/>} />
-        <Route path="/dashboard/projects" element={<Projects/>} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard/projects" element={<Projects />} />
         <Route path="/dashboard/cargos" element={<Cargos/>} />
         <Route path="/dashboard/supervisores" element={<Supervisores/>} />
-        <Route path="/dashboard/contratistas" element={<Contratistas/>} />
+        <Route path="/dashboard/contratistas" element={<Contratistas />} />
         <Route path="/dashboard/operarios" element={<Operarios/>} />
-      </Routes>
+  </Routes>
+ 
+ 
     </>
   );
 }

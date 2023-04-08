@@ -1,16 +1,19 @@
 import React from 'react';
 import { Link,NavLink } from 'react-router-dom';
+import useMenuToggle from '../hooks/useMenuToggle';
 
 export const Sidebar = () => {
+  const { menu,setMenu }=useMenuToggle();
+
   return (
-    <aside id="sidebar" className="sidebar">
+    <aside id="sidebar" className="sidebar" style={{  left: menu ? '0px': '-300px' }}>
 
     <ul className="sidebar-nav" id="sidebar-nav">
 
       <li className="nav-item">
         <NavLink   to={'/dashboard'} className="nav-link collapsed">
           <i className="bi bi-grid"></i>
-          <span>Dashboard</span>
+          <span >Dashboard</span>
         </NavLink >
       </li>
 

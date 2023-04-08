@@ -53,7 +53,7 @@ export const Login = () => {
                       <button className="btn btn-primary w-100" type="submit">Login</button>
                     </div>
                     <div className="col-12">
-                      <p className="small mb-0">Don't have account? <a href="pages-register.html">Create an account</a></p>/
+                      <p className="small mb-0">Don't have account? <a href="pages-register.html">Create an account</a></p>
                     </div>
                   </form>
 

@@ -1,6 +1,13 @@
-import React from 'react'
+import React from 'react';
+import useMenuToggle from '../hooks/useMenuToggle';
 
 export const Header = () => {
+  const { menu,setMenu }=useMenuToggle();
+ const btnMenu=(value)=>{
+  setMenu(value);
+  console.log(menu)
+ }
+ console.log(menu)
   return (
     <header id="header" className="header fixed-top d-flex align-items-center">
 
@@ -9,8 +16,8 @@ export const Header = () => {
         <img src="assets/img/logo.png" alt=""/>
         <span className="d-none d-lg-block">NiceAdmin</span>
       </a>
-      <i className="bi bi-list toggle-sidebar-btn"></i>
-      
+      {menu ? <i className="bi bi-list toggle-sidebar-btn" onClick={()=>btnMenu(false)}></i> :
+      <i className="bi bi-list toggle-sidebar-btn" onClick={()=>btnMenu(true)}></i>}
     </div>
 
     
