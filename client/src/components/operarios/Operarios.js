@@ -5,6 +5,7 @@ import { Sidebar } from "../Sidebar";
 import useMenuToggle from '../../hooks/useMenuToggle';
 
 export const Operarios = () => {
+  const {menu} = useMenuToggle();
   return (
     <>
       <Header />

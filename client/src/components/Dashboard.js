@@ -7,7 +7,7 @@ import { Sidebar } from './Sidebar';
 
 
 export const Dashboard = () => {
-  const {menu}=useMenuToggle();
+  const {menu} = useMenuToggle();
   return (
     <>
       <Header/>

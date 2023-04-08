@@ -5,7 +5,7 @@ import { Footer } from '../Footer';
 import { Sidebar } from '../Sidebar';
 
 export const Contratistas = () => {
-  const {menu}=useMenuToggle();
+  const {menu} = useMenuToggle();
   return (
     <>
       <Header />
