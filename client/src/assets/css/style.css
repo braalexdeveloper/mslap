@@ -1220,7 +1220,8 @@ h6 {
   border-top: 1px solid #cddfff;
 }
 
-.footer .copyright {
+.footer .copyright,
+.footer .contact-me {
   text-align: center;
   color: #012970;
 }
@@ -1230,4 +1231,8 @@ h6 {
   text-align: center;
   font-size: 13px;
   color: #012970;
+}
+
+.footer .contact-me {
+  text-decoration: none;
 }

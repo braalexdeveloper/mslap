@@ -9,24 +9,18 @@ export const Contratistas = () => {
       <Header />
       <Sidebar />
       <main id="main" className="main">
-
         <section className="section dashboard">
           <div className="pagetitle">
             <h1>Contratistas</h1>
             <nav>
-
               <button className='btn btn-success mt-2 '><i className="bi bi-plus-lg"></i> Crear Nuevo</button>
             </nav>
           </div>
-
           <section className="section">
             <div className="row">
               <div className="col-lg-12">
-
                 <div className="card">
                   <div className="card-body">
-                   
-
                     <div className="table-responsive">
                       <table className="table">
                         <thead>
@@ -130,10 +124,7 @@ export const Contratistas = () => {
                     </div>
                   </div>
                 </div>
-
               </div>
-
-
             </div>
           </section>
         </section>

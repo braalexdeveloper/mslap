@@ -11,12 +11,9 @@ export const Dashboard = () => {
       <Header />
       <Sidebar />
       <main id="main" className="main">
-
         <section className="section dashboard">
-        dashboard
-          
+          dashboard       
         </section>
-
       </main>
       <Footer />
     </>
