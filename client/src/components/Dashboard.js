@@ -7,15 +7,18 @@ import { Sidebar } from './Sidebar';
 
 
 export const Dashboard = () => {
-  const {menu} = useMenuToggle();
+  const {menu}=useMenuToggle();
   return (
     <>
       <Header/>
       <Sidebar/>
       <main id="main" className="main" style={{  marginLeft: menu ? '': '0px' }}>
+
         <section className="section dashboard">
-          dashboard       
+        dashboard
+          
         </section>
+
       </main>
       <Footer />
     </>
