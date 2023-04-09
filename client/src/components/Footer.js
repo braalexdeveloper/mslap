@@ -1,37 +1,22 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react'
 import useMenuToggle from '../hooks/useMenuToggle'
 
 export const Footer = () => {
-  const {menu} = useMenuToggle();
+  const {menu}=useMenuToggle();
   return (
     <>
-      <footer id="footer" className="footer mb-5" style={{  marginLeft: menu ? '': '0px' }}>
-        <div className="row text-center">
-          <div className="col">
-            <Link to="to:0998113580" className="contact-me">
-              <i className="bi bi-phone">&nbsp;</i>
-              <span>0998113580</span>
-            </Link>
-          </div>
-          <div className="col copyright">
-            &copy; Copyright&nbsp;
-            <span className="fw-bold">NiceAdmin</span>. All Rights Reserved
-          </div>
-          <div className="col">
-            <Link to="mailto:fnicolalde@mslaps.com" className="contact-me">
-              <i className="bi bi-envelope-at">&nbsp;</i>
-              <span>fnicolalde@mslaps.com</span>
-            </Link>
-          </div>
-        </div>
-      </footer>
-      <Link
-        href="/#"
-        className="back-to-top d-flex align-items-center justify-content-center"
-      >
-        <i className="bi bi-arrow-up-short"></i>
-      </Link>
-    </>
-  );
-};
+    <footer id="footer" className="footer" style={{  marginLeft: menu ? '': '0px' }}>
+    <div className="copyright">
+      &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
+    </div>
+    <div className="credits">
+      
+      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+    </div>
+  </footer>
+
+  <a href="#" className="back-to-top d-flex align-items-center justify-content-center"><i className="bi bi-arrow-up-short"></i></a>
+  
+  </>
+  )
+}

@@ -5,12 +5,12 @@ import { Sidebar } from '../Sidebar';
 import useMenuToggle from '../../hooks/useMenuToggle';
 
 export const Supervisores = () => {
-    const {menu}=useMenuToggle();
+    const { menu } = useMenuToggle();
     return (
         <>
-            <Header/>
-            <Sidebar/>
-            <main id="main" className="main" style={{  marginLeft: menu ? '': '0px' }}>
+            <Header />
+            <Sidebar />
+            <main id="main" className="main" style={{ marginLeft: menu ? '' : '0px' }}>
 
                 <section className="section dashboard">
                     <div className="pagetitle">
@@ -31,43 +31,87 @@ export const Supervisores = () => {
 
                                             <form class="row g-3">
                                                 <div class="col-12">
-                                                    <label for="inputNanme4" class="form-label">Your Name</label>
+                                                    <label for="inputNanme4" class="form-label">DNI</label>
                                                     <input type="text" class="form-control" id="inputNanme4" />
                                                 </div>
+
+                                                <div class="col-12">
+                                                    <label for="inputNanme4" class="form-label">Name</label>
+                                                    <input type="text" class="form-control" id="inputNanme4" />
+                                                </div>
+
+                                                <div class="col-12">
+                                                    <label for="inputNanme4" class="form-label">Apellidos</label>
+                                                    <input type="text" class="form-control" id="inputNanme4" />
+                                                </div>
+
+
+                                                <div class="col-12">
+                                                    <label for="inputNanme4" class="form-label">Fecha de Nacimiento</label>
+                                                    <input type="date" class="form-control" id="inputNanme4" />
+                                                </div>
+
+
+                                                <div class="col-12">
+                                                    <label for="inputNanme4" class="form-label">Telefono</label>
+                                                    <input type="text" class="form-control" id="inputNanme4" />
+                                                </div>
+
+
+                                                <div class="col-12">
+                                                    <label for="inputNanme4" class="form-label">Contacto de Emergencia</label>
+                                                    <input type="text" class="form-control" id="inputNanme4" />
+                                                </div>
+
+                                                <div class="col-12">
+                                                    <label for="inputNanme4" class="form-label">Telf. de Emergencia</label>
+                                                    <input type="text" class="form-control" id="inputNanme4" />
+                                                </div>
+
                                                 <div class="col-12">
                                                     <label for="inputEmail4" class="form-label">Email</label>
                                                     <input type="email" class="form-control" id="inputEmail4" />
                                                 </div>
+
+                                                <div class="col-12">
+                                                    <label for="inputAddress" class="form-label">Tipo de Sangre</label>
+                                                    <input type="text" class="form-control" id="inputAddress" />
+                                                </div>
+
+                                                <div class="col-12">
+                                                    <label for="inputAddress" class="form-label">Salario</label>
+                                                    <input type="number" class="form-control" id="inputAddress" />
+                                                </div>
+
                                                 <div class="col-12">
                                                     <label for="inputPassword4" class="form-label">Password</label>
                                                     <input type="password" class="form-control" id="inputPassword4" />
                                                 </div>
+
                                                 <div class="col-12">
-                                                    <label for="inputAddress" class="form-label">Address</label>
-                                                    <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St" />
+                                                    <label for="inputPassword4" class="form-label">Cargo</label>
+                                                    <select class="form-control">
+                                                    <option>escoge</option>
+                                                    <option>escoge2</option>
+                                                    <option>escoge3</option>
+                                                    </select>
                                                 </div>
+
                                                 <div class="col-12">
-                                                    <label for="inputNanme4" class="form-label">Your Name</label>
-                                                    <input type="text" class="form-control" id="inputNanme4" />
+                                                    <label for="inputPassword4" class="form-label">Proyecto</label>
+                                                    <select class="form-control">
+                                                        <option>escoge</option>
+                                                    </select>
                                                 </div>
-                                                <div class="col-12">
-                                                    <label for="inputEmail4" class="form-label">Email</label>
-                                                    <input type="email" class="form-control" id="inputEmail4" />
-                                                </div>
-                                                <div class="col-12">
-                                                    <label for="inputPassword4" class="form-label">Password</label>
-                                                    <input type="password" class="form-control" id="inputPassword4" />
-                                                </div>
-                                                <div class="col-12">
-                                                    <label for="inputAddress" class="form-label">Address</label>
-                                                    <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St" />
-                                                </div>
+
+                                                
+
                                                 <div class="text-center">
                                                     <button type="submit" class="btn btn-success">Guardar</button>
                                                     <button type="reset" class="btn btn-warning mx-2">Reset</button>
                                                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                                                 </div>
-                                                
+
                                             </form>
                                         </div>
 
