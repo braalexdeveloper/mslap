@@ -8,6 +8,6 @@ const router = Router();
 // logueo de usuario
 router.get("/login", auth, userController.login);
 // resetear contraseña
-router.update("/resetPass", thereIsUserById, userController.updatePassword);
+router.put("/resetPass", thereIsUserById, userController.updatePassword);
 
 module.exports = router;
