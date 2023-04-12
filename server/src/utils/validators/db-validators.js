@@ -1,4 +1,3 @@
-const {} = require("");
 const { User, Position, Project } = require("../../db");
 
 // Middleware for routes user

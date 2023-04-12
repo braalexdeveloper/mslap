@@ -22,7 +22,7 @@ module.exports = (sequelize) => {
         allowNull: false,
       },
       totalCertificates: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       location: {
