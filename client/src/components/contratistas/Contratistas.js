@@ -1,21 +1,27 @@
-import React from 'react';
-import useMenuToggle from '../../hooks/useMenuToggle';
-import { Header } from '../Header';
-import { Footer } from '../Footer';
-import { Sidebar } from '../Sidebar';
+import React from "react";
+import useMenuToggle from "../../hooks/useMenuToggle";
+import { Header } from "../Header";
+import { Footer } from "../Footer";
+import { Sidebar } from "../Sidebar";
 
 export const Contratistas = () => {
-  const {menu} = useMenuToggle();
+  const { menu } = useMenuToggle();
   return (
     <>
       <Header />
       <Sidebar />
-      <main id="main" className="main" style={{  marginLeft: menu ? '': '0px' }}>
+      <main
+        id="main"
+        className="main"
+        style={{ marginLeft: menu ? "" : "0px" }}
+      >
         <section className="section dashboard">
           <div className="pagetitle">
             <h1>Contratistas</h1>
             <nav>
-              <button className='btn btn-success mt-2 '><i className="bi bi-plus-lg"></i> Crear Nuevo</button>
+              <button className="btn btn-success mt-2 ">
+                <i className="bi bi-plus-lg"></i> Crear Nuevo
+              </button>
             </nav>
           </div>
           <section className="section">
@@ -53,8 +59,13 @@ export const Contratistas = () => {
                             <td>Designer</td>
                             <td>Designer</td>
                             <td>
-                              <button className='btn btn-warning btn-sm '><i className="bi bi-pencil-fill"></i></button>&nbsp;
-                              <button className='btn btn-danger btn-sm '><i className="bi bi-trash-fill"></i></button>
+                              <button className="btn btn-warning btn-sm ">
+                                <i className="bi bi-pencil-fill"></i>
+                              </button>
+                              &nbsp;
+                              <button className="btn btn-danger btn-sm ">
+                                <i className="bi bi-trash-fill"></i>
+                              </button>
                             </td>
                           </tr>
                           <tr>
@@ -69,8 +80,13 @@ export const Contratistas = () => {
                             <td>Designer</td>
                             <td>Designer</td>
                             <td>
-                              <button className='btn btn-warning btn-sm '><i className="bi bi-pencil-fill"></i></button>&nbsp;
-                              <button className='btn btn-danger btn-sm '><i className="bi bi-trash-fill"></i></button>
+                              <button className="btn btn-warning btn-sm ">
+                                <i className="bi bi-pencil-fill"></i>
+                              </button>
+                              &nbsp;
+                              <button className="btn btn-danger btn-sm ">
+                                <i className="bi bi-trash-fill"></i>
+                              </button>
                             </td>
                           </tr>
                           <tr>
@@ -85,8 +101,13 @@ export const Contratistas = () => {
                             <td>Designer</td>
                             <td>Designer</td>
                             <td>
-                              <button className='btn btn-warning btn-sm '><i className="bi bi-pencil-fill"></i></button>&nbsp;
-                              <button className='btn btn-danger btn-sm '><i className="bi bi-trash-fill"></i></button>
+                              <button className="btn btn-warning btn-sm ">
+                                <i className="bi bi-pencil-fill"></i>
+                              </button>
+                              &nbsp;
+                              <button className="btn btn-danger btn-sm ">
+                                <i className="bi bi-trash-fill"></i>
+                              </button>
                             </td>
                           </tr>
                           <tr>
@@ -101,8 +122,13 @@ export const Contratistas = () => {
                             <td>Designer</td>
                             <td>Designer</td>
                             <td>
-                              <button className='btn btn-warning btn-sm '><i className="bi bi-pencil-fill"></i></button>&nbsp;
-                              <button className='btn btn-danger btn-sm '><i className="bi bi-trash-fill"></i></button>
+                              <button className="btn btn-warning btn-sm ">
+                                <i className="bi bi-pencil-fill"></i>
+                              </button>
+                              &nbsp;
+                              <button className="btn btn-danger btn-sm ">
+                                <i className="bi bi-trash-fill"></i>
+                              </button>
                             </td>
                           </tr>
                           <tr>
@@ -117,8 +143,13 @@ export const Contratistas = () => {
                             <td>Designer</td>
                             <td>Designer</td>
                             <td>
-                              <button className='btn btn-warning btn-sm '><i className="bi bi-pencil-fill"></i></button>&nbsp;
-                              <button className='btn btn-danger btn-sm '><i className="bi bi-trash-fill"></i></button>
+                              <button className="btn btn-warning btn-sm ">
+                                <i className="bi bi-pencil-fill"></i>
+                              </button>
+                              &nbsp;
+                              <button className="btn btn-danger btn-sm ">
+                                <i className="bi bi-trash-fill"></i>
+                              </button>
                             </td>
                           </tr>
                         </tbody>
@@ -133,5 +164,5 @@ export const Contratistas = () => {
       </main>
       <Footer />
     </>
-  )
-}
+  );
+};

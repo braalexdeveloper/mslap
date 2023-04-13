@@ -4,7 +4,6 @@ import useMenuToggle from "../hooks/useMenuToggle";
 
 export const Sidebar = () => {
   const { menu, setMenu } = useMenuToggle();
-
   return (
     <aside
       id="sidebar"
