@@ -25,7 +25,7 @@ module.exports = (sequelize) => {
         type: DataTypes.DATE,
       },
       phone: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
         allowNull: false,
       },
       contactEmergency: {
@@ -33,7 +33,7 @@ module.exports = (sequelize) => {
         allowNull: false,
       },
       phoneEmergency: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
         allowNull: false,
       },
       email: {
@@ -53,9 +53,13 @@ module.exports = (sequelize) => {
       observation: {
         type: DataTypes.TEXT,
       },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      }
     },
     {
-      timestamp: false,
+      timestamps: false,
     }
   );
 };

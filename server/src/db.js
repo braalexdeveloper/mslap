@@ -50,14 +50,14 @@ sequelize.models = Object.fromEntries(capsEntries);
 const { User, Position, Project, Role } = sequelize.models;
 
 // Relaciones de los modelos
-User.hasOne(Position);
-Position.belongsTo(User);
+Position.hasOne(User);
+User.belongsTo(Position);
 
-User.hasMany(Project);
-Project.belongsTo(User);
+User.belongsToMany(Project, { through: 'usersprojects' });
+Project.belongsToMany(User, { through: 'usersprojects' });
 
-User.hasOne(Role);
-Role.belongsTo(User);
+Role.hasMany(User);
+User.belongsTo(Role);
 
 module.exports = {
   ...sequelize.models,

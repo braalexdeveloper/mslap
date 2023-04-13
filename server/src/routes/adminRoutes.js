@@ -13,7 +13,7 @@ const router = Router();
 // crear cargo
 router.post(
   "/position",
-  [check("name", "Ingrese nombres").not().isEmpty()],
+  [check("name", "Ingrese nombre").not().isEmpty()],
   adminController.createPosition
 );
 // actualizar cargo
