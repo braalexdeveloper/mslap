@@ -1,22 +1,46 @@
-import React from 'react';
+import React, { useState } from 'react';
 import useMenuToggle from '../../hooks/useMenuToggle';
 import { Header } from '../Header';
 import { Footer } from '../Footer';
 import { Sidebar } from '../Sidebar';
 
 export const Cargos = () => {
-    const {menu}=useMenuToggle();
-  return (
-    <>
+    const { menu } = useMenuToggle();
+    const [image, setImage] = useState("");
+let arrayCount=[];
+    function iter() {
+
+        for (let i = 0; i < 5; i++) {
+            arrayCount.push(i)
+        }
+
+    }
+    iter();
+    
+console.log(arrayCount);
+    const uploadImage = () => {
+        const formData = new FormData();
+        formData.append("file", image);
+        formData.append("upload_preset", "twqan9ru");
+        fetch("https://api.cloudinary.com/v1_1/dwmrbilbo/image/upload", {
+            method: "POST",
+            body: formData,
+        }
+        ).then(res => res.json()).catch(error => console.log(error)).then(res => console.log('Success:', res));;
+
+    }
+
+    return (
+        <>
             <Header />
             <Sidebar />
-            <main id="main" className="main" style={{  marginLeft: menu ? '': '0px' }}>
+            <main id="main" className="main" style={{ marginLeft: menu ? '' : '0px' }}>
 
                 <section className="section dashboard">
                     <div className="pagetitle">
                         <h1>Cargos</h1>
                         <nav>
-                        <button className='btn btn-success mt-2 ' data-bs-toggle="modal" data-bs-target="#verticalycentered">
+                            <button className='btn btn-success mt-2 ' data-bs-toggle="modal" data-bs-target="#verticalycentered">
                                 <i className="bi bi-plus-lg"></i> Crear Nuevo
                             </button>
                             <div class="modal fade" id="verticalycentered" tabindex="-1">
@@ -28,12 +52,14 @@ export const Cargos = () => {
                                         </div>
                                         <div class="modal-body">
 
-                                            <form class="row g-3">
+                                            <form class="row g-3" >
                                                 <div class="col-12">
                                                     <label for="inputNanme4" class="form-label">Nombre</label>
                                                     <input type="text" class="form-control" id="inputNanme4" />
                                                 </div>
-                                                
+
+
+
                                                 <div class="text-center">
                                                     <button type="submit" class="btn btn-success">Guardar</button>
                                                     <button type="reset" class="btn btn-warning mx-2">Reset</button>
@@ -41,6 +67,16 @@ export const Cargos = () => {
                                                 </div>
 
                                             </form>
+                                           {arrayCount.map(element => {
+                                             return <div class="col-12" key={element}>
+                                             <label for="files" class="form-label">subir imagen</label>
+                                             <input type="file" onChange={(e) => { setImage(e.target.files[0]) }} class="form-control" id="files" />
+                                             <button onClick={uploadImage} class="btn btn-warning mx-2">SubirImagen</button>
+                                            </div>
+                                           })}
+                                                    
+                                            
+
                                         </div>
 
                                     </div>
@@ -55,7 +91,7 @@ export const Cargos = () => {
 
                                 <div className="card">
                                     <div className="card-body">
-                                        
+
 
                                         <div className="table-responsive">
                                             <table className="table">
@@ -73,7 +109,7 @@ export const Cargos = () => {
                                                             <button className='btn btn-danger btn-sm '><i className="bi bi-trash-fill"></i></button>
                                                         </td>
                                                     </tr>
-                                                    
+
                                                 </tbody>
                                             </table>
                                         </div>
@@ -89,5 +125,5 @@ export const Cargos = () => {
             </main>
             <Footer />
         </>
-  )
+    )
 }
