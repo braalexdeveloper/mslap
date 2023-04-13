@@ -1,5 +1,6 @@
+const bcrypt = require("bcrypt");
 const { validationResult } = require("express-validator");
-const { User } = require("../db");
+const { User, Role } = require("../db");
 
 const userController = {
   // Función de login
@@ -14,12 +15,18 @@ const userController = {
 
     try {
       const user = await User.findByPk(id, {
-        attributes: {
-          exclude: ["password", "role"],
-        },
+        include: [Role],
       });
 
+      if (req.query.role !== user.role.value) {
+        return res.status(401).json({
+          status: 0,
+          message: "Rol de usuario incorrecto",
+        });
+      }
+
       if (bcrypt.compareSync(req.query.password, user.password)) {
+        delete user.password;
         return res.status(200).json({
           status: 1,
           message: "Usuario logueado correctamente",
@@ -47,15 +54,14 @@ const userController = {
     }
 
     const { id } = req.params;
-    const { password } = req.body;
-    req.body.password = bcrypt.hashSync(password, 10);
+    const password = bcrypt.hashSync(req.body.newPassword, 10);
 
     try {
-      await User.update(req.body, { where: { id } });
+      await User.update({ password }, { where: { id } });
 
       const user = await User.findByPk(id, {
         attributes: {
-          exclude: ["password", "role"],
+          exclude: ["password"],
         },
       });
 
