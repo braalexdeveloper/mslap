@@ -1,8 +1,12 @@
-import React from 'react'
+
+import React from "react";
+
+
 
 export const Login = () => {
   return (
     <main>
+
     <div className="container">
 
       <section className="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
@@ -57,6 +61,7 @@ export const Login = () => {
                     </div>
                   </form>
 
+
                 </div>
               </div>
 
@@ -67,11 +72,10 @@ export const Login = () => {
 
             </div>
           </div>
-        </div>
+</div>
+        </section>
+      </div>
+    </main>
+  );
+};
 
-      </section>
-
-    </div>
-  </main>
-  )
-}

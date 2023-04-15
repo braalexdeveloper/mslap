@@ -20,96 +20,96 @@ export const Supervisores = () => {
                             <button className='btn btn-success mt-2 ' data-bs-toggle="modal" data-bs-target="#verticalycentered">
                                 <i className="bi bi-plus-lg"></i> Crear Nuevo
                             </button>
-                            <div class="modal fade" id="verticalycentered" tabindex="-1">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">Agregar Supervisor</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <div className="modal fade" id="verticalycentered" tabindex="-1">
+                                <div className="modal-dialog modal-dialog-centered">
+                                    <div className="modal-content">
+                                        <div className="modal-header">
+                                            <h5 className="modal-title">Agregar Supervisor</h5>
+                                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
-                                        <div class="modal-body">
+                                        <div className="modal-body">
 
-                                            <form class="row g-3">
-                                                <div class="col-12">
-                                                    <label for="inputNanme4" class="form-label">DNI</label>
-                                                    <input type="text" class="form-control" id="inputNanme4" />
+                                            <form className="row g-3">
+                                                <div className="col-12">
+                                                    <label for="inputNanme4" className="form-label">DNI</label>
+                                                    <input type="text" className="form-control" id="inputNanme4" />
                                                 </div>
 
-                                                <div class="col-12">
-                                                    <label for="inputNanme4" class="form-label">Name</label>
-                                                    <input type="text" class="form-control" id="inputNanme4" />
+                                                <div className="col-12">
+                                                    <label for="inputNanme4" className="form-label">Name</label>
+                                                    <input type="text" className="form-control" id="inputNanme4" />
                                                 </div>
 
-                                                <div class="col-12">
-                                                    <label for="inputNanme4" class="form-label">Apellidos</label>
-                                                    <input type="text" class="form-control" id="inputNanme4" />
-                                                </div>
-
-
-                                                <div class="col-12">
-                                                    <label for="inputNanme4" class="form-label">Fecha de Nacimiento</label>
-                                                    <input type="date" class="form-control" id="inputNanme4" />
+                                                <div className="col-12">
+                                                    <label for="inputNanme4" className="form-label">Apellidos</label>
+                                                    <input type="text" className="form-control" id="inputNanme4" />
                                                 </div>
 
 
-                                                <div class="col-12">
-                                                    <label for="inputNanme4" class="form-label">Telefono</label>
-                                                    <input type="text" class="form-control" id="inputNanme4" />
+                                                <div className="col-12">
+                                                    <label for="inputNanme4" className="form-label">Fecha de Nacimiento</label>
+                                                    <input type="date" className="form-control" id="inputNanme4" />
                                                 </div>
 
 
-                                                <div class="col-12">
-                                                    <label for="inputNanme4" class="form-label">Contacto de Emergencia</label>
-                                                    <input type="text" class="form-control" id="inputNanme4" />
+                                                <div className="col-12">
+                                                    <label for="inputNanme4" className="form-label">Telefono</label>
+                                                    <input type="text" className="form-control" id="inputNanme4" />
                                                 </div>
 
-                                                <div class="col-12">
-                                                    <label for="inputNanme4" class="form-label">Telf. de Emergencia</label>
-                                                    <input type="text" class="form-control" id="inputNanme4" />
+
+                                                <div className="col-12">
+                                                    <label for="inputNanme4" className="form-label">Contacto de Emergencia</label>
+                                                    <input type="text" className="form-control" id="inputNanme4" />
                                                 </div>
 
-                                                <div class="col-12">
-                                                    <label for="inputEmail4" class="form-label">Email</label>
-                                                    <input type="email" class="form-control" id="inputEmail4" />
+                                                <div className="col-12">
+                                                    <label for="inputNanme4" className="form-label">Telf. de Emergencia</label>
+                                                    <input type="text" className="form-control" id="inputNanme4" />
                                                 </div>
 
-                                                <div class="col-12">
-                                                    <label for="inputAddress" class="form-label">Tipo de Sangre</label>
-                                                    <input type="text" class="form-control" id="inputAddress" />
+                                                <div className="col-12">
+                                                    <label for="inputEmail4" className="form-label">Email</label>
+                                                    <input type="email" className="form-control" id="inputEmail4" />
                                                 </div>
 
-                                                <div class="col-12">
-                                                    <label for="inputAddress" class="form-label">Salario</label>
-                                                    <input type="number" class="form-control" id="inputAddress" />
+                                                <div className="col-12">
+                                                    <label for="inputAddress" className="form-label">Tipo de Sangre</label>
+                                                    <input type="text" className="form-control" id="inputAddress" />
                                                 </div>
 
-                                                <div class="col-12">
-                                                    <label for="inputPassword4" class="form-label">Password</label>
-                                                    <input type="password" class="form-control" id="inputPassword4" />
+                                                <div className="col-12">
+                                                    <label for="inputAddress" className="form-label">Salario</label>
+                                                    <input type="number" className="form-control" id="inputAddress" />
                                                 </div>
 
-                                                <div class="col-12">
-                                                    <label for="inputPassword4" class="form-label">Cargo</label>
-                                                    <select class="form-control">
+                                                <div className="col-12">
+                                                    <label for="inputPassword4" className="form-label">Password</label>
+                                                    <input type="password" className="form-control" id="inputPassword4" />
+                                                </div>
+
+                                                <div className="col-12">
+                                                    <label for="inputPassword4" className="form-label">Cargo</label>
+                                                    <select className="form-control">
                                                     <option>escoge</option>
                                                     <option>escoge2</option>
                                                     <option>escoge3</option>
                                                     </select>
                                                 </div>
 
-                                                <div class="col-12">
-                                                    <label for="inputPassword4" class="form-label">Proyecto</label>
-                                                    <select class="form-control">
+                                                <div className="col-12">
+                                                    <label for="inputPassword4" className="form-label">Proyecto</label>
+                                                    <select className="form-control">
                                                         <option>escoge</option>
                                                     </select>
                                                 </div>
 
                                                 
 
-                                                <div class="text-center">
-                                                    <button type="submit" class="btn btn-success">Guardar</button>
-                                                    <button type="reset" class="btn btn-warning mx-2">Reset</button>
-                                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                                <div className="text-center">
+                                                    <button type="submit" className="btn btn-success">Guardar</button>
+                                                    <button type="reset" className="btn btn-warning mx-2">Reset</button>
+                                                    <button type="button" className="btn btn-danger" data-bs-dismiss="modal">Close</button>
                                                 </div>
 
                                             </form>

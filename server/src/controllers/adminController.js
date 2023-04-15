@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const { validationResult } = require("express-validator");
-const { User, Position, Project } = require("../db");
+const { User, Position, Project, Role } = require("../db");
 
 const adminController = {
   // Funciones del modelo Position
@@ -11,8 +11,12 @@ const adminController = {
       return res.status(400).json(errors);
     }
 
+    const { id } = req.params;
+
     try {
-      const position = await Position.findByPk(id);
+      const position = await Position.findByPk(id, {
+        include: [User],
+      });
 
       if (!position) {
         return res.status(404).json({
@@ -35,7 +39,9 @@ const adminController = {
   },
   getAllPositions: async (req, res) => {
     try {
-      const positions = await Position.findAll();
+      const positions = await Position.findAll({
+        include: [User],
+      });
 
       return res.status(200).json({
         status: 1,
@@ -129,8 +135,19 @@ const adminController = {
       return res.status(400).json(errors);
     }
 
+    const { id } = req.params;
+
     try {
-      const project = await Project.findByPk(id);
+      const project = await Project.findByPk(id, {
+        include: [
+          {
+            model: User,
+            through: {
+              attributes: [],
+            },
+          },
+        ],
+      });
 
       if (!project) {
         return res.status(404).json({
@@ -153,7 +170,16 @@ const adminController = {
   },
   getAllProjects: async (req, res) => {
     try {
-      const projects = await Project.findAll();
+      const projects = await Project.findAll({
+        include: [
+          {
+            model: User,
+            through: {
+              attributes: [],
+            },
+          },
+        ],
+      });
 
       return res.status(200).json({
         status: 1,
@@ -247,11 +273,27 @@ const adminController = {
       return res.status(400).json(errors);
     }
 
+    const { id } = req.params;
+
     try {
       const user = await User.findByPk(id, {
         attributes: {
-          exclude: ["password", "role"],
+          exclude: ["password"],
         },
+        include: [
+          {
+            model: Position,
+          },
+          {
+            model: Project,
+            through: {
+              attributes: [],
+            },
+          },
+          {
+            model: Role,
+          },
+        ],
       });
 
       if (!user) {
@@ -277,8 +319,22 @@ const adminController = {
     try {
       const users = await User.findAll({
         attributes: {
-          exclude: ["password", "role"],
+          exclude: ["password"],
         },
+        include: [
+          {
+            model: Position,
+          },
+          {
+            model: Project,
+            through: {
+              attributes: [],
+            },
+          },
+          {
+            model: Role,
+          },
+        ],
       });
 
       return res.status(200).json({
@@ -300,11 +356,12 @@ const adminController = {
       return res.status(400).json(errors);
     }
 
-    const { password } = req.body;
+    const { password, projectId } = req.body;
     req.body.password = bcrypt.hashSync(password, 10);
 
     try {
       const userCreated = await User.create(req.body);
+      userCreated.addProject(projectId);
 
       return res.status(200).json({
         status: 1,
