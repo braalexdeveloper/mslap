@@ -1,12 +1,12 @@
-import React from 'react';
-import useMenuToggle from '../hooks/useMenuToggle';
+import React from "react";
+import useMenuToggle from "../hooks/useMenuToggle";
 
-import { Header } from './Header';
-import { Footer } from './Footer';
-import { Sidebar } from './Sidebar';
-
+import { Header } from "./Header";
+import { Footer } from "./Footer";
+import { Sidebar } from "./Sidebar";
 
 export const Dashboard = () => {
+
   const {menu}=useMenuToggle();
   return (
     <>
@@ -22,5 +22,5 @@ export const Dashboard = () => {
       </main>
       <Footer />
     </>
-  )
-}
+  );
+};

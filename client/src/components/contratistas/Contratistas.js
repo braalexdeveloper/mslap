@@ -1,124 +1,130 @@
-import React from 'react';
-import useMenuToggle from '../../hooks/useMenuToggle';
-import { Header } from '../Header';
-import { Footer } from '../Footer';
-import { Sidebar } from '../Sidebar';
+import React from "react";
+import useMenuToggle from "../../hooks/useMenuToggle";
+import { Header } from "../Header";
+import { Footer } from "../Footer";
+import { Sidebar } from "../Sidebar";
 
 export const Contratistas = () => {
-  const {menu}=useMenuToggle();
+
+  const { menu } = useMenuToggle();
+
   return (
     <>
       <Header />
       <Sidebar />
-      <main id="main" className="main" style={{  marginLeft: menu ? '': '0px' }}>
+
+      <main id="main" className="main" style={{ marginLeft: menu ? '' : '0px' }}>
+
 
         <section className="section dashboard">
           <div className="pagetitle">
             <h1>Contratistas</h1>
             <nav>
 
-<button className='btn btn-success mt-2 ' data-bs-toggle="modal" data-bs-target="#verticalycentered">
-    <i className="bi bi-plus-lg"></i> Crear Nuevo
-</button>
-<div class="modal fade" id="verticalycentered" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Agregar Contratista</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
 
-                <form class="row g-3">
-                    <div class="col-12">
-                        <label for="inputNanme4" class="form-label">DNI</label>
-                        <input type="text" class="form-control" id="inputNanme4" />
+              <button className='btn btn-success mt-2 ' data-bs-toggle="modal" data-bs-target="#verticalycentered">
+                <i className="bi bi-plus-lg"></i> Crear Nuevo
+              </button>
+              <div className="modal fade" id="verticalycentered" tabindex="-1">
+                <div className="modal-dialog modal-dialog-centered">
+                  <div className="modal-content">
+                    <div className="modal-header">
+                      <h5 className="modal-title">Agregar Contratista</h5>
+                      <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
+                    <div className="modal-body">
 
-                    <div class="col-12">
-                        <label for="inputNanme4" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="inputNanme4" />
-                    </div>
+                      <form className="row g-3">
+                        <div className="col-12">
+                          <label for="inputNanme4" className="form-label">DNI</label>
+                          <input type="text" className="form-control" id="inputNanme4" />
+                        </div>
 
-                    <div class="col-12">
-                        <label for="inputNanme4" class="form-label">Apellidos</label>
-                        <input type="text" class="form-control" id="inputNanme4" />
-                    </div>
+                        <div className="col-12">
+                          <label for="inputNanme4" className="form-label">Name</label>
+                          <input type="text" className="form-control" id="inputNanme4" />
+                        </div>
 
-
-                    <div class="col-12">
-                        <label for="inputNanme4" class="form-label">Fecha de Nacimiento</label>
-                        <input type="date" class="form-control" id="inputNanme4" />
-                    </div>
-
-
-                    <div class="col-12">
-                        <label for="inputNanme4" class="form-label">Telefono</label>
-                        <input type="text" class="form-control" id="inputNanme4" />
-                    </div>
+                        <div className="col-12">
+                          <label for="inputNanme4" className="form-label">Apellidos</label>
+                          <input type="text" className="form-control" id="inputNanme4" />
+                        </div>
 
 
-                    <div class="col-12">
-                        <label for="inputNanme4" class="form-label">Contacto de Emergencia</label>
-                        <input type="text" class="form-control" id="inputNanme4" />
-                    </div>
+                        <div className="col-12">
+                          <label for="inputNanme4" className="form-label">Fecha de Nacimiento</label>
+                          <input type="date" className="form-control" id="inputNanme4" />
+                        </div>
 
-                    <div class="col-12">
-                        <label for="inputNanme4" class="form-label">Telf. de Emergencia</label>
-                        <input type="text" class="form-control" id="inputNanme4" />
-                    </div>
 
-                    <div class="col-12">
-                        <label for="inputEmail4" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="inputEmail4" />
-                    </div>
+                        <div className="col-12">
+                          <label for="inputNanme4" className="form-label">Telefono</label>
+                          <input type="text" className="form-control" id="inputNanme4" />
+                        </div>
 
-                    <div class="col-12">
-                        <label for="inputAddress" class="form-label">Tipo de Sangre</label>
-                        <input type="text" class="form-control" id="inputAddress" />
-                    </div>
 
-                    <div class="col-12">
-                        <label for="inputAddress" class="form-label">Salario</label>
-                        <input type="number" class="form-control" id="inputAddress" />
-                    </div>
+                        <div className="col-12">
+                          <label for="inputNanme4" className="form-label">Contacto de Emergencia</label>
+                          <input type="text" className="form-control" id="inputNanme4" />
+                        </div>
 
-                    <div class="col-12">
-                        <label for="inputPassword4" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="inputPassword4" />
-                    </div>
+                        <div className="col-12">
+                          <label for="inputNanme4" className="form-label">Telf. de Emergencia</label>
+                          <input type="text" className="form-control" id="inputNanme4" />
+                        </div>
 
-                    <div class="col-12">
-                        <label for="inputPassword4" class="form-label">Cargo</label>
-                        <select class="form-control">
-                        <option>escoge</option>
-                        <option>escoge2</option>
-                        <option>escoge3</option>
-                        </select>
-                    </div>
+                        <div className="col-12">
+                          <label for="inputEmail4" className="form-label">Email</label>
+                          <input type="email" className="form-control" id="inputEmail4" />
+                        </div>
 
-                    <div class="col-12">
-                        <label for="inputPassword4" class="form-label">Proyecto</label>
-                        <select class="form-control">
+                        <div className="col-12">
+                          <label for="inputAddress" className="form-label">Tipo de Sangre</label>
+                          <input type="text" className="form-control" id="inputAddress" />
+                        </div>
+
+                        <div className="col-12">
+                          <label for="inputAddress" className="form-label">Salario</label>
+                          <input type="number" className="form-control" id="inputAddress" />
+                        </div>
+
+                        <div className="col-12">
+                          <label for="inputPassword4" className="form-label">Password</label>
+                          <input type="password" className="form-control" id="inputPassword4" />
+                        </div>
+
+                        <div className="col-12">
+                          <label for="inputPassword4" className="form-label">Cargo</label>
+                          <select className="form-control">
                             <option>escoge</option>
-                        </select>
+                            <option>escoge2</option>
+                            <option>escoge3</option>
+                          </select>
+                        </div>
+
+                        <div className="col-12">
+                          <label for="inputPassword4" className="form-label">Proyecto</label>
+                          <select className="form-control">
+                            <option>escoge</option>
+                          </select>
+                        </div>
+
+
+
+                        <div className="text-center">
+                          <button type="submit" className="btn btn-success">Guardar</button>
+                          <button type="reset" className="btn btn-warning mx-2">Reset</button>
+                          <button type="button" className="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        </div>
+
+                      </form>
                     </div>
 
-                    
+                  </div>
+                </div>
+              </div>
+            </nav>
 
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-success">Guardar</button>
-                        <button type="reset" class="btn btn-warning mx-2">Reset</button>
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                    </div>
-
-                </form>
-            </div>
-
-        </div>
-    </div>
-</div>
-</nav>
           </div>
 
           <section className="section">
@@ -127,7 +133,7 @@ export const Contratistas = () => {
 
                 <div className="card">
                   <div className="card-body">
-                   
+
 
                     <div className="table-responsive">
                       <table className="table">
@@ -159,8 +165,13 @@ export const Contratistas = () => {
                             <td>Designer</td>
                             <td>Designer</td>
                             <td>
-                              <button className='btn btn-warning btn-sm '><i className="bi bi-pencil-fill"></i></button>&nbsp;
-                              <button className='btn btn-danger btn-sm '><i className="bi bi-trash-fill"></i></button>
+                              <button className="btn btn-warning btn-sm ">
+                                <i className="bi bi-pencil-fill"></i>
+                              </button>
+                              &nbsp;
+                              <button className="btn btn-danger btn-sm ">
+                                <i className="bi bi-trash-fill"></i>
+                              </button>
                             </td>
                           </tr>
                           <tr>
@@ -175,8 +186,13 @@ export const Contratistas = () => {
                             <td>Designer</td>
                             <td>Designer</td>
                             <td>
-                              <button className='btn btn-warning btn-sm '><i className="bi bi-pencil-fill"></i></button>&nbsp;
-                              <button className='btn btn-danger btn-sm '><i className="bi bi-trash-fill"></i></button>
+                              <button className="btn btn-warning btn-sm ">
+                                <i className="bi bi-pencil-fill"></i>
+                              </button>
+                              &nbsp;
+                              <button className="btn btn-danger btn-sm ">
+                                <i className="bi bi-trash-fill"></i>
+                              </button>
                             </td>
                           </tr>
                           <tr>
@@ -191,8 +207,13 @@ export const Contratistas = () => {
                             <td>Designer</td>
                             <td>Designer</td>
                             <td>
-                              <button className='btn btn-warning btn-sm '><i className="bi bi-pencil-fill"></i></button>&nbsp;
-                              <button className='btn btn-danger btn-sm '><i className="bi bi-trash-fill"></i></button>
+                              <button className="btn btn-warning btn-sm ">
+                                <i className="bi bi-pencil-fill"></i>
+                              </button>
+                              &nbsp;
+                              <button className="btn btn-danger btn-sm ">
+                                <i className="bi bi-trash-fill"></i>
+                              </button>
                             </td>
                           </tr>
                           <tr>
@@ -207,8 +228,13 @@ export const Contratistas = () => {
                             <td>Designer</td>
                             <td>Designer</td>
                             <td>
-                              <button className='btn btn-warning btn-sm '><i className="bi bi-pencil-fill"></i></button>&nbsp;
-                              <button className='btn btn-danger btn-sm '><i className="bi bi-trash-fill"></i></button>
+                              <button className="btn btn-warning btn-sm ">
+                                <i className="bi bi-pencil-fill"></i>
+                              </button>
+                              &nbsp;
+                              <button className="btn btn-danger btn-sm ">
+                                <i className="bi bi-trash-fill"></i>
+                              </button>
                             </td>
                           </tr>
                           <tr>
@@ -223,8 +249,13 @@ export const Contratistas = () => {
                             <td>Designer</td>
                             <td>Designer</td>
                             <td>
-                              <button className='btn btn-warning btn-sm '><i className="bi bi-pencil-fill"></i></button>&nbsp;
-                              <button className='btn btn-danger btn-sm '><i className="bi bi-trash-fill"></i></button>
+                              <button className="btn btn-warning btn-sm ">
+                                <i className="bi bi-pencil-fill"></i>
+                              </button>
+                              &nbsp;
+                              <button className="btn btn-danger btn-sm ">
+                                <i className="bi bi-trash-fill"></i>
+                              </button>
                             </td>
                           </tr>
                         </tbody>
@@ -242,5 +273,5 @@ export const Contratistas = () => {
       </main>
       <Footer />
     </>
-  )
-}
+  );
+};

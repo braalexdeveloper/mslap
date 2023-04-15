@@ -7,7 +7,7 @@ export const Header = () => {
   setMenu(value);
   console.log(menu)
  }
- console.log(menu)
+
   return (
     <header id="header" className="header fixed-top d-flex align-items-center">
 

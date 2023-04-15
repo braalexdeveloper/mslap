@@ -4,12 +4,14 @@ import { Link,NavLink } from 'react-router-dom';
 import useMenuToggle from '../hooks/useMenuToggle';
 
 export const Sidebar = () => {
+
   const { menu,setMenu }=useMenuToggle();
   const [matches, setMatches] = useState(window.matchMedia("(min-width: 768px)").matches);
   //setMatches( e.matches )
   useEffect(() => {
     window.matchMedia("(min-width: 768px)").addEventListener('change', e => setMenu(false));
   }, []);
+
 
   return (
     <aside id="sidebar" className="sidebar" style={{  left: menu ? '0px': '-300px' }}>
