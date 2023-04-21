@@ -1,11 +1,157 @@
-import React from 'react';
-import { Header } from '../Header';
-import { Footer } from '../Footer';
-import { Sidebar } from '../Sidebar';
-import useMenuToggle from '../../hooks/useMenuToggle';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import Swal from "sweetalert2";
+import useMenuToggle from "../../hooks/useMenuToggle";
+import { Header } from "../Header";
+import { Footer } from "../Footer";
+import { Sidebar } from "../Sidebar";
+import { Form } from "./Form";
+import { createUser, allUsers, deleteUser, allProjects, AllCargos,updateUser } from "../../redux/actions";
+import { useDispatch, useSelector } from "react-redux";
 
 export const Supervisores = () => {
     const { menu } = useMenuToggle();
+    const users = useSelector(state => state.supervisores);
+  const responseCreateUser = useSelector(state => state.createUser);
+  const responseDeleteUser = useSelector(state => state.deleteUser);
+  const Projects = useSelector(state => state.projects);
+  const Cargos = useSelector(state => state.cargos);
+  const dispatch = useDispatch();
+  const [action, setAction] = useState("create");
+  //const [refresh,setRefresh]=useState(false);
+
+  const [input, setInput] = useState({
+    dni: '',
+    name: '',
+    lastName: '',
+    birthday: '',
+    phone: '',
+    contactEmergency: '',
+    phoneEmergency: '',
+    email: '',
+    typeBlood: '',
+    salary: 0,
+    password: '',
+    positionId: '',
+    roleId: "supervisor",
+    projectId: ''
+  });
+
+  const handleChange = (e) => {
+    setInput({
+      ...input,
+      [e.target.name]: e.target.value
+    })
+
+  }
+
+  const limpiarCampo = () => {
+    setInput({
+      dni: '',
+      name: '',
+      lastName: '',
+      birthday: '',
+      phone: '',
+      contactEmergency: '',
+      phoneEmergency: '',
+      email: '',
+      typeBlood: '',
+      salary: 0,
+      password: '',
+      positionId: '',
+      roleId: "supervisor",
+      projectId: ''
+    });
+    setAction("create");
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (action === "create") {
+      dispatch(createUser(input));
+
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Contratista Creado Correctamente!',
+        showConfirmButton: false,
+        timer: 2000
+      })
+      console.log(input)
+    } else {
+       dispatch(updateUser(input.id,input));
+       Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Contratista Actualizado Correctamente!',
+        showConfirmButton: false,
+        timer: 2000
+      })
+    }
+    limpiarCampo();
+    dispatch(allUsers());
+
+  }
+
+  const showUser = async (id) => {
+    const response = await axios.get('http://localhost:3001/api/admin/user/' + id);
+    let user = response.data.data;
+    let fechaNacimiento = user.birthday.split('T');
+
+
+    setInput({
+      id:user.id,
+      dni: user.dni,
+      name: user.name,
+      lastName: user.lastName,
+      birthday: fechaNacimiento[0],
+      phone: user.phone,
+      contactEmergency: user.contactEmergency,
+      phoneEmergency: user.phoneEmergency,
+      email: user.email,
+      typeBlood: user.typeBlood,
+      salary: user.salary,
+      //password: '',
+      positionId: user.positionId,
+     
+      projectId: user.projects[0].id
+    }
+    );
+    setAction("edit");
+  }
+
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: '¿Estas seguro de eliminar?',
+      text: "",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, eliminar!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deleteUser(id));
+
+
+        Swal.fire(
+          'Eliminado!',
+          'Contratista eliminado con éxito.',
+          'success'
+        )
+      }
+    })
+
+  }
+
+
+  useEffect(() => {
+    dispatch(allProjects());
+    dispatch(AllCargos());
+    dispatch(allUsers());
+  }, [dispatch])
+
     return (
         <>
             <Header />
@@ -20,104 +166,7 @@ export const Supervisores = () => {
                             <button className='btn btn-success mt-2 ' data-bs-toggle="modal" data-bs-target="#verticalycentered">
                                 <i className="bi bi-plus-lg"></i> Crear Nuevo
                             </button>
-                            <div className="modal fade" id="verticalycentered" tabindex="-1">
-                                <div className="modal-dialog modal-dialog-centered">
-                                    <div className="modal-content">
-                                        <div className="modal-header">
-                                            <h5 className="modal-title">Agregar Supervisor</h5>
-                                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div className="modal-body">
-
-                                            <form className="row g-3">
-                                                <div className="col-12">
-                                                    <label for="inputNanme4" className="form-label">DNI</label>
-                                                    <input type="text" className="form-control" id="inputNanme4" />
-                                                </div>
-
-                                                <div className="col-12">
-                                                    <label for="inputNanme4" className="form-label">Name</label>
-                                                    <input type="text" className="form-control" id="inputNanme4" />
-                                                </div>
-
-                                                <div className="col-12">
-                                                    <label for="inputNanme4" className="form-label">Apellidos</label>
-                                                    <input type="text" className="form-control" id="inputNanme4" />
-                                                </div>
-
-
-                                                <div className="col-12">
-                                                    <label for="inputNanme4" className="form-label">Fecha de Nacimiento</label>
-                                                    <input type="date" className="form-control" id="inputNanme4" />
-                                                </div>
-
-
-                                                <div className="col-12">
-                                                    <label for="inputNanme4" className="form-label">Telefono</label>
-                                                    <input type="text" className="form-control" id="inputNanme4" />
-                                                </div>
-
-
-                                                <div className="col-12">
-                                                    <label for="inputNanme4" className="form-label">Contacto de Emergencia</label>
-                                                    <input type="text" className="form-control" id="inputNanme4" />
-                                                </div>
-
-                                                <div className="col-12">
-                                                    <label for="inputNanme4" className="form-label">Telf. de Emergencia</label>
-                                                    <input type="text" className="form-control" id="inputNanme4" />
-                                                </div>
-
-                                                <div className="col-12">
-                                                    <label for="inputEmail4" className="form-label">Email</label>
-                                                    <input type="email" className="form-control" id="inputEmail4" />
-                                                </div>
-
-                                                <div className="col-12">
-                                                    <label for="inputAddress" className="form-label">Tipo de Sangre</label>
-                                                    <input type="text" className="form-control" id="inputAddress" />
-                                                </div>
-
-                                                <div className="col-12">
-                                                    <label for="inputAddress" className="form-label">Salario</label>
-                                                    <input type="number" className="form-control" id="inputAddress" />
-                                                </div>
-
-                                                <div className="col-12">
-                                                    <label for="inputPassword4" className="form-label">Password</label>
-                                                    <input type="password" className="form-control" id="inputPassword4" />
-                                                </div>
-
-                                                <div className="col-12">
-                                                    <label for="inputPassword4" className="form-label">Cargo</label>
-                                                    <select className="form-control">
-                                                    <option>escoge</option>
-                                                    <option>escoge2</option>
-                                                    <option>escoge3</option>
-                                                    </select>
-                                                </div>
-
-                                                <div className="col-12">
-                                                    <label for="inputPassword4" className="form-label">Proyecto</label>
-                                                    <select className="form-control">
-                                                        <option>escoge</option>
-                                                    </select>
-                                                </div>
-
-                                                
-
-                                                <div className="text-center">
-                                                    <button type="submit" className="btn btn-success">Guardar</button>
-                                                    <button type="reset" className="btn btn-warning mx-2">Reset</button>
-                                                    <button type="button" className="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                                                </div>
-
-                                            </form>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
+                            <Form handleSubmit={handleSubmit} handleChange={handleChange} input={input} action={action} Projects={Projects} Cargos={Cargos} />
                         </nav>
                     </div>
 
@@ -130,105 +179,50 @@ export const Supervisores = () => {
 
 
                                         <div className="table-responsive">
-                                            <table className="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col">Nombres</th>
-                                                        <th scope="col">Apellidos</th>
-                                                        <th scope="col">DNI</th>
-                                                        <th scope="col">Telf. Contacto</th>
-                                                        <th scope="col">Contacto de Emergencia</th>
-                                                        <th scope="col">Telf. Emergencia</th>
-                                                        <th scope="col">Email</th>
-                                                        <th scope="col">Tipo de Sangre</th>
-                                                        <th scope="col">Proyecto</th>
-                                                        <th scope="col">Sueldo</th>
-                                                        <th scope="col">Acciones</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Brandon Jacob</td>
-                                                        <td>Designer</td>
-                                                        <td>46852154</td>
-                                                        <td>2016-05-25</td>
-                                                        <td>Designer</td>
-                                                        <td>Designer</td>
-                                                        <td>Designer</td>
-                                                        <td>Designer</td>
-                                                        <td>Designer</td>
-                                                        <td>Designer</td>
-                                                        <td>
-                                                            <button className='btn btn-warning btn-sm '><i className="bi bi-pencil-fill"></i></button>&nbsp;
-                                                            <button className='btn btn-danger btn-sm '><i className="bi bi-trash-fill"></i></button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Brandon Jacob</td>
-                                                        <td>Designer</td>
-                                                        <td>28</td>
-                                                        <td>2016-05-25</td>
-                                                        <td>Designer</td>
-                                                        <td>Designer</td>
-                                                        <td>Designer</td>
-                                                        <td>Designer</td>
-                                                        <td>Designer</td>
-                                                        <td>Designer</td>
-                                                        <td>
-                                                            <button className='btn btn-warning btn-sm '><i className="bi bi-pencil-fill"></i></button>&nbsp;
-                                                            <button className='btn btn-danger btn-sm '><i className="bi bi-trash-fill"></i></button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Brandon Jacob</td>
-                                                        <td>Designer</td>
-                                                        <td>28</td>
-                                                        <td>2016-05-25</td>
-                                                        <td>Designer</td>
-                                                        <td>Designer</td>
-                                                        <td>Designer</td>
-                                                        <td>Designer</td>
-                                                        <td>Designer</td>
-                                                        <td>Designer</td>
-                                                        <td>
-                                                            <button className='btn btn-warning btn-sm '><i className="bi bi-pencil-fill"></i></button>&nbsp;
-                                                            <button className='btn btn-danger btn-sm '><i className="bi bi-trash-fill"></i></button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Brandon Jacob</td>
-                                                        <td>Designer</td>
-                                                        <td>28</td>
-                                                        <td>2016-05-25</td>
-                                                        <td>Designer</td>
-                                                        <td>Designer</td>
-                                                        <td>Designer</td>
-                                                        <td>Designer</td>
-                                                        <td>Designer</td>
-                                                        <td>Designer</td>
-                                                        <td>
-                                                            <button className='btn btn-warning btn-sm '><i className="bi bi-pencil-fill"></i></button>&nbsp;
-                                                            <button className='btn btn-danger btn-sm '><i className="bi bi-trash-fill"></i></button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Brandon Jacob</td>
-                                                        <td>Designer</td>
-                                                        <td>28</td>
-                                                        <td>2016-05-25</td>
-                                                        <td>Designer</td>
-                                                        <td>Designer</td>
-                                                        <td>Designer</td>
-                                                        <td>Designer</td>
-                                                        <td>Designer</td>
-                                                        <td>Designer</td>
-                                                        <td>
-                                                            <button className='btn btn-warning btn-sm '><i className="bi bi-pencil-fill"></i></button>&nbsp;
-                                                            <button className='btn btn-danger btn-sm '><i className="bi bi-trash-fill"></i></button>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                        <table className="table">
+                        <thead>
+                          <tr>
+                            <th scope="col">Nombres</th>
+                            <th scope="col">Apellidos</th>
+                            <th scope="col">DNI</th>
+                            <th scope="col">Telf. Contacto</th>
+                            <th scope="col">Contacto de Emergencia</th>
+                            <th scope="col">Telf. Emergencia</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Tipo de Sangre</th>
+                            <th scope="col">Proyecto</th>
+                            <th scope="col">Sueldo</th>
+                            <th scope="col">Acciones</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {users && users.map((el, index) => (
+                            <tr key={index}>
+                              <td>{el.name}</td>
+                              <td>{el.lastName}</td>
+                              <td>{el.dni}</td>
+                              <td>{el.phone}</td>
+                              <td>{el.contactEmergency}</td>
+                              <td>{el.phoneEmergency}</td>
+                              <td>{el.email}</td>
+                              <td>{el.typeBlood}</td>
+                              <td>{el.projects[0].name}</td>
+                              <td>{el.salary}</td>
+                              <td>
+                                <button className="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#verticalycentered" onClick={() => showUser(el.id)}>
+                                  <i className="bi bi-pencil-fill"></i>
+                                </button>
+                                &nbsp;
+                                <button className="btn btn-danger btn-sm ">
+                                  <i className="bi bi-trash-fill" onClick={() => handleDelete(el.id)}></i>
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+
+
+                        </tbody>
+                      </table>
                                         </div>
                                     </div>
                                 </div>
