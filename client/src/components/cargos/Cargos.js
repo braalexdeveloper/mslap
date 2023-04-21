@@ -33,6 +33,7 @@ export const Cargos = () => {
         setInput({ name: '' });
         setAction("create");
     }
+    
     const handleSubmit = (e) => {
         e.preventDefault();
         if (action === "create") {

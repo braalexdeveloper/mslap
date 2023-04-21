@@ -59,6 +59,10 @@ Project.belongsToMany(User, { through: 'usersprojects' });
 Role.hasMany(User);
 User.belongsTo(Role);
 
+//cargar los roles en la tabla Role
+let roles=["admin","contratista","supervisor","operario"];
+roles.forEach(async el => await Role.findOrCreate({ where: { value: el } }));
+
 module.exports = {
   ...sequelize.models,
   conn: sequelize,

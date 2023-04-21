@@ -358,6 +358,10 @@ const adminController = {
 
     const { password, projectId } = req.body;
     req.body.password = bcrypt.hashSync(password, 10);
+    //Obtengo el ID del rol
+     const role=await Role.findAll({where:{value:req.body.roleId}});
+     console.log(role[0].dataValues.id);
+    req.body.roleId=role[0].dataValues.id;
 
     try {
       const userCreated = await User.create(req.body);
