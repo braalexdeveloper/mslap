@@ -17,7 +17,7 @@ const userRoutes = require("./routes/userRoutes");
 app.name = "API";
 
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "uploads")));
 app.use(express.json());
 app.use(cors({ origin: "*" }));
 app.use(cookieParser());

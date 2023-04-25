@@ -1,21 +1,39 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useMenuToggle from "../hooks/useMenuToggle";
+import { useDispatch, useSelector } from "react-redux";
+import { clearDataState, userSelector } from "../slices/user/userSlice";
+import { url_api } from "../utils/config";
 
 export const Header = () => {
   const { menu, setMenu } = useMenuToggle();
+  const { user } = useSelector(userSelector);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const btnMenu = (value) => {
     setMenu(value);
     console.log(menu);
   };
   console.log(menu);
+  const logout = (e) => {
+    e.preventDefault();
+    dispatch(clearDataState());
+    navigate("/");
+  }
+  
   return (
-    <header id="header" className="header fixed-top d-flex align-items-center">
+    <header
+      id="header"
+      className="header fixed-top d-flex justify-content-between align-items-center"
+    >
       <div className="d-flex align-items-center justify-content-between">
-        <Link to="index.html" className="logo d-flex align-items-center">
+        <Link
+          to="/dashboard/projects"
+          className="logo d-flex align-items-center"
+        >
           <img src="assets/img/logo.png" alt="" />
-          <span className="d-none d-lg-block">NiceAdmin</span>
+          <span className="d-none d-lg-block">MSLAPS</span>
         </Link>
         {menu ? (
           <i
@@ -29,13 +47,11 @@ export const Header = () => {
           ></i>
         )}
       </div>
-      <nav className="header-nav ms-auto">
+      <div className="logo text-center w-100">
+        <span>Gestión de Documentos</span>
+      </div>
+      <nav className="header-nav">
         <ul className="d-flex align-items-center">
-          <li className="nav-item d-block d-lg-none">
-            <Link className="nav-link nav-icon search-bar-toggle " to="#">
-              <i className="bi bi-search"></i>
-            </Link>
-          </li>
           <li className="nav-item dropdown pe-3">
             <Link
               className="nav-link nav-profile d-flex align-items-center pe-0"
@@ -43,18 +59,18 @@ export const Header = () => {
               data-bs-toggle="dropdown"
             >
               <img
-                src="assets/img/profile-img.jpg"
+                src={`${url_api}/${user?.image}`}
                 alt="Profile"
                 className="rounded-circle"
               />
               <span className="d-none d-md-block dropdown-toggle ps-2">
-                K. Anderson
+                {`${user?.name?.charAt(0)}. ${user?.lastName}`}
               </span>
             </Link>
             <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
               <li className="dropdown-header">
-                <h6>Kevin Anderson</h6>
-                <span>Web Designer</span>
+                <h6 className="text-capitalize">{`${user?.name} ${user?.lastName}`}</h6>
+                <span className="text-capitalize">{user?.role?.value}</span>
               </li>
               <li>
                 <hr className="dropdown-divider" />
@@ -62,10 +78,10 @@ export const Header = () => {
               <li>
                 <Link
                   className="dropdown-item d-flex align-items-center"
-                  to="users-profile.html"
+                  to="/dashboard/profile"
                 >
                   <i className="bi bi-person"></i>
-                  <span>My Profile</span>
+                  <span>Mi Perfil</span>
                 </Link>
               </li>
               <li>
@@ -74,35 +90,26 @@ export const Header = () => {
               <li>
                 <Link
                   className="dropdown-item d-flex align-items-center"
-                  to="users-profile.html"
+                  to="/dashboard/generateqr"
                 >
-                  <i className="bi bi-gear"></i>
-                  <span>Account Settings</span>
+                  <i className="bi bi-qr-code"></i>
+                  <span>Generar QR</span>
                 </Link>
               </li>
               <li>
                 <hr className="dropdown-divider" />
               </li>
               <li>
-                <Link
-                  className="dropdown-item d-flex align-items-center"
-                  to="pages-faq.html"
-                >
-                  <i className="bi bi-question-circle"></i>
-                  <span>Need Help?</span>
-                </Link>
-              </li>
-              <li>
                 <hr className="dropdown-divider" />
               </li>
               <li>
-                <Link
+                <button
                   className="dropdown-item d-flex align-items-center"
-                  to="#"
+                  onClick={logout}
                 >
                   <i className="bi bi-box-arrow-right"></i>
-                  <span>Sign Out</span>
-                </Link>
+                  <span>Cerrar Sesion</span>
+                </button>
               </li>
             </ul>
           </li>

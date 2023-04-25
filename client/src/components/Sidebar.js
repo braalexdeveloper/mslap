@@ -12,12 +12,6 @@ export const Sidebar = () => {
     >
       <ul className="sidebar-nav" id="sidebar-nav">
         <li className="nav-item">
-          <NavLink to={"/dashboard"} className="nav-link collapsed">
-            <i className="bi bi-grid"></i>
-            <span>Dashboard</span>
-          </NavLink>
-        </li>
-        <li className="nav-item">
           <NavLink to={"/dashboard/projects"} className="nav-link collapsed">
             <i className="bi bi-card-list"></i>
             <span>Proyectos</span>

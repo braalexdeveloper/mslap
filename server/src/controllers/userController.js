@@ -1,4 +1,6 @@
 const bcrypt = require("bcrypt");
+// const multer = require("multer");
+// const upload = multer({ dest: "uploads/" });
 const { validationResult } = require("express-validator");
 const { User, Role } = require("../db");
 
@@ -38,6 +40,28 @@ const userController = {
           message: "Contraseña incorrecta",
         });
       }
+    } catch (error) {
+      res.status(500).json({
+        status: 0,
+        message: "No se pudo realizar la operación",
+      });
+    }
+  },
+  // Función para cambiar imagen de perfil
+  changeImage: async (req, res) => {
+    const { filename: image } = req.file;
+    const { id } = req.params;
+    
+    try {
+      await User.update({ image }, { where: { id } });
+
+      const user = await User.findByPk(id, { attributes: ["image"] });
+
+      return res.status(202).json({
+        status: 1,
+        message: "Imagen cambiada correctamente",
+        data: user,
+      });
     } catch (error) {
       res.status(500).json({
         status: 0,

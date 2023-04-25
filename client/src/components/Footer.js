@@ -20,7 +20,7 @@ export const Footer = () => {
           </div>
           <div className="col copyright">
             &copy; Copyright&nbsp;
-            <span className="fw-bold">NiceAdmin</span>. All Rights Reserved
+            <span className="fw-bold">MSLAPS</span>. Todos los Derechos Reservados
           </div>
           <div className="col">
             <Link to="mailto:fnicolalde@mslaps.com" className="contact-me">
