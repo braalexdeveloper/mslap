@@ -48,6 +48,17 @@ const thereIsUserById = async (req, res, next) => {
   return next();
 };
 
+const validateFile = async (req, res, next) => {
+  if (!req.params || !req.file || !req.params.id) {
+    return res.status(400).json({
+      status: 0,
+      message: "Debe enviar un archivo",
+    });
+  }
+
+  return next();
+};
+
 const authPassword = async (req, res, next) => {
   if (!req.params.id || !req.body.currPassword || !req.body.newPassword) {
     return res.status(400).json({
@@ -78,7 +89,7 @@ const validatePassword = async (req, res, next) => {
       status: 0,
       message: "La contraseña ingresada no corresponde con la actual",
     });
-  } 
+  }
   return next();
 };
 
@@ -129,6 +140,7 @@ const thereIsProjectById = async (req, res, next) => {
 module.exports = {
   auth,
   thereIsUserById,
+  validateFile,
   authPassword,
   validatePassword,
   thereIsPositionById,

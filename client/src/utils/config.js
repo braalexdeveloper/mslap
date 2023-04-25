@@ -1,0 +1,1 @@
+export const url_api = process.env.URL_API || "http://localhost:3001";
