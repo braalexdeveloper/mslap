@@ -1,9 +1,18 @@
-import React from "react";
-import { Link, NavLink } from "react-router-dom";
-import useMenuToggle from "../hooks/useMenuToggle";
+import React, { useState,useEffect } from 'react';
+
+import { Link,NavLink } from 'react-router-dom';
+import useMenuToggle from '../hooks/useMenuToggle';
 
 export const Sidebar = () => {
-  const { menu, setMenu } = useMenuToggle();
+
+  const { menu,setMenu }=useMenuToggle();
+  const [matches, setMatches] = useState(window.matchMedia("(min-width: 768px)").matches);
+  //setMatches( e.matches )
+  useEffect(() => {
+    window.matchMedia("(min-width: 768px)").addEventListener('change', e => setMenu(false));
+  }, []);
+
+
   return (
     <aside
       id="sidebar"

@@ -1,156 +1,185 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import Swal from "sweetalert2";
+import useMenuToggle from "../../hooks/useMenuToggle";
 import { Header } from "../Header";
 import { Footer } from "../Footer";
 import { Sidebar } from "../Sidebar";
-import useMenuToggle from "../../hooks/useMenuToggle";
+import { Form } from "./Form";
+import { createUser, allUsers, deleteUser, allProjects, AllCargos,updateUser } from "../../redux/actions";
+import { useDispatch, useSelector } from "react-redux";
 
 export const Supervisores = () => {
-  const { menu } = useMenuToggle();
-  return (
-    <>
-      <Header />
-      <Sidebar />
-      <main
-        id="main"
-        className="main"
-        style={{ marginLeft: menu ? "" : "0px" }}
-      >
-        <section className="section dashboard">
-          <div className="pagetitle">
-            <h1>Supervisores</h1>
-            <nav>
-              <button
-                className="btn btn-success mt-2 "
-                data-bs-toggle="modal"
-                data-bs-target="#verticalycentered"
-              >
-                <i className="bi bi-plus-lg"></i> Crear Nuevo
-              </button>
-              <div class="modal fade" id="verticalycentered" tabindex="-1">
-                <div class="modal-dialog modal-dialog-centered">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title">Agregar Supervisor</h5>
-                      <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                      ></button>
+    const { menu } = useMenuToggle();
+    const users = useSelector(state => state.supervisores);
+  const responseCreateUser = useSelector(state => state.createUser);
+  const responseDeleteUser = useSelector(state => state.deleteUser);
+  const Projects = useSelector(state => state.projects);
+  const Cargos = useSelector(state => state.cargos);
+  const dispatch = useDispatch();
+  const [action, setAction] = useState("create");
+  //const [refresh,setRefresh]=useState(false);
+
+  const [input, setInput] = useState({
+    dni: '',
+    name: '',
+    lastName: '',
+    birthday: '',
+    phone: '',
+    contactEmergency: '',
+    phoneEmergency: '',
+    email: '',
+    typeBlood: '',
+    salary: 0,
+    password: '',
+    positionId: '',
+    roleId: "supervisor",
+    projectId: ''
+  });
+
+  const handleChange = (e) => {
+    setInput({
+      ...input,
+      [e.target.name]: e.target.value
+    })
+
+  }
+
+  const limpiarCampo = () => {
+    setInput({
+      dni: '',
+      name: '',
+      lastName: '',
+      birthday: '',
+      phone: '',
+      contactEmergency: '',
+      phoneEmergency: '',
+      email: '',
+      typeBlood: '',
+      salary: 0,
+      password: '',
+      positionId: '',
+      roleId: "supervisor",
+      projectId: ''
+    });
+    setAction("create");
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (action === "create") {
+      dispatch(createUser(input));
+
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Contratista Creado Correctamente!',
+        showConfirmButton: false,
+        timer: 2000
+      })
+      console.log(input)
+    } else {
+       dispatch(updateUser(input.id,input));
+       Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Contratista Actualizado Correctamente!',
+        showConfirmButton: false,
+        timer: 2000
+      })
+    }
+    limpiarCampo();
+    dispatch(allUsers());
+
+  }
+
+  const showUser = async (id) => {
+    const response = await axios.get('http://localhost:3001/api/admin/user/' + id);
+    let user = response.data.data;
+    let fechaNacimiento = user.birthday.split('T');
+
+
+    setInput({
+      id:user.id,
+      dni: user.dni,
+      name: user.name,
+      lastName: user.lastName,
+      birthday: fechaNacimiento[0],
+      phone: user.phone,
+      contactEmergency: user.contactEmergency,
+      phoneEmergency: user.phoneEmergency,
+      email: user.email,
+      typeBlood: user.typeBlood,
+      salary: user.salary,
+      //password: '',
+      positionId: user.positionId,
+     
+      projectId: user.projects[0].id
+    }
+    );
+    setAction("edit");
+  }
+
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: '¿Estas seguro de eliminar?',
+      text: "",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, eliminar!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deleteUser(id));
+
+
+        Swal.fire(
+          'Eliminado!',
+          'Contratista eliminado con éxito.',
+          'success'
+        )
+      }
+    })
+
+  }
+
+
+  useEffect(() => {
+    dispatch(allProjects());
+    dispatch(AllCargos());
+    dispatch(allUsers());
+  }, [dispatch])
+
+    return (
+        <>
+            <Header />
+            <Sidebar />
+            <main id="main" className="main" style={{ marginLeft: menu ? '' : '0px' }}>
+
+                <section className="section dashboard">
+                    <div className="pagetitle">
+                        <h1>Supervisores</h1>
+                        <nav>
+
+                            <button className='btn btn-success mt-2 ' data-bs-toggle="modal" data-bs-target="#verticalycentered">
+                                <i className="bi bi-plus-lg"></i> Crear Nuevo
+                            </button>
+                            <Form handleSubmit={handleSubmit} handleChange={handleChange} input={input} action={action} Projects={Projects} Cargos={Cargos} />
+                        </nav>
                     </div>
-                    <div class="modal-body">
-                      <form class="row g-3">
-                        <div class="col-12">
-                          <label for="inputNanme4" class="form-label">
-                            Your Name
-                          </label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="inputNanme4"
-                          />
-                        </div>
-                        <div class="col-12">
-                          <label for="inputEmail4" class="form-label">
-                            Email
-                          </label>
-                          <input
-                            type="email"
-                            class="form-control"
-                            id="inputEmail4"
-                          />
-                        </div>
-                        <div class="col-12">
-                          <label for="inputPassword4" class="form-label">
-                            Password
-                          </label>
-                          <input
-                            type="password"
-                            class="form-control"
-                            id="inputPassword4"
-                          />
-                        </div>
-                        <div class="col-12">
-                          <label for="inputAddress" class="form-label">
-                            Address
-                          </label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="inputAddress"
-                            placeholder="1234 Main St"
-                          />
-                        </div>
-                        <div class="col-12">
-                          <label for="inputNanme4" class="form-label">
-                            Your Name
-                          </label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="inputNanme4"
-                          />
-                        </div>
-                        <div class="col-12">
-                          <label for="inputEmail4" class="form-label">
-                            Email
-                          </label>
-                          <input
-                            type="email"
-                            class="form-control"
-                            id="inputEmail4"
-                          />
-                        </div>
-                        <div class="col-12">
-                          <label for="inputPassword4" class="form-label">
-                            Password
-                          </label>
-                          <input
-                            type="password"
-                            class="form-control"
-                            id="inputPassword4"
-                          />
-                        </div>
-                        <div class="col-12">
-                          <label for="inputAddress" class="form-label">
-                            Address
-                          </label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="inputAddress"
-                            placeholder="1234 Main St"
-                          />
-                        </div>
-                        <div class="text-center">
-                          <button type="submit" class="btn btn-success">
-                            Guardar
-                          </button>
-                          <button type="reset" class="btn btn-warning mx-2">
-                            Reset
-                          </button>
-                          <button
-                            type="button"
-                            class="btn btn-danger"
-                            data-bs-dismiss="modal"
-                          >
-                            Close
-                          </button>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </nav>
-          </div>
-          <section className="section">
-            <div className="row">
-              <div className="col-lg-12">
-                <div className="card">
-                  <div className="card-body">
-                    <div className="table-responsive">
-                      <table className="table">
+
+                    <section className="section">
+                        <div className="row">
+                            <div className="col-lg-12">
+
+                                <div className="card">
+                                    <div className="card-body">
+
+
+                                        <div className="table-responsive">
+                                        <table className="table">
                         <thead>
                           <tr>
                             <th scope="col">Nombres</th>
@@ -167,122 +196,45 @@ export const Supervisores = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td>Brandon Jacob</td>
-                            <td>Designer</td>
-                            <td>46852154</td>
-                            <td>2016-05-25</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>
-                              <button className="btn btn-warning btn-sm ">
-                                <i className="bi bi-pencil-fill"></i>
-                              </button>
-                              &nbsp;
-                              <button className="btn btn-danger btn-sm ">
-                                <i className="bi bi-trash-fill"></i>
-                              </button>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>Brandon Jacob</td>
-                            <td>Designer</td>
-                            <td>28</td>
-                            <td>2016-05-25</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>
-                              <button className="btn btn-warning btn-sm ">
-                                <i className="bi bi-pencil-fill"></i>
-                              </button>
-                              &nbsp;
-                              <button className="btn btn-danger btn-sm ">
-                                <i className="bi bi-trash-fill"></i>
-                              </button>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>Brandon Jacob</td>
-                            <td>Designer</td>
-                            <td>28</td>
-                            <td>2016-05-25</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>
-                              <button className="btn btn-warning btn-sm ">
-                                <i className="bi bi-pencil-fill"></i>
-                              </button>
-                              &nbsp;
-                              <button className="btn btn-danger btn-sm ">
-                                <i className="bi bi-trash-fill"></i>
-                              </button>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>Brandon Jacob</td>
-                            <td>Designer</td>
-                            <td>28</td>
-                            <td>2016-05-25</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>
-                              <button className="btn btn-warning btn-sm ">
-                                <i className="bi bi-pencil-fill"></i>
-                              </button>
-                              &nbsp;
-                              <button className="btn btn-danger btn-sm ">
-                                <i className="bi bi-trash-fill"></i>
-                              </button>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>Brandon Jacob</td>
-                            <td>Designer</td>
-                            <td>28</td>
-                            <td>2016-05-25</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>
-                              <button className="btn btn-warning btn-sm ">
-                                <i className="bi bi-pencil-fill"></i>
-                              </button>
-                              &nbsp;
-                              <button className="btn btn-danger btn-sm ">
-                                <i className="bi bi-trash-fill"></i>
-                              </button>
-                            </td>
-                          </tr>
+                          {users && users.map((el, index) => (
+                            <tr key={index}>
+                              <td>{el.name}</td>
+                              <td>{el.lastName}</td>
+                              <td>{el.dni}</td>
+                              <td>{el.phone}</td>
+                              <td>{el.contactEmergency}</td>
+                              <td>{el.phoneEmergency}</td>
+                              <td>{el.email}</td>
+                              <td>{el.typeBlood}</td>
+                              <td>{el.projects[0].name}</td>
+                              <td>{el.salary}</td>
+                              <td>
+                                <button className="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#verticalycentered" onClick={() => showUser(el.id)}>
+                                  <i className="bi bi-pencil-fill"></i>
+                                </button>
+                                &nbsp;
+                                <button className="btn btn-danger btn-sm ">
+                                  <i className="bi bi-trash-fill" onClick={() => handleDelete(el.id)}></i>
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+
+
                         </tbody>
                       </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-        </section>
-      </main>
-      <Footer />
-    </>
-  );
-};
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </section>
+                </section>
+            </main>
+            <Footer />
+        </>
+    )
+}

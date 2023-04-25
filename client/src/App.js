@@ -1,5 +1,4 @@
 import React from "react";
-import { Dashboard } from "./components/Dashboard";
 import { Contratistas } from "./components/contratistas/Contratistas";
 import { Operarios } from "./components/operarios/Operarios";
 import { Login } from "./components/login/Login";
@@ -11,7 +10,7 @@ import { Profile } from "./components/profile/Profile";
 import { GenerarQR } from "./components/generarQR/GenerarQR";
 import { NotFound } from "./components/notfound/NotFound";
 
-function App() {
+function App() { 
   return (
     <div className="App">
       <Routes>
