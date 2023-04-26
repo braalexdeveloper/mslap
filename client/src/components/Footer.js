@@ -4,6 +4,7 @@ import useMenuToggle from "../hooks/useMenuToggle";
 
 export const Footer = () => {
   const { menu } = useMenuToggle();
+
   return (
     <>
       <footer
@@ -20,7 +21,8 @@ export const Footer = () => {
           </div>
           <div className="col copyright">
             &copy; Copyright&nbsp;
-            <span className="fw-bold">MSLAPS</span>. Todos los Derechos Reservados
+            <span className="fw-bold">MSLAPS</span>. Todos los Derechos
+            Reservados
           </div>
           <div className="col">
             <Link to="mailto:fnicolalde@mslaps.com" className="contact-me">
@@ -29,12 +31,13 @@ export const Footer = () => {
             </Link>
           </div>
         </div>
-
       </footer>
-
-      <a href="#" className="back-to-top d-flex align-items-center justify-content-center"><i className="bi bi-arrow-up-short"></i></a>
-
+      <a
+        href="#"
+        className="back-to-top d-flex align-items-center justify-content-center"
+      >
+        <i className="bi bi-arrow-up-short"></i>
+      </a>
     </>
   );
 };
-
