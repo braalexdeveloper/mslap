@@ -2,8 +2,11 @@ const { Router } = require("express");
 const { check } = require("express-validator");
 const {
   thereIsUserById,
+  validateUser,
   thereIsPositionById,
+  validatePosition,
   thereIsProjectById,
+  validateProject,
 } = require("../utils/validators/db-validators");
 const adminController = require("../controllers/adminController");
 const router = Router();
@@ -13,7 +16,7 @@ const router = Router();
 // crear cargo
 router.post(
   "/position",
-  [check("name", "Ingrese nombre").not().isEmpty()],
+  [check("name", "Ingrese nombre").not().isEmpty(), validatePosition],
   adminController.createPosition
 );
 // actualizar cargo
@@ -46,6 +49,7 @@ router.post(
       .not()
       .isEmpty(),
     check("location", "Ingrese ubicación").not().isEmpty(),
+    validateProject
   ],
   adminController.createProject
 );
@@ -79,6 +83,7 @@ router.post(
     check("phoneEmergency", "Mínimo permito 7 digitos").isLength({ min: 7 }),
     check("email", "Ingrese correo electrónico").not().isEmpty(),
     check("typeBlood", "Ingrese tipo de sangre").not().isEmpty(),
+    validateUser
   ],
   adminController.createUser
 );

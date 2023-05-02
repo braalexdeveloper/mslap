@@ -47,9 +47,6 @@ module.exports = (sequelize) => {
       salary: {
         type: DataTypes.DOUBLE,
       },
-      certificates: {
-        type: DataTypes.ARRAY(DataTypes.STRING),
-      },
       observation: {
         type: DataTypes.TEXT,
       },
