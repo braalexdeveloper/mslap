@@ -47,7 +47,7 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 // En sequelize.models están todos los modelos importados como propiedades
 // Destructuring del array de los modelos
-const { User, Position, Project, Role } = sequelize.models;
+const { User, Position, Project, Certificate, Role } = sequelize.models;
 
 // Relaciones de los modelos
 Position.hasOne(User);
@@ -55,6 +55,9 @@ User.belongsTo(Position);
 
 User.belongsToMany(Project, { through: 'usersprojects' });
 Project.belongsToMany(User, { through: 'usersprojects' });
+
+User.hasMany(Certificate);
+Certificate.belongsTo(User);
 
 Role.hasMany(User);
 User.belongsTo(Role);

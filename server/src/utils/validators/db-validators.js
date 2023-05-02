@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
-const { User, Position, Project } = require("../../db");
+const { User, Position, Project, Op } = require("../../db");
+const Certificate = require("../../models/Certificate");
 
 // Middleware for routes user
 const auth = async (req, res, next) => {
@@ -42,6 +43,35 @@ const thereIsUserById = async (req, res, next) => {
     return res.status(404).json({
       status: 0,
       message: "Usuario no encontrado",
+    });
+  }
+
+  return next();
+};
+
+const validateUser = async (req, res, next) => {
+  if (!req.body) {
+    return res.status(400).json({
+      status: 0,
+      message: "Registro fallido, todos los campos son obligatorios",
+    });
+  }
+
+  const { dni, email } = req.body;
+
+  const user = await User.findOne({
+    where: {
+      [Op.or]: [{ dni }, { email }],
+    },
+  });
+
+  if (user) {
+    return res.status(404).json({
+      status: 0,
+      message: `Usuario con ${
+        user.dni === dni ? `DNI ${dni}` : `correo electrónico ${email}`
+      } ya existe.
+      Por favor, ingrese un nuevo usuario.`,
     });
   }
 
@@ -115,6 +145,27 @@ const thereIsPositionById = async (req, res, next) => {
   return next();
 };
 
+const validatePosition = async (req, res, next) => {
+  if (!req.body || !req.body.name) {
+    return res.status(400).json({
+      status: 0,
+      message: "Debe enviar el nombre del cargo",
+    });
+  }
+
+  const { name } = req.body;
+
+  const position = await Position.findOne({ where: { name } });
+
+  if (position) {
+    return res.status(400).json({
+      status: 0,
+      message: `El cargo ${position.name} ya existe`,
+    });
+  }
+  return next();
+};
+
 // Middleware for routes project
 const thereIsProjectById = async (req, res, next) => {
   if (!req.params.id) {
@@ -137,12 +188,36 @@ const thereIsProjectById = async (req, res, next) => {
   return next();
 };
 
+const validateProject = async (req, res, next) => {
+  if (!req.body) {
+    return res.status(400).json({
+      status: 0,
+      message: "Registro fallido, todos los campos son obligatorios",
+    });
+  }
+
+  const { name } = req.body;
+
+  const project = await Project.findOne({ where: { name } });
+
+  if (project) {
+    return res.status(400).json({
+      status: 0,
+      message: `El proyecto ${project.name} ya existe`,
+    });
+  }
+  return next();
+};
+
 module.exports = {
   auth,
   thereIsUserById,
+  validateUser,
   validateFile,
   authPassword,
   validatePassword,
   thereIsPositionById,
+  validatePosition,
   thereIsProjectById,
+  validateProject,
 };

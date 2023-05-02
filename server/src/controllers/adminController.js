@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const { validationResult } = require("express-validator");
-const { User, Position, Project, Role } = require("../db");
+const { User, Position, Project, Certificate, Role } = require("../db");
 
 const adminController = {
   // Funciones del modelo Position
@@ -293,6 +293,9 @@ const adminController = {
           {
             model: Role,
           },
+          {
+            model: Certificate,
+          }
         ],
       });
 
@@ -334,6 +337,9 @@ const adminController = {
           {
             model: Role,
           },
+          {
+            model: Certificate,
+          }
         ],
       });
 
@@ -356,16 +362,22 @@ const adminController = {
       return res.status(400).json(errors);
     }
 
-    const { password, projectId } = req.body;
+    const { password, projectId, roleId } = req.body;
+    const certificates = req.body.certificates;
+    delete req.body.certificates;
     req.body.password = bcrypt.hashSync(password, 10);
     //Obtengo el ID del rol
-     const role=await Role.findAll({where:{value:req.body.roleId}});
-     console.log(role[0].dataValues.id);
-    req.body.roleId=role[0].dataValues.id;
-
+    const role = await Role.findOne({ where: { value: roleId } });
+    req.body.roleId = role.id;
+    
     try {
       const userCreated = await User.create(req.body);
       userCreated.addProject(projectId);
+      
+      if (certificates.length) {
+        const certs = certificates.map((c) => ({ ...c, userId: userCreated.id }));
+        await Certificate.bulkCreate(certs);
+      }
 
       return res.status(200).json({
         status: 1,
