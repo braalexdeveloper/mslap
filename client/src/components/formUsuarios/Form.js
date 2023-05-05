@@ -1,4 +1,5 @@
 import React from "react";
+import { Certificates } from "../certificates/Certificates";
 
 export const Form = ({
   handleChange,
@@ -7,16 +8,17 @@ export const Form = ({
   action,
   Projects,
   Cargos,
+  errors,
 }) => {
   return (
-    <div className="modal fade" id="verticalycentered" tabindex="-1">
+    <div className="modal fade" id="verticalycentered" tabIndex="-1">
       <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title">
               {action && action === "create"
-                ? "Agregar Contratista"
-                : "Editar Contratista"}
+                ? "Agregar Supervisor"
+                : "Editar Supervisor"}
             </h5>
             <button
               type="button"
@@ -28,7 +30,7 @@ export const Form = ({
           <div className="modal-body">
             <form className="row g-3" onSubmit={(e) => handleSubmit(e)}>
               <div className="col-12">
-                <label for="inputNanme4" className="form-label">
+                <label htmlFor="dni" className="form-label">
                   DNI
                 </label>
                 <input
@@ -37,12 +39,20 @@ export const Form = ({
                   onChange={(e) => handleChange(e)}
                   value={input.dni}
                   name="dni"
-                  id="inputNanme4"
+                  id="dni"
                 />
+                {errors.dni && (
+                  <div
+                    className="alert alert-danger alert-dismissible fade show my-2"
+                    role="alert"
+                  >
+                    <span>{errors.dni}</span>
+                  </div>
+                )}
               </div>
               <div className="col-12">
-                <label for="inputNanme4" className="form-label">
-                  Name
+                <label htmlFor="name" className="form-label">
+                  Nombre(s)
                 </label>
                 <input
                   type="text"
@@ -50,12 +60,20 @@ export const Form = ({
                   onChange={(e) => handleChange(e)}
                   value={input.name}
                   name="name"
-                  id="inputNanme4"
+                  id="name"
                 />
+                {errors.name && (
+                  <div
+                    className="alert alert-danger alert-dismissible fade show my-2"
+                    role="alert"
+                  >
+                    <span>{errors.name}</span>
+                  </div>
+                )}
               </div>
               <div className="col-12">
-                <label for="inputNanme4" className="form-label">
-                  Apellidos
+                <label htmlFor="lastName" className="form-label">
+                  Apellido(s)
                 </label>
                 <input
                   type="text"
@@ -63,11 +81,19 @@ export const Form = ({
                   onChange={(e) => handleChange(e)}
                   value={input.lastName}
                   name="lastName"
-                  id="inputNanme4"
+                  id="lastName"
                 />
+                {errors.lastName && (
+                  <div
+                    className="alert alert-danger alert-dismissible fade show my-2"
+                    role="alert"
+                  >
+                    <span>{errors.lastName}</span>
+                  </div>
+                )}
               </div>
               <div className="col-12">
-                <label for="inputNanme4" className="form-label">
+                <label htmlFor="birthday" className="form-label">
                   Fecha de Nacimiento
                 </label>
                 <input
@@ -76,11 +102,11 @@ export const Form = ({
                   onChange={(e) => handleChange(e)}
                   value={input.birthday}
                   name="birthday"
-                  id="inputNanme4"
+                  id="birthday"
                 />
               </div>
               <div className="col-12">
-                <label for="inputNanme4" className="form-label">
+                <label htmlFor="phone" className="form-label">
                   Telefono
                 </label>
                 <input
@@ -89,11 +115,19 @@ export const Form = ({
                   onChange={(e) => handleChange(e)}
                   value={input.phone}
                   name="phone"
-                  id="inputNanme4"
+                  id="phone"
                 />
+                {errors.phone && (
+                  <div
+                    className="alert alert-danger alert-dismissible fade show my-2"
+                    role="alert"
+                  >
+                    <span>{errors.phone}</span>
+                  </div>
+                )}
               </div>
               <div className="col-12">
-                <label for="inputNanme4" className="form-label">
+                <label htmlFor="contactEmergency" className="form-label">
                   Contacto de Emergencia
                 </label>
                 <input
@@ -102,11 +136,19 @@ export const Form = ({
                   onChange={(e) => handleChange(e)}
                   value={input.contactEmergency}
                   name="contactEmergency"
-                  id="inputNanme4"
+                  id="contactEmergency"
                 />
+                {errors.contactEmergency && (
+                  <div
+                    className="alert alert-danger alert-dismissible fade show my-2"
+                    role="alert"
+                  >
+                    <span>{errors.contactEmergency}</span>
+                  </div>
+                )}
               </div>
               <div className="col-12">
-                <label for="inputNanme4" className="form-label">
+                <label htmlFor="phoneEmergency" className="form-label">
                   Telf. de Emergencia
                 </label>
                 <input
@@ -115,11 +157,19 @@ export const Form = ({
                   onChange={(e) => handleChange(e)}
                   value={input.phoneEmergency}
                   name="phoneEmergency"
-                  id="inputNanme4"
+                  id="phoneEmergency"
                 />
+                {errors.phoneEmergency && (
+                  <div
+                    className="alert alert-danger alert-dismissible fade show my-2"
+                    role="alert"
+                  >
+                    <span>{errors.phoneEmergency}</span>
+                  </div>
+                )}
               </div>
               <div className="col-12">
-                <label for="inputEmail4" className="form-label">
+                <label htmlFor="email" className="form-label">
                   Email
                 </label>
                 <input
@@ -128,11 +178,19 @@ export const Form = ({
                   onChange={(e) => handleChange(e)}
                   value={input.email}
                   name="email"
-                  id="inputEmail4"
+                  id="email"
                 />
+                {errors.email && (
+                  <div
+                    className="alert alert-danger alert-dismissible fade show my-2"
+                    role="alert"
+                  >
+                    <span>{errors.email}</span>
+                  </div>
+                )}
               </div>
               <div className="col-12">
-                <label for="inputAddress" className="form-label">
+                <label htmlFor="typeBlood" className="form-label">
                   Tipo de Sangre
                 </label>
                 <input
@@ -141,11 +199,19 @@ export const Form = ({
                   onChange={(e) => handleChange(e)}
                   value={input.typeBlood}
                   name="typeBlood"
-                  id="inputAddress"
+                  id="typeBlood"
                 />
+                {errors.typeBlood && (
+                  <div
+                    className="alert alert-danger alert-dismissible fade show my-2"
+                    role="alert"
+                  >
+                    <span>{errors.typeBlood}</span>
+                  </div>
+                )}
               </div>
               <div className="col-12">
-                <label for="inputAddress" className="form-label">
+                <label htmlFor="salary" className="form-label">
                   Salario
                 </label>
                 <input
@@ -154,13 +220,13 @@ export const Form = ({
                   onChange={(e) => handleChange(e)}
                   value={input.salary}
                   name="salary"
-                  id="inputAddress"
+                  id="salary"
                 />
               </div>
               {action && action === "create" ? (
                 <div className="col-12">
-                  <label for="inputPassword4" className="form-label">
-                    Password
+                  <label htmlFor="password" className="form-label">
+                    Contraseña
                   </label>
                   <input
                     type="password"
@@ -168,16 +234,22 @@ export const Form = ({
                     onChange={(e) => handleChange(e)}
                     value={input.password}
                     name="password"
-                    id="inputPassword4"
+                    id="password"
                   />
+                  {errors.password && (
+                    <div
+                      className="alert alert-danger alert-dismissible fade show my-2"
+                      role="alert"
+                    >
+                      <span>{errors.password}</span>
+                    </div>
+                  )}
                 </div>
               ) : (
                 ""
               )}
               <div className="col-12">
-                <label for="inputPassword4" className="form-label">
-                  Cargo
-                </label>
+                <label className="form-label">Cargo</label>
                 <select
                   onChange={(e) => handleChange(e)}
                   name="positionId"
@@ -195,12 +267,18 @@ export const Form = ({
                       </option>
                     ))}
                 </select>
+                {errors.positionId && (
+                  <div
+                    className="alert alert-danger alert-dismissible fade show my-2"
+                    role="alert"
+                  >
+                    <span>{errors.positionId}</span>
+                  </div>
+                )}
               </div>
               {action && action === "create" ? (
                 <div className="col-12">
-                  <label for="inputPassword4" className="form-label">
-                    Proyecto
-                  </label>
+                  <label className="form-label">Proyecto</label>
                   <select
                     onChange={(e) => handleChange(e)}
                     name="projectId"
@@ -218,15 +296,29 @@ export const Form = ({
                         </option>
                       ))}
                   </select>
+                  {errors.projectId && (
+                    <div
+                      className="alert alert-danger alert-dismissible fade show my-2"
+                      role="alert"
+                    >
+                      <span>{errors.projectId}</span>
+                    </div>
+                  )}
                 </div>
               ) : (
                 ""
               )}
+              <Certificates count={2} />
               <div className="text-center">
                 <button
                   type="submit"
                   className="btn btn-success"
                   data-bs-dismiss="modal"
+                  disabled={
+                    Object.keys(errors).length > 0 || input.dni === ""
+                      ? true
+                      : false
+                  }
                 >
                   Guardar
                 </button>

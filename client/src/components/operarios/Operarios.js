@@ -1,12 +1,155 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import Swal from "sweetalert2";
 import useMenuToggle from "../../hooks/useMenuToggle";
 import { Header } from "../Header";
 import { Footer } from "../Footer";
 import { Sidebar } from "../Sidebar";
-import { Certificates } from "../certificates/Certificates";
+import { Form } from "../formUsuarios/Form";
+import {
+  getAllUsers,
+  createUser,
+  updateUser,
+  deleteUser,
+} from "../../slices/userCrudSlice/userCrudSlice";
+import { getAllProjects } from "../../slices/project/projectSlice";
+import { getAllCargos } from "../../slices/cargo/cargoSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { userSelector } from "../../slices/user/userSlice";
+import { validate } from "../formUsuarios/Validate";
+
+const newOperator = {
+  dni: "",
+  name: "",
+  lastName: "",
+  birthday: "",
+  phone: "",
+  contactEmergency: "",
+  phoneEmergency: "",
+  email: "",
+  typeBlood: "",
+  salary: 0,
+  password: "",
+  positionId: "",
+  roleId: "operario",
+  projectId: "",
+  certificates: [],
+}
 
 export const Operarios = () => {
   const { menu } = useMenuToggle();
+
+  const dispatch = useDispatch();
+  const { users } = useSelector((state) => state.userCrud);
+  let operarios = users.filter((el) => el.role.value === "operario");
+  const { projects } = useSelector((state) => state.project);
+  const { cargos } = useSelector((state) => state.cargo);
+  const { user } = useSelector(userSelector);
+
+  const [action, setAction] = useState("create");
+  const [errors, setErrors] = useState({});
+
+  const [input, setInput] = useState(newOperator);
+
+  const limpiarCampo = () => {
+    setInput(newOperator);
+    setAction("create");
+  };
+
+  const handleChange = (e) => {
+    setInput({
+      ...input,
+      [e.target.name]: e.target.value,
+    });
+
+    setErrors(
+      validate({
+        ...input,
+        [e.target.name]: e.target.value,
+      })
+    );
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (action === "create") {
+      dispatch(createUser(input));
+
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Contratista Creado Correctamente!",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+      console.log(input);
+    } else {
+      delete input.password;
+      dispatch(updateUser(input.id, input));
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Contratista Actualizado Correctamente!",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+    }
+    limpiarCampo();
+  };
+
+  const showUser = async (id) => {
+    const response = await axios.get(
+      "http://localhost:3001/api/admin/user/" + id
+    );
+    let user = response.data.data;
+    let fechaNacimiento = user.birthday.split("T");
+
+    setInput({
+      id: user.id,
+      dni: user.dni,
+      name: user.name,
+      lastName: user.lastName,
+      birthday: fechaNacimiento[0],
+      phone: user.phone,
+      contactEmergency: user.contactEmergency,
+      phoneEmergency: user.phoneEmergency,
+      email: user.email,
+      typeBlood: user.typeBlood,
+      salary: user.salary,
+      password: "password",
+      positionId: user.positionId,
+      projectId: user.projects.length > 0 ? user.projects[0].id : "",
+      certificates: [],
+    });
+    setAction("edit");
+    setErrors({});
+  };
+
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "¿Estas seguro de eliminar?",
+      text: "",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, eliminar!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deleteUser(id));
+
+        Swal.fire("Eliminado!", "Operario eliminado con éxito.", "success");
+      }
+    });
+  };
+
+  useEffect(() => {
+    dispatch(getAllProjects());
+    dispatch(getAllCargos());
+    dispatch(getAllUsers());
+  }, [dispatch]);
+
   return (
     <>
       <Header />
@@ -20,211 +163,27 @@ export const Operarios = () => {
           <div className="pagetitle">
             <h1>Operarios</h1>
             <nav>
-              <button
-                className="btn btn-success mt-2 "
-                data-bs-toggle="modal"
-                data-bs-target="#formCreateOperator"
-              >
-                <i className="bi bi-plus-lg"></i> Crear Nuevo
-              </button>
-              <div className="modal fade" id="formCreateOperator" tabIndex="-1">
-                <div className="modal-dialog modal-dialog-centered">
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <h5 className="modal-title">Agregar Operario</h5>
-                      <button
-                        type="button"
-                        className="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                      ></button>
-                    </div>
-                    <div className="modal-body">
-                      <form className="row g-3">
-                        <div className="col-12">
-                          <label htmlFor="dni" className="form-label">
-                            DNI
-                          </label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="dni"
-                            name="dni"
-                          />
-                        </div>
-                        <div className="col-12">
-                          <label htmlFor="name" className="form-label">
-                            Nombre(s)
-                          </label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="name"
-                            name="name"
-                          />
-                        </div>
-                        <div className="col-12">
-                          <label htmlFor="lastName" className="form-label">
-                            Apellido(s)
-                          </label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="lastName"
-                            name="lastName"
-                          />
-                        </div>
-                        <div className="col-12">
-                          <label htmlFor="birthday" className="form-label">
-                            Fecha de Nacimiento
-                          </label>
-                          <input
-                            type="date"
-                            className="form-control"
-                            id="birthday"
-                            name="birthday"
-                          />
-                        </div>
-                        <div className="col-12">
-                          <label htmlFor="phone" className="form-label">
-                            Telefono
-                          </label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="phone"
-                            name="phone"
-                          />
-                        </div>
-                        <div className="col-12">
-                          <label
-                            htmlFor="contactEmergency"
-                            className="form-label"
-                          >
-                            Contacto de Emergencia
-                          </label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="contactEmergency"
-                            name="contactEmergency"
-                          />
-                        </div>
-                        <div className="col-12">
-                          <label
-                            htmlFor="phoneEmergency"
-                            className="form-label"
-                          >
-                            Telf. de Emergencia
-                          </label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="phoneEmergency"
-                            name="phoneEmergency"
-                          />
-                        </div>
-                        <div className="col-12">
-                          <label htmlFor="email" className="form-label">
-                            Email
-                          </label>
-                          <input
-                            type="email"
-                            className="form-control"
-                            id="email"
-                            name="email"
-                          />
-                        </div>
-                        <div className="col-12">
-                          <label htmlFor="typeBlood" className="form-label">
-                            Tipo de Sangre
-                          </label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="typeBlood"
-                            name="typeBlood"
-                          />
-                        </div>
-                        <div className="col-12">
-                          <label htmlFor="salary" className="form-label">
-                            Salario
-                          </label>
-                          <input
-                            type="number"
-                            className="form-control"
-                            id="salary"
-                            name="salary"
-                          />
-                        </div>
-                        <div className="col-12">
-                          <label htmlFor="password" className="form-label">
-                            Contraseña
-                          </label>
-                          <input
-                            type="password"
-                            className="form-control"
-                            id="password"
-                            name="password"
-                          />
-                        </div>
-                        <div className="col-12">
-                          <label htmlFor="position" className="form-label">
-                            Cargo
-                          </label>
-                          <select
-                            className="form-control"
-                            id="position"
-                            name="position"
-                          >
-                            <option>escoge</option>
-                            <option>escoge2</option>
-                            <option>escoge3</option>
-                          </select>
-                        </div>
-                        <div className="col-12">
-                          <label htmlFor="project" className="form-label">
-                            Proyecto
-                          </label>
-                          <select
-                            className="form-control"
-                            id="project"
-                            name="project"
-                          >
-                            <option>escoge</option>
-                          </select>
-                        </div>
-                        <Certificates count={2} />
-                        <div className="col-12">
-                          <label htmlFor="observation" className="form-label">
-                            Observación
-                          </label>
-                          <textarea
-                            className="form-control"
-                            id="observation"
-                            name="observation"
-                          ></textarea>
-                        </div>
-                        <div className="text-center">
-                          <button type="submit" className="btn btn-success">
-                            Guardar
-                          </button>
-                          <button type="reset" className="btn btn-warning mx-2">
-                            Reset
-                          </button>
-                          <button
-                            type="button"
-                            className="btn btn-danger"
-                            data-bs-dismiss="modal"
-                          >
-                            Close
-                          </button>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              {user.role.value === "supervisor" ? (
+                ""
+              ) : (
+                <button
+                  className="btn btn-success mt-2 "
+                  data-bs-toggle="modal"
+                  data-bs-target="#verticalycentered"
+                  onClick={() => limpiarCampo()}
+                >
+                  <i className="bi bi-plus-lg"></i> Crear Nuevo
+                </button>
+              )}
+              <Form
+                handleSubmit={handleSubmit}
+                handleChange={handleChange}
+                input={input}
+                action={action}
+                Projects={projects}
+                Cargos={cargos}
+                errors={errors}
+              />
             </nav>
           </div>
           <section className="section">
@@ -236,124 +195,60 @@ export const Operarios = () => {
                       <table className="table">
                         <thead>
                           <tr>
-                            <th scope="col">DNI</th>
                             <th scope="col">Nombres</th>
                             <th scope="col">Apellidos</th>
+                            <th scope="col">DNI</th>
+                            <th scope="col">Telf. Contacto</th>
                             <th scope="col">Contacto de Emergencia</th>
                             <th scope="col">Telf. Emergencia</th>
                             <th scope="col">Email</th>
                             <th scope="col">Tipo de Sangre</th>
                             <th scope="col">Proyecto</th>
                             <th scope="col">Sueldo</th>
-                            <th scope="col" colSpan={2}>Acciones</th>
+                            <th scope="col">Acciones</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td>46852154</td>
-                            <td>Brandon Jacob</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>
-                              <button className="btn btn-warning btn-sm ">
-                                <i className="bi bi-pencil-fill"></i>
-                              </button>
-                            </td>
-                            <td>
-                              <button className="btn btn-danger btn-sm ">
-                                <i className="bi bi-trash-fill"></i>
-                              </button>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>28</td>
-                            <td>Brandon Jacob</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>
-                              <button className="btn btn-warning btn-sm ">
-                                <i className="bi bi-pencil-fill"></i>
-                              </button>
-                            </td>
-                            <td>
-                              <button className="btn btn-danger btn-sm ">
-                                <i className="bi bi-trash-fill"></i>
-                              </button>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>28</td>
-                            <td>Brandon Jacob</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>
-                              <button className="btn btn-warning btn-sm ">
-                                <i className="bi bi-pencil-fill"></i>
-                              </button>
-                            </td>
-                            <td>
-                              <button className="btn btn-danger btn-sm ">
-                                <i className="bi bi-trash-fill"></i>
-                              </button>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>28</td>
-                            <td>Brandon Jacob</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>
-                              <button className="btn btn-warning btn-sm ">
-                                <i className="bi bi-pencil-fill"></i>
-                              </button>
-                            </td>
-                            <td>
-                              <button className="btn btn-danger btn-sm ">
-                                <i className="bi bi-trash-fill"></i>
-                              </button>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>28</td>
-                            <td>Brandon Jacob</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>Designer</td>
-                            <td>
-                              <button className="btn btn-warning btn-sm ">
-                                <i className="bi bi-pencil-fill"></i>
-                              </button>
-                            </td>
-                            <td>
-                              <button className="btn btn-danger btn-sm ">
-                                <i className="bi bi-trash-fill"></i>
-                              </button>
-                            </td>
-                          </tr>
+                          {operarios &&
+                            operarios.map((el, index) => (
+                              <tr key={index}>
+                                <td>{el.name}</td>
+                                <td>{el.lastName}</td>
+                                <td>{el.dni}</td>
+                                <td>{el.phone}</td>
+                                <td>{el.contactEmergency}</td>
+                                <td>{el.phoneEmergency}</td>
+                                <td>{el.email}</td>
+                                <td>{el.typeBlood}</td>
+                                <td>
+                                  {el.projects.length > 0
+                                    ? el.projects[0].name
+                                    : ""}
+                                </td>
+                                <td>{el.salary}</td>
+                                <td>
+                                  <button
+                                    className="btn btn-warning btn-sm"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#verticalycentered"
+                                    onClick={() => showUser(el.id)}
+                                  >
+                                    <i className="bi bi-pencil-fill"></i>
+                                  </button>
+                                  &nbsp;
+                                  {user.role.value === "supervisor" ? (
+                                    ""
+                                  ) : (
+                                    <button className="btn btn-danger btn-sm ">
+                                      <i
+                                        className="bi bi-trash-fill"
+                                        onClick={() => handleDelete(el.id)}
+                                      ></i>
+                                    </button>
+                                  )}
+                                </td>
+                              </tr>
+                            ))}
                         </tbody>
                       </table>
                     </div>

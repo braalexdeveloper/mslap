@@ -2,12 +2,13 @@ import axios from "axios";
 import { createSlice } from "@reduxjs/toolkit";
 import { url_api } from "../../utils/config";
 
+
 export const initialState = {
   isLogin: false,
   user: {},
   message: "",
   status: -1,
-};
+ };
 
 const userSlice = createSlice({
   name: "user",
@@ -42,6 +43,7 @@ const userSlice = createSlice({
       state.message = "";
       state.status = -1;
     },
+    
   },
 });
 
@@ -53,7 +55,7 @@ const {
   updateImage,
   resetInfo,
   resetState,
-} = userSlice.actions;
+  } = userSlice.actions;
 
 export const userSelector = (state) => state.user;
 
@@ -72,17 +74,17 @@ export const clearInfo = () => (dispatch) => {
 // Funciones para la ruta login
 export const login =
   ({ username, password, role }) =>
-  async (dispatch) => {
-    try {
-      const { data } = await axios(
-        `${url_api}/api/user/login?email=${username}&password=${password}&role=${role}`
-      );
-      dispatch(getLogin(data));
-      dispatch(getInfo(data));
-    } catch (error) {
-      dispatch(getError(error.response.data));
-    }
-  };
+    async (dispatch) => {
+      try {
+        const { data } = await axios(
+          `${url_api}/api/user/login?email=${username}&password=${password}&role=${role}`
+        );
+        dispatch(getLogin(data));
+        dispatch(getInfo(data));
+      } catch (error) {
+        dispatch(getError(error.response.data));
+      }
+    };
 
 export const getUserById = (id) => async (dispatch) => {
   try {
