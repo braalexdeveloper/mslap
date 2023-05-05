@@ -5,27 +5,25 @@ import useMenuToggle from "../../hooks/useMenuToggle";
 import { Header } from "../Header";
 import { Footer } from "../Footer";
 import { Sidebar } from "../Sidebar";
-import { Form } from "./Form";
-import {
-  createUser,
-  allUsers,
-  deleteUser,
-  allProjects,
-  AllCargos,
-  updateUser,
-} from "../../redux/actions";
+
+import { Form } from "../formUsuarios/Form";
+import { validate } from "../formUsuarios/Validate";
+import { getAllUsers,createUser,updateUser, deleteUser } from "../../slices/userCrudSlice/userCrudSlice";
+import { getAllProjects } from "../../slices/project/projectSlice";
+import { getAllCargos } from "../../slices/cargo/cargoSlice";
+import { userSelector } from "../../slices/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 export const Contratistas = () => {
   const { menu } = useMenuToggle();
-  const users = useSelector((state) => state.contratistas);
-  const responseCreateUser = useSelector((state) => state.createUser);
-  const responseDeleteUser = useSelector((state) => state.deleteUser);
-  const Projects = useSelector((state) => state.projects);
-  const Cargos = useSelector((state) => state.cargos);
+  const {users} = useSelector((state) => state.userCrud);
+ let contratistas=users.filter(el=>el.role.value==="contratista");
+  const {projects} = useSelector((state) => state.project);
+  const {cargos} = useSelector((state) => state.cargo);
+  const { user } = useSelector(userSelector);
   const dispatch = useDispatch();
   const [action, setAction] = useState("create");
-  //const [refresh,setRefresh]=useState(false);
+  const [errors, setErrors] = useState({});
 
   const [input, setInput] = useState({
     dni: "",
@@ -42,6 +40,7 @@ export const Contratistas = () => {
     positionId: "",
     roleId: "contratista",
     projectId: "",
+    certificates:[]
   });
 
   const handleChange = (e) => {
@@ -49,6 +48,13 @@ export const Contratistas = () => {
       ...input,
       [e.target.name]: e.target.value,
     });
+
+    setErrors(validate({
+      ...input,
+      [e.target.name]: e.target.value
+    }))
+
+    
   };
 
   const limpiarCampo = () => {
@@ -67,6 +73,7 @@ export const Contratistas = () => {
       positionId: "",
       roleId: "contratista",
       projectId: "",
+      certificates:[]
     });
     setAction("create");
   };
@@ -86,6 +93,7 @@ export const Contratistas = () => {
       });
       console.log(input);
     } else {
+      delete input.password;
       dispatch(updateUser(input.id, input));
       Swal.fire({
         position: "top-end",
@@ -96,7 +104,7 @@ export const Contratistas = () => {
       });
     }
     limpiarCampo();
-    dispatch(allUsers());
+    
   };
 
   const showUser = async (id) => {
@@ -118,11 +126,13 @@ export const Contratistas = () => {
       email: user.email,
       typeBlood: user.typeBlood,
       salary: user.salary,
-      //password: '',
+      password: "password",
       positionId: user.positionId,
       projectId: user.projects[0].id,
+      certificates:[]
     });
     setAction("edit");
+    setErrors({});
   };
 
   const handleDelete = (id) => {
@@ -144,10 +154,12 @@ export const Contratistas = () => {
   };
 
   useEffect(() => {
-    dispatch(allProjects());
-    dispatch(AllCargos());
-    dispatch(allUsers());
+    dispatch(getAllProjects());
+    dispatch(getAllCargos());
+    dispatch(getAllUsers());
   }, [dispatch]);
+
+ 
 
   return (
     <>
@@ -158,92 +170,96 @@ export const Contratistas = () => {
         className="main"
         style={{ marginLeft: menu ? "" : "0px" }}
       >
+        {user.role.value && user.role.value!=="admin" ? <h1>No tienes acceso</h1> :
         <section className="section dashboard">
-          <div className="pagetitle">
-            <h1>Contratistas</h1>
-            <nav>
-              <button
-                className="btn btn-success mt-2 "
-                data-bs-toggle="modal"
-                data-bs-target="#verticalycentered"
-                onClick={() => limpiarCampo()}
-              >
-                <i className="bi bi-plus-lg"></i> Crear Nuevo
-              </button>
-              <Form
-                handleSubmit={handleSubmit}
-                handleChange={handleChange}
-                input={input}
-                action={action}
-                Projects={Projects}
-                Cargos={Cargos}
-              />
-            </nav>
-          </div>
-          <section className="section">
-            <div className="row">
-              <div className="col-lg-12">
-                <div className="card">
-                  <div className="card-body">
-                    <div className="table-responsive">
-                      <table className="table">
-                        <thead>
-                          <tr>
-                            <th scope="col">Nombres</th>
-                            <th scope="col">Apellidos</th>
-                            <th scope="col">DNI</th>
-                            <th scope="col">Telf. Contacto</th>
-                            <th scope="col">Contacto de Emergencia</th>
-                            <th scope="col">Telf. Emergencia</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Tipo de Sangre</th>
-                            <th scope="col">Proyecto</th>
-                            <th scope="col">Sueldo</th>
-                            <th scope="col">Acciones</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {users &&
-                            users.map((el, index) => (
-                              <tr key={index}>
-                                <td>{el.name}</td>
-                                <td>{el.lastName}</td>
-                                <td>{el.dni}</td>
-                                <td>{el.phone}</td>
-                                <td>{el.contactEmergency}</td>
-                                <td>{el.phoneEmergency}</td>
-                                <td>{el.email}</td>
-                                <td>{el.typeBlood}</td>
-                                <td>{el.projects[0].name}</td>
-                                <td>{el.salary}</td>
-                                <td>
-                                  <button
-                                    className="btn btn-warning btn-sm"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#verticalycentered"
-                                    onClick={() => showUser(el.id)}
-                                  >
-                                    <i className="bi bi-pencil-fill"></i>
-                                  </button>
-                                  &nbsp;
-                                  <button className="btn btn-danger btn-sm ">
-                                    <i
-                                      className="bi bi-trash-fill"
-                                      onClick={() => handleDelete(el.id)}
-                                    ></i>
-                                  </button>
-                                </td>
-                              </tr>
-                            ))}
-                        </tbody>
-                      </table>
-                    </div>
+        <div className="pagetitle">
+          <h1>Contratistas</h1>
+          <nav>
+            <button
+              className="btn btn-success mt-2 "
+              data-bs-toggle="modal"
+              data-bs-target="#verticalycentered"
+              onClick={() => limpiarCampo()}
+            >
+              <i className="bi bi-plus-lg"></i> Crear Nuevo
+            </button>
+            <Form
+              handleSubmit={handleSubmit}
+              handleChange={handleChange}
+              input={input}
+              action={action}
+              Projects={projects}
+              Cargos={cargos} 
+              errors={errors}
+            />
+          </nav>
+        </div>
+        <section className="section">
+          <div className="row">
+            <div className="col-lg-12">
+              <div className="card">
+                <div className="card-body">
+                  <div className="table-responsive">
+                    <table className="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">Nombres</th>
+                          <th scope="col">Apellidos</th>
+                          <th scope="col">DNI</th>
+                          <th scope="col">Telf. Contacto</th>
+                          <th scope="col">Contacto de Emergencia</th>
+                          <th scope="col">Telf. Emergencia</th>
+                          <th scope="col">Email</th>
+                          <th scope="col">Tipo de Sangre</th>
+                          <th scope="col">Proyecto</th>
+                          <th scope="col">Sueldo</th>
+                          <th scope="col">Acciones</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {contratistas &&
+                          contratistas.map((el, index) => (
+                            <tr key={index}>
+                              <td>{el.name}</td>
+                              <td>{el.lastName}</td>
+                              <td>{el.dni}</td>
+                              <td>{el.phone}</td>
+                              <td>{el.contactEmergency}</td>
+                              <td>{el.phoneEmergency}</td>
+                              <td>{el.email}</td>
+                              <td>{el.typeBlood}</td>
+                              <td>{el.projects.length > 0 ? el.projects[0].name : ''}</td>
+                              <td>{el.salary}</td>
+                              <td>
+                                <button
+                                  className="btn btn-warning btn-sm"
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#verticalycentered"
+                                  onClick={() => showUser(el.id)}
+                                >
+                                  <i className="bi bi-pencil-fill"></i>
+                                </button>
+                                &nbsp;
+                                <button className="btn btn-danger btn-sm ">
+                                  <i
+                                    className="bi bi-trash-fill"
+                                    onClick={() => handleDelete(el.id)}
+                                  ></i>
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
             </div>
-          </section>
+          </div>
         </section>
+      </section>
+        }
+        
       </main>
       <Footer />
     </>

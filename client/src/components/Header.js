@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useMenuToggle from "../hooks/useMenuToggle";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,7 +7,7 @@ import { url_api } from "../utils/config";
 
 export const Header = () => {
   const { menu, setMenu } = useMenuToggle();
-  const { user } = useSelector(userSelector);
+  const { user,isLogin } = useSelector(userSelector);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -21,6 +21,12 @@ export const Header = () => {
     dispatch(clearDataState());
     navigate("/");
   }
+
+ 
+   if(!isLogin){
+     navigate("/");
+   }
+  
   
   return (
     <header

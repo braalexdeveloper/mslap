@@ -5,21 +5,40 @@ import Swal from "sweetalert2";
 import { Header } from "../Header";
 import { Footer } from "../Footer";
 import { Sidebar } from "../Sidebar";
-import {
-  allProjects,
-  createProject,
-  deleteProject,
-  updateProject,
-} from "../../redux/actions";
+import { userSelector } from "../../slices/user/userSlice";
+import { getAllProjects,createProject,  deleteProject,  updateProject } from "../../slices/project/projectSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Form } from "./Form";
+
+function validate(input) {
+  let errors = {};
+  const pattern = new RegExp('^[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$');
+  if (input.name === '') {
+      errors.name = 'El campo nombre es requerido';
+  } else if (!pattern.test(input.name)) {
+      errors.name = 'No se aceptan números'
+  }
+
+  if (!input.dateStart) {
+      errors.dateStart = 'La fecha de inicio es obligatorio'
+  } else if (!input.dateEnd) {
+      errors.dateEnd = 'La fecha de finalización es obligatorio'
+  } else if (!input.totalCertificates || input.totalCertificates<1) {
+      errors.totalCertificates = 'Este campo no acepta valores menor a 1'
+  } else if (!input.location) {
+      errors.location = 'Este campo es obligatorio'
+  }
+
+  return errors;
+}
 
 export const Projects = () => {
   const { menu } = useMenuToggle();
   const [action, setAction] = useState("create");
-  const projects = useSelector((state) => state.projects);
+  const {projects} = useSelector(state => state.project);
   const dispatch = useDispatch();
-
+  const [errors, setErrors] = useState({});
+  const { user } = useSelector(userSelector);
   const [input, setInput] = useState({
     name: "",
     dateStart: "",
@@ -33,6 +52,11 @@ export const Projects = () => {
       ...input,
       [e.target.name]: e.target.value,
     });
+
+    setErrors(validate({
+      ...input,
+      [e.target.name]: e.target.value
+  }));
   };
 
   const limpiarCampo = () => {
@@ -69,7 +93,7 @@ export const Projects = () => {
         timer: 2000,
       });
     }
-    dispatch(allProjects());
+   
     limpiarCampo();
   };
 
@@ -108,10 +132,11 @@ export const Projects = () => {
       location: response.data.data.location,
     });
     setAction("edit");
+    setErrors({});
   };
 
   useEffect(() => {
-    dispatch(allProjects());
+    dispatch(getAllProjects());
   }, [dispatch]);
 
   return (
@@ -123,6 +148,7 @@ export const Projects = () => {
         className="main"
         style={{ marginLeft: menu ? "" : "0px" }}
       >
+         {user.role.value && user.role.value!=="admin" ? <h1>No tienes acceso</h1> :
         <section className="section dashboard">
           <div className="pagetitle">
             <h1>Projects</h1>
@@ -139,7 +165,8 @@ export const Projects = () => {
                 handleSubmit={handleSubmit}
                 handleChange={handleChange}
                 input={input}
-                action={action}
+                action={action} 
+                errors={errors}
               />
             </nav>
           </div>
@@ -205,6 +232,7 @@ export const Projects = () => {
             </div>
           </section>
         </section>
+}
       </main>
       <Footer />
     </>

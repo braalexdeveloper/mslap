@@ -5,27 +5,26 @@ import useMenuToggle from "../../hooks/useMenuToggle";
 import { Header } from "../Header";
 import { Footer } from "../Footer";
 import { Sidebar } from "../Sidebar";
-import { Form } from "./Form";
-import {
-  createUser,
-  allUsers,
-  deleteUser,
-  allProjects,
-  AllCargos,
-  updateUser,
-} from "../../redux/actions";
+
+import { Form } from "../formUsuarios/Form";
+import { validate } from "../formUsuarios/Validate";
+import { getAllUsers,createUser,updateUser, deleteUser } from "../../slices/userCrudSlice/userCrudSlice";
+import { getAllProjects } from "../../slices/project/projectSlice";
+import { getAllCargos } from "../../slices/cargo/cargoSlice";
+import { userSelector } from "../../slices/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 export const Supervisores = () => {
   const { menu } = useMenuToggle();
-  const users = useSelector((state) => state.supervisores);
-  const responseCreateUser = useSelector((state) => state.createUser);
-  const responseDeleteUser = useSelector((state) => state.deleteUser);
-  const Projects = useSelector((state) => state.projects);
-  const Cargos = useSelector((state) => state.cargos);
+  const {users} = useSelector((state) => state.userCrud);
+  let supercisores=users.filter(el=>el.role.value==="supervisor");
+  const {projects} = useSelector((state) => state.project);
+  const {cargos} = useSelector((state) => state.cargo);
+  const { user } = useSelector(userSelector);
+ 
   const dispatch = useDispatch();
   const [action, setAction] = useState("create");
-  //const [refresh,setRefresh]=useState(false);
+  const [errors, setErrors] = useState({});
 
   const [input, setInput] = useState({
     dni: "",
@@ -42,6 +41,7 @@ export const Supervisores = () => {
     positionId: "",
     roleId: "supervisor",
     projectId: "",
+    certificates:[]
   });
 
   const handleChange = (e) => {
@@ -49,6 +49,11 @@ export const Supervisores = () => {
       ...input,
       [e.target.name]: e.target.value,
     });
+
+    setErrors(validate({
+      ...input,
+      [e.target.name]: e.target.value
+    }))
   };
 
   const limpiarCampo = () => {
@@ -67,6 +72,7 @@ export const Supervisores = () => {
       positionId: "",
       roleId: "supervisor",
       projectId: "",
+      certificates:[]
     });
     setAction("create");
   };
@@ -86,6 +92,7 @@ export const Supervisores = () => {
       });
       console.log(input);
     } else {
+      delete input.password;
       dispatch(updateUser(input.id, input));
       Swal.fire({
         position: "top-end",
@@ -96,7 +103,7 @@ export const Supervisores = () => {
       });
     }
     limpiarCampo();
-    dispatch(allUsers());
+    
   };
 
   const showUser = async (id) => {
@@ -118,11 +125,13 @@ export const Supervisores = () => {
       email: user.email,
       typeBlood: user.typeBlood,
       salary: user.salary,
-      //password: '',
+      password:"password",
       positionId: user.positionId,
       projectId: user.projects[0].id,
+      certificates:[]
     });
     setAction("edit");
+    setErrors({});
   };
 
   const handleDelete = (id) => {
@@ -144,9 +153,9 @@ export const Supervisores = () => {
   };
 
   useEffect(() => {
-    dispatch(allProjects());
-    dispatch(AllCargos());
-    dispatch(allUsers());
+    dispatch(getAllProjects());
+    dispatch(getAllCargos());
+    dispatch(getAllUsers());
   }, [dispatch]);
 
   return (
@@ -158,6 +167,7 @@ export const Supervisores = () => {
         className="main"
         style={{ marginLeft: menu ? "" : "0px" }}
       >
+        {user.role.value && user.role.value!=="admin" ? <h1>No tienes acceso</h1> :
         <section className="section dashboard">
           <div className="pagetitle">
             <h1>Supervisores</h1>
@@ -165,7 +175,7 @@ export const Supervisores = () => {
               <button
                 className="btn btn-success mt-2 "
                 data-bs-toggle="modal"
-                data-bs-target="#verticalycentered"
+                data-bs-target="#verticalycentered" onClick={() => limpiarCampo()}
               >
                 <i className="bi bi-plus-lg"></i> Crear Nuevo
               </button>
@@ -174,8 +184,9 @@ export const Supervisores = () => {
                 handleChange={handleChange}
                 input={input}
                 action={action}
-                Projects={Projects}
-                Cargos={Cargos}
+                Projects={projects}
+                Cargos={cargos} 
+                errors={errors}
               />
             </nav>
           </div>
@@ -202,8 +213,8 @@ export const Supervisores = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {users &&
-                            users.map((el, index) => (
+                          {supercisores &&
+                            supercisores.map((el, index) => (
                               <tr key={index}>
                                 <td>{el.name}</td>
                                 <td>{el.lastName}</td>
@@ -213,7 +224,7 @@ export const Supervisores = () => {
                                 <td>{el.phoneEmergency}</td>
                                 <td>{el.email}</td>
                                 <td>{el.typeBlood}</td>
-                                <td>{el.projects[0].name}</td>
+                                <td>{el.projects.length > 0 ? el.projects[0].name : ''}</td>
                                 <td>{el.salary}</td>
                                 <td>
                                   <button
@@ -243,6 +254,7 @@ export const Supervisores = () => {
             </div>
           </section>
         </section>
+}
       </main>
       <Footer />
     </>
