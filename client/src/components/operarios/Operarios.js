@@ -3,6 +3,7 @@ import useMenuToggle from "../../hooks/useMenuToggle";
 import { Header } from "../Header";
 import { Footer } from "../Footer";
 import { Sidebar } from "../Sidebar";
+import { Certificates } from "../certificates/Certificates";
 
 export const Operarios = () => {
   const { menu } = useMenuToggle();
@@ -22,11 +23,11 @@ export const Operarios = () => {
               <button
                 className="btn btn-success mt-2 "
                 data-bs-toggle="modal"
-                data-bs-target="#verticalycentered"
+                data-bs-target="#formCreateOperator"
               >
                 <i className="bi bi-plus-lg"></i> Crear Nuevo
               </button>
-              <div className="modal fade" id="verticalycentered" tabIndex="-1">
+              <div className="modal fade" id="formCreateOperator" tabIndex="-1">
                 <div className="modal-dialog modal-dialog-centered">
                   <div className="modal-content">
                     <div className="modal-header">
@@ -53,7 +54,7 @@ export const Operarios = () => {
                         </div>
                         <div className="col-12">
                           <label htmlFor="name" className="form-label">
-                            Name
+                            Nombre(s)
                           </label>
                           <input
                             type="text"
@@ -64,7 +65,7 @@ export const Operarios = () => {
                         </div>
                         <div className="col-12">
                           <label htmlFor="lastName" className="form-label">
-                            Apellidos
+                            Apellido(s)
                           </label>
                           <input
                             type="text"
@@ -158,7 +159,7 @@ export const Operarios = () => {
                         </div>
                         <div className="col-12">
                           <label htmlFor="password" className="form-label">
-                            Password
+                            Contraseña
                           </label>
                           <input
                             type="password"
@@ -193,17 +194,7 @@ export const Operarios = () => {
                             <option>escoge</option>
                           </select>
                         </div>
-                        <div className="col-12">
-                          <label htmlFor="certificates" className="form-label">
-                            Certificados
-                          </label>
-                          <input
-                            type="file"
-                            className="form-control"
-                            id="certificates"
-                            name="certificates"
-                          />
-                        </div>
+                        <Certificates count={2} />
                         <div className="col-12">
                           <label htmlFor="observation" className="form-label">
                             Observación
@@ -245,25 +236,23 @@ export const Operarios = () => {
                       <table className="table">
                         <thead>
                           <tr>
+                            <th scope="col">DNI</th>
                             <th scope="col">Nombres</th>
                             <th scope="col">Apellidos</th>
-                            <th scope="col">DNI</th>
-                            <th scope="col">Telf. Contacto</th>
                             <th scope="col">Contacto de Emergencia</th>
                             <th scope="col">Telf. Emergencia</th>
                             <th scope="col">Email</th>
                             <th scope="col">Tipo de Sangre</th>
                             <th scope="col">Proyecto</th>
                             <th scope="col">Sueldo</th>
-                            <th scope="col">Acciones</th>
+                            <th scope="col" colSpan={2}>Acciones</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr>
-                            <td>Brandon Jacob</td>
-                            <td>Designer</td>
                             <td>46852154</td>
-                            <td>2016-05-25</td>
+                            <td>Brandon Jacob</td>
+                            <td>Designer</td>
                             <td>Designer</td>
                             <td>Designer</td>
                             <td>Designer</td>
@@ -274,17 +263,17 @@ export const Operarios = () => {
                               <button className="btn btn-warning btn-sm ">
                                 <i className="bi bi-pencil-fill"></i>
                               </button>
-                              &nbsp;
+                            </td>
+                            <td>
                               <button className="btn btn-danger btn-sm ">
                                 <i className="bi bi-trash-fill"></i>
                               </button>
                             </td>
                           </tr>
                           <tr>
+                            <td>28</td>
                             <td>Brandon Jacob</td>
                             <td>Designer</td>
-                            <td>28</td>
-                            <td>2016-05-25</td>
                             <td>Designer</td>
                             <td>Designer</td>
                             <td>Designer</td>
@@ -295,17 +284,17 @@ export const Operarios = () => {
                               <button className="btn btn-warning btn-sm ">
                                 <i className="bi bi-pencil-fill"></i>
                               </button>
-                              &nbsp;
+                            </td>
+                            <td>
                               <button className="btn btn-danger btn-sm ">
                                 <i className="bi bi-trash-fill"></i>
                               </button>
                             </td>
                           </tr>
                           <tr>
+                            <td>28</td>
                             <td>Brandon Jacob</td>
                             <td>Designer</td>
-                            <td>28</td>
-                            <td>2016-05-25</td>
                             <td>Designer</td>
                             <td>Designer</td>
                             <td>Designer</td>
@@ -316,17 +305,17 @@ export const Operarios = () => {
                               <button className="btn btn-warning btn-sm ">
                                 <i className="bi bi-pencil-fill"></i>
                               </button>
-                              &nbsp;
+                            </td>
+                            <td>
                               <button className="btn btn-danger btn-sm ">
                                 <i className="bi bi-trash-fill"></i>
                               </button>
                             </td>
                           </tr>
                           <tr>
+                            <td>28</td>
                             <td>Brandon Jacob</td>
                             <td>Designer</td>
-                            <td>28</td>
-                            <td>2016-05-25</td>
                             <td>Designer</td>
                             <td>Designer</td>
                             <td>Designer</td>
@@ -337,17 +326,17 @@ export const Operarios = () => {
                               <button className="btn btn-warning btn-sm ">
                                 <i className="bi bi-pencil-fill"></i>
                               </button>
-                              &nbsp;
+                            </td>
+                            <td>
                               <button className="btn btn-danger btn-sm ">
                                 <i className="bi bi-trash-fill"></i>
                               </button>
                             </td>
                           </tr>
                           <tr>
+                            <td>28</td>
                             <td>Brandon Jacob</td>
                             <td>Designer</td>
-                            <td>28</td>
-                            <td>2016-05-25</td>
                             <td>Designer</td>
                             <td>Designer</td>
                             <td>Designer</td>
@@ -358,7 +347,8 @@ export const Operarios = () => {
                               <button className="btn btn-warning btn-sm ">
                                 <i className="bi bi-pencil-fill"></i>
                               </button>
-                              &nbsp;
+                            </td>
+                            <td>
                               <button className="btn btn-danger btn-sm ">
                                 <i className="bi bi-trash-fill"></i>
                               </button>
