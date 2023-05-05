@@ -6,27 +6,42 @@ import { Header } from "../Header";
 import { Footer } from "../Footer";
 import { Sidebar } from "../Sidebar";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  AllCargos,
-  createCargo,
-  deleteCargo,
-  updateCargo,
-} from "../../redux/actions";
+import { userSelector } from "../../slices/user/userSlice";
+import { getAllCargos,createCargo,deleteCargo,updateCargo} from "../../slices/cargo/cargoSlice";
 import { Form } from "./Form";
+
+function validate(input) {
+  let errors = {};
+  const pattern = new RegExp('^[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$');
+  if (input.name === '') {
+      errors.name = 'El campo nombre es requerido';
+  } else if (!pattern.test(input.name)) {
+      errors.name = 'No se aceptan números'
+  }
+
+  return errors;
+}
 
 export const Cargos = () => {
   const { menu } = useMenuToggle();
   const dispatch = useDispatch();
-  const cargos = useSelector((state) => state.cargos);
+  const {cargos} = useSelector((state) => state.cargo);
 
   const [input, setInput] = useState({ name: "" });
   const [action, setAction] = useState("create");
+  const [errors, setErrors] = useState({});
+  const { user } = useSelector(userSelector);
 
   const handleChange = (e) => {
     setInput({
       ...input,
       [e.target.name]: e.target.value,
     });
+
+    setErrors(validate({
+      ...input,
+      [e.target.name]: e.target.value
+  }))
   };
 
   const limpiarCampo = () => {
@@ -46,6 +61,7 @@ export const Cargos = () => {
         showConfirmButton: false,
         timer: 2000,
       });
+     
     } else {
       dispatch(updateCargo(input.id, input));
 
@@ -56,9 +72,11 @@ export const Cargos = () => {
         showConfirmButton: false,
         timer: 2000,
       });
+      
     }
     limpiarCampo();
-    dispatch(AllCargos());
+    dispatch(getAllCargos());
+    
   };
 
   const handleDelete = (id) => {
@@ -73,9 +91,11 @@ export const Cargos = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         dispatch(deleteCargo(id));
+       
         Swal.fire("Eliminado!", "Cargo eliminado con éxito.", "success");
       }
     });
+    
   };
 
   const showCargo = async (id) => {
@@ -84,10 +104,11 @@ export const Cargos = () => {
     );
     setInput(response.data.data);
     setAction("edit");
+    setErrors({});
   };
 
   useEffect(() => {
-    dispatch(AllCargos());
+    dispatch(getAllCargos());
   }, [dispatch]);
 
   return (
@@ -99,6 +120,7 @@ export const Cargos = () => {
         className="main"
         style={{ marginLeft: menu ? "" : "0px" }}
       >
+        {user.role.value && user.role.value!=="admin" ? <h1>No tienes acceso</h1> :
         <section className="section dashboard">
           <div className="pagetitle">
             <h1>Cargos</h1>
@@ -115,7 +137,8 @@ export const Cargos = () => {
                 handleSubmit={handleSubmit}
                 handleChange={handleChange}
                 input={input}
-                action={action}
+                action={action} 
+                errors={errors}
               />
             </nav>
           </div>
@@ -165,6 +188,7 @@ export const Cargos = () => {
             </div>
           </section>
         </section>
+}
       </main>
       <Footer />
     </>
