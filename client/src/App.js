@@ -9,19 +9,30 @@ import { Cargos } from "./components/cargos/Cargos";
 import { Profile } from "./components/profile/Profile";
 import { GenerarQR } from "./components/generarQR/GenerarQR";
 import { NotFound } from "./components/notfound/NotFound";
+import { ProtectedRoute } from "./components/ProtectedRoute";
+import { userSelector } from "./slices/user/userSlice";
+import { useSelector } from "react-redux";
 
-function App() { 
+function App() {
+  const { user,isLogin } = useSelector(userSelector); 
   return (
     <div className="App">
       <Routes>
         <Route exact path="/" element={<Login />} />
+
+        <Route element={<ProtectedRoute  isLogin={isLogin} />}>
+          <Route path="/dashboard/operarios" element={<Operarios />} />
+          <Route path="/dashboard/profile" element={<Profile />} />
+          <Route path="/dashboard/generateqr" element={<GenerarQR />} />
+        </Route>
+
+        <Route element={<ProtectedRoute  isLogin={isLogin && user.role.value==="admin"} redirectTo="/dashboard/operarios" />}>
         <Route path="/dashboard/projects" element={<Projects />} />
         <Route path="/dashboard/cargos" element={<Cargos />} />
         <Route path="/dashboard/supervisores" element={<Supervisores />} />
         <Route path="/dashboard/contratistas" element={<Contratistas />} />
-        <Route path="/dashboard/operarios" element={<Operarios />} />
-        <Route path="/dashboard/profile" element={<Profile />} />
-        <Route path="/dashboard/generateqr" element={<GenerarQR />} />
+        </Route>
+
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>

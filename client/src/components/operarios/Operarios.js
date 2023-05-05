@@ -176,11 +176,11 @@ export const Operarios = () => {
                     <div className="pagetitle">
                         <h1>Operarios</h1>
                         <nav>
-                        {user.role.value==="supervisor" ? '' :
+                        {user.role.value && user.role.value==="supervisor" ? '' :
                             <button className='btn btn-success mt-2 ' data-bs-toggle="modal" data-bs-target="#verticalycentered" onClick={() => limpiarCampo()}>
                                 <i className="bi bi-plus-lg"></i> Crear Nuevo
                             </button>
-                            }
+                           } 
                             <Form handleSubmit={handleSubmit} handleChange={handleChange} input={input} action={action} Projects={projects} Cargos={cargos} errors={errors} />
                         </nav>
                     </div>
@@ -228,7 +228,7 @@ export const Operarios = () => {
                                                                     <i className="bi bi-pencil-fill"></i>
                                                                 </button>
                                                                 &nbsp;
-                                                                {user.role.value==="supervisor" ? '' :
+                                                                {user.role.value && user.role.value==="supervisor" ? '' :
                                                                 <button className="btn btn-danger btn-sm ">
                                                                     <i className="bi bi-trash-fill" onClick={() => handleDelete(el.id)}></i>
                                                                 </button>

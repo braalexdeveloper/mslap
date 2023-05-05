@@ -11,7 +11,7 @@ import { validate } from "../formUsuarios/Validate";
 import { getAllUsers,createUser,updateUser, deleteUser } from "../../slices/userCrudSlice/userCrudSlice";
 import { getAllProjects } from "../../slices/project/projectSlice";
 import { getAllCargos } from "../../slices/cargo/cargoSlice";
-import { userSelector } from "../../slices/user/userSlice";
+//import { userSelector } from "../../slices/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 export const Supervisores = () => {
@@ -20,7 +20,7 @@ export const Supervisores = () => {
   let supercisores=users.filter(el=>el.role.value==="supervisor");
   const {projects} = useSelector((state) => state.project);
   const {cargos} = useSelector((state) => state.cargo);
-  const { user } = useSelector(userSelector);
+  //const { user } = useSelector(userSelector);
  
   const dispatch = useDispatch();
   const [action, setAction] = useState("create");
@@ -167,7 +167,7 @@ export const Supervisores = () => {
         className="main"
         style={{ marginLeft: menu ? "" : "0px" }}
       >
-        {user.role.value && user.role.value!=="admin" ? <h1>No tienes acceso</h1> :
+        {/*user.role.value && user.role.value!=="admin" ? <h1>No tienes acceso</h1> :*/}
         <section className="section dashboard">
           <div className="pagetitle">
             <h1>Supervisores</h1>
@@ -254,7 +254,7 @@ export const Supervisores = () => {
             </div>
           </section>
         </section>
-}
+
       </main>
       <Footer />
     </>
