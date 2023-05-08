@@ -6,7 +6,7 @@ const dataCertificate = {
   expiration: "",
 };
 
-export const Certificates = ({ count = 1 }) => {
+export const Certificates = ({ count = 0 }) => {
   const [inputs, setInputs] = useState(Array(count).fill([dataCertificate]));
 
   const handleChange = (e, i) => {
@@ -20,7 +20,7 @@ export const Certificates = ({ count = 1 }) => {
   const arrayInput = [];
   for (let index = 0; index < count; index++) {
     arrayInput.push(
-      <Certificate key={index} value={inputs[index].expiration} onChange={(e) => handleChange(e, index)} />
+      <Certificate key={index} value={inputs[index]?.expiration} onChange={(e) => handleChange(e, index)} />
     );
   }
 
