@@ -12,6 +12,7 @@ import { NotFound } from "./components/notfound/NotFound";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { userSelector } from "./slices/user/userSlice";
 import { useSelector } from "react-redux";
+import { Certificates } from "./components/certificates/Certificates";
 
 function App() {
   const { user,isLogin } = useSelector(userSelector); 
@@ -22,6 +23,7 @@ function App() {
 
         <Route element={<ProtectedRoute  isLogin={isLogin} />}>
           <Route path="/dashboard/operarios" element={<Operarios />} />
+          <Route path="/dashboard/certificates" element={<Certificates/>} />
           <Route path="/dashboard/profile" element={<Profile />} />
           <Route path="/dashboard/generateqr" element={<GenerarQR />} />
         </Route>
