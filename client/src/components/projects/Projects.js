@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import { Header } from "../Header";
 import { Footer } from "../Footer";
 import { Sidebar } from "../Sidebar";
-import { userSelector } from "../../slices/user/userSlice";
+//import { userSelector } from "../../slices/user/userSlice";
 import { getAllProjects,createProject,  deleteProject,  updateProject } from "../../slices/project/projectSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Form } from "./Form";
@@ -38,7 +38,7 @@ export const Projects = () => {
   const {projects} = useSelector(state => state.project);
   const dispatch = useDispatch();
   const [errors, setErrors] = useState({});
-  const { user } = useSelector(userSelector);
+  //const { user } = useSelector(userSelector);
   const [input, setInput] = useState({
     name: "",
     dateStart: "",
@@ -148,7 +148,7 @@ export const Projects = () => {
         className="main"
         style={{ marginLeft: menu ? "" : "0px" }}
       >
-         {user.role.value && user.role.value!=="admin" ? <h1>No tienes acceso</h1> :
+         {/*user.role.value && user.role.value!=="admin" ? <h1>No tienes acceso</h1> :*/}
         <section className="section dashboard">
           <div className="pagetitle">
             <h1>Projects</h1>
@@ -232,7 +232,7 @@ export const Projects = () => {
             </div>
           </section>
         </section>
-}
+
       </main>
       <Footer />
     </>

@@ -6,7 +6,7 @@ import { Header } from "../Header";
 import { Footer } from "../Footer";
 import { Sidebar } from "../Sidebar";
 import { useDispatch, useSelector } from "react-redux";
-import { userSelector } from "../../slices/user/userSlice";
+//import { userSelector } from "../../slices/user/userSlice";
 import { getAllCargos,createCargo,deleteCargo,updateCargo} from "../../slices/cargo/cargoSlice";
 import { Form } from "./Form";
 
@@ -30,7 +30,7 @@ export const Cargos = () => {
   const [input, setInput] = useState({ name: "" });
   const [action, setAction] = useState("create");
   const [errors, setErrors] = useState({});
-  const { user } = useSelector(userSelector);
+  //const { user } = useSelector(userSelector);
 
   const handleChange = (e) => {
     setInput({
@@ -120,7 +120,7 @@ export const Cargos = () => {
         className="main"
         style={{ marginLeft: menu ? "" : "0px" }}
       >
-        {user.role.value && user.role.value!=="admin" ? <h1>No tienes acceso</h1> :
+        {/*user.role.value && user.role.value!=="admin" ? <h1>No tienes acceso</h1> :*/}
         <section className="section dashboard">
           <div className="pagetitle">
             <h1>Cargos</h1>
@@ -188,7 +188,7 @@ export const Cargos = () => {
             </div>
           </section>
         </section>
-}
+
       </main>
       <Footer />
     </>

@@ -7,7 +7,7 @@ import { url_api } from "../utils/config";
 
 export const Header = () => {
   const { menu, setMenu } = useMenuToggle();
-  const { user,isLogin } = useSelector(userSelector);
+  const { user } = useSelector(userSelector);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -23,9 +23,9 @@ export const Header = () => {
   }
 
  
-   if(!isLogin){
+   /*if(!isLogin){
      navigate("/");
-   }
+   }*/
   
   
   return (

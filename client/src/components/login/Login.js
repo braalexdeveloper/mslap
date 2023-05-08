@@ -20,7 +20,7 @@ export const Login = () => {
   const [input, setInput] = useState(data);
   const [error, setError] = useState(data);
   const inputRef = useRef(null);
-  const { status, message,user } = useSelector(userSelector);
+  const { status, message } = useSelector(userSelector);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -28,11 +28,9 @@ export const Login = () => {
     if (status === 1) {
       await showAlertLogin(message, "", "success");
       dispatch(clearInfo());
-     if(user.role.value==="admin"){
+   
         navigate("/dashboard/projects");
-      }else{
-        navigate("/dashboard/operarios");
-      }
+      
       
     } else if (status === 0) {
       showAlertNormal(message, "", "error");

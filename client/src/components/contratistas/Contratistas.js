@@ -11,7 +11,7 @@ import { validate } from "../formUsuarios/Validate";
 import { getAllUsers,createUser,updateUser, deleteUser } from "../../slices/userCrudSlice/userCrudSlice";
 import { getAllProjects } from "../../slices/project/projectSlice";
 import { getAllCargos } from "../../slices/cargo/cargoSlice";
-import { userSelector } from "../../slices/user/userSlice";
+//import { userSelector } from "../../slices/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 export const Contratistas = () => {
@@ -20,7 +20,7 @@ export const Contratistas = () => {
  let contratistas=users.filter(el=>el.role.value==="contratista");
   const {projects} = useSelector((state) => state.project);
   const {cargos} = useSelector((state) => state.cargo);
-  const { user } = useSelector(userSelector);
+  //const { user } = useSelector(userSelector);
   const dispatch = useDispatch();
   const [action, setAction] = useState("create");
   const [errors, setErrors] = useState({});
@@ -170,7 +170,7 @@ export const Contratistas = () => {
         className="main"
         style={{ marginLeft: menu ? "" : "0px" }}
       >
-        {user.role.value && user.role.value!=="admin" ? <h1>No tienes acceso</h1> :
+        {/*user.role.value && user.role.value!=="admin" ? <h1>No tienes acceso</h1> :*/}
         <section className="section dashboard">
         <div className="pagetitle">
           <h1>Contratistas</h1>
@@ -258,7 +258,7 @@ export const Contratistas = () => {
           </div>
         </section>
       </section>
-        }
+        
         
       </main>
       <Footer />

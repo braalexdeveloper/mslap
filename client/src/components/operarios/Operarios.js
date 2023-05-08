@@ -34,7 +34,7 @@ const newOperator = {
   roleId: "operario",
   projectId: "",
   certificates: [],
-}
+};
 
 export const Operarios = () => {
   const { menu } = useMenuToggle();
@@ -144,6 +144,14 @@ export const Operarios = () => {
     });
   };
 
+  let cantCertificates = 0;
+  if (input.projectId) {
+    let selectedProject = projects.find((el) => el.id === input.projectId);
+    cantCertificates = selectedProject?.totalCertificates;
+    console.log(cantCertificates);
+  }
+  console.log(cantCertificates);
+
   useEffect(() => {
     dispatch(getAllProjects());
     dispatch(getAllCargos());
@@ -183,6 +191,8 @@ export const Operarios = () => {
                 Projects={projects}
                 Cargos={cargos}
                 errors={errors}
+                cantCertificates={cantCertificates}
+                setInput={setInput}
               />
             </nav>
           </div>
