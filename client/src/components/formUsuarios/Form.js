@@ -3,7 +3,6 @@ import { Certificates } from "../certificates/Certificates";
 import { userSelector } from "../../slices/user/userSlice";
 import { useSelector } from "react-redux";
 
-
 export const Form = ({
   handleChange,
   handleSubmit,
@@ -13,7 +12,7 @@ export const Form = ({
   Cargos,
   errors,
   cantCertificates,
-  setInput
+  setInput,
 }) => {
   const { user } = useSelector(userSelector);
 
@@ -258,18 +257,15 @@ export const Form = ({
               <div className="col-12">
                 <label className="form-label">Cargo</label>
                 <select
-                  onChange={(e) => handleChange(e)}
                   name="positionId"
                   className="form-control"
+                  value={input.positionId}
+                  onChange={(e) => handleChange(e)}
                 >
                   <option>Selecciona un Cargo</option>
                   {Cargos &&
                     Cargos.map((el, index) => (
-                      <option
-                        key={index}
-                        selected={el.id === input.positionId ? true : false}
-                        value={el.id}
-                      >
+                      <option key={index} value={el.id}>
                         {el.name}
                       </option>
                     ))}
@@ -287,18 +283,15 @@ export const Form = ({
                 <div className="col-12">
                   <label className="form-label">Proyecto</label>
                   <select
-                    onChange={(e) => handleChange(e)}
                     name="projectId"
                     className="form-control"
+                    value={input.projectId}
+                    onChange={(e) => handleChange(e)}
                   >
                     <option>Selecciona un Proyecto</option>
                     {Projects &&
                       Projects.map((el, index) => (
-                        <option
-                          key={index}
-                          selected={el.id === input.projectId ? true : false}
-                          value={el.id}
-                        >
+                        <option key={index} value={el.id}>
                           {el.name}
                         </option>
                       ))}
@@ -315,13 +308,19 @@ export const Form = ({
               ) : (
                 ""
               )}
-              {(user.role.value==="admin" || user.role.value==="contratista") && cantCertificates>0 ? 
-              <div className="col-12">
-                
-                <Certificates count={cantCertificates} input={input} setInput={setInput} />
-              </div>
-              : ''}
-
+              {(user.role.value === "admin" ||
+                user.role.value === "contratista") &&
+              cantCertificates > 0 ? (
+                <div className="col-12">
+                  <Certificates
+                    count={cantCertificates}
+                    input={input}
+                    setInput={setInput}
+                  />
+                </div>
+              ) : (
+                ""
+              )}
               <div className="text-center">
                 <button
                   type="submit"

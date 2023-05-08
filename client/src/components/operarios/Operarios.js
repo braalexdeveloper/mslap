@@ -34,7 +34,7 @@ const newOperator = {
   roleId: "operario",
   projectId: "",
   certificates: [],
-}
+};
 
 export const Operarios = () => {
   const { menu } = useMenuToggle();
@@ -50,10 +50,6 @@ export const Operarios = () => {
   const [errors, setErrors] = useState({});
 
   const [input, setInput] = useState(newOperator);
-
-
-
-
 
   const limpiarCampo = () => {
     setInput(newOperator);
@@ -72,8 +68,6 @@ export const Operarios = () => {
         [e.target.name]: e.target.value,
       })
     );
-
-
   };
 
   const handleSubmit = (e) => {
@@ -152,11 +146,11 @@ export const Operarios = () => {
 
   let cantCertificates = 0;
   if (input.projectId) {
-    let selectedProject = projects.find(el => el.id === input.projectId);
-    cantCertificates = selectedProject.totalCertificates;
-    console.log(cantCertificates)
+    let selectedProject = projects.find((el) => el.id === input.projectId);
+    cantCertificates = selectedProject?.totalCertificates;
+    console.log(cantCertificates);
   }
-  console.log(cantCertificates)
+  console.log(cantCertificates);
 
   useEffect(() => {
     dispatch(getAllProjects());
@@ -198,7 +192,7 @@ export const Operarios = () => {
                 Cargos={cargos}
                 errors={errors}
                 cantCertificates={cantCertificates}
-                setInput={setInput} 
+                setInput={setInput}
               />
             </nav>
           </div>
@@ -279,4 +273,3 @@ export const Operarios = () => {
     </>
   );
 };
-
