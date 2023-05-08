@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const multer = require("multer");
 const { check } = require("express-validator");
 const {
   thereIsUserById,
@@ -10,6 +11,19 @@ const {
 } = require("../utils/validators/db-validators");
 const adminController = require("../controllers/adminController");
 const router = Router();
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "src/uploads/"); // Carpeta de destino para guardar las imágenes
+  },
+  filename: function (req, file, cb) {
+    const fileName = file.originalname.toLowerCase().split(" ").join("-");
+    cb(null, fileName); // El nombre del archivo será el original
+  },
+});
+
+const upload = multer({ storage });
+
 /**
  * End-point's del modelo Position
  */
@@ -83,7 +97,8 @@ router.post(
     check("phoneEmergency", "Mínimo permito 7 digitos").isLength({ min: 7 }),
     check("email", "Ingrese correo electrónico").not().isEmpty(),
     check("typeBlood", "Ingrese tipo de sangre").not().isEmpty(),
-    validateUser
+    validateUser,
+    upload.single("file"),
   ],
   adminController.createUser
 );

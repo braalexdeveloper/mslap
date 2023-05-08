@@ -6,9 +6,11 @@ const dataCertificate = {
   expiration: "",
 };
 
+
 export const Certificates = ({ count=1,setInput,input }) => {
   
   const [inputsCertificates, setInputsCertificates] = useState(Array(count).fill(dataCertificate));
+
   const handleChange = (e, i) => {
     const name = e.target.name;
     const value = name === "expiration" ? e.target.value : e.target.files[0];

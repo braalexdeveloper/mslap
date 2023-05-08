@@ -46,7 +46,7 @@ export const FormChangeImage = () => {
     const formData = new FormData();
     formData.append("image", file.image);
     dispatch(
-      changeImageProfile("1cc67e66-cbff-4eb2-970e-09f5c38333e2", formData)
+      changeImageProfile(user?.id, formData)
     );
   };
 
