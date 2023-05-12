@@ -13,6 +13,7 @@ const errorHandler = require("./utils/middleware/errorHandler");
 const app = express();
 const adminRoutes = require("./routes/adminRoutes");
 const userRoutes = require("./routes/userRoutes");
+const certificateRoutes=require("./routes/certificateRoutes");
 
 app.name = "API";
 
@@ -27,6 +28,7 @@ app.use(setHeader);
 
 app.use("/api/admin", adminRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/certificate",certificateRoutes);
 
 app.use(errorHandler);
 
