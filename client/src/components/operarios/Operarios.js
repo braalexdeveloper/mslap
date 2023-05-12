@@ -6,17 +6,19 @@ import { Header } from "../Header";
 import { Footer } from "../Footer";
 import { Sidebar } from "../Sidebar";
 import { Form } from "../formUsuarios/Form";
+import { DetailOperario } from "./DetailOperario";
 import {
   getAllUsers,
   createUser,
   updateUser,
-  deleteUser,
+  deleteUser
 } from "../../slices/userCrudSlice/userCrudSlice";
 import { getAllProjects } from "../../slices/project/projectSlice";
 import { getAllCargos } from "../../slices/cargo/cargoSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { userSelector } from "../../slices/user/userSlice";
 import { validate } from "../formUsuarios/Validate";
+import { Pagination } from "../pagination/Pagination";
 
 const newOperator = {
   dni: "",
@@ -40,7 +42,7 @@ export const Operarios = () => {
   const { menu } = useMenuToggle();
 
   const dispatch = useDispatch();
-  const { users } = useSelector((state) => state.userCrud);
+  const { users, userUpdate } = useSelector((state) => state.userCrud);
   let operarios = users.filter((el) => el.role.value === "operario");
   const { projects } = useSelector((state) => state.project);
   const { cargos } = useSelector((state) => state.cargo);
@@ -68,6 +70,7 @@ export const Operarios = () => {
         [e.target.name]: e.target.value,
       })
     );
+    console.log(input)
   };
 
   const handleSubmit = (e) => {
@@ -83,10 +86,13 @@ export const Operarios = () => {
         showConfirmButton: false,
         timer: 2000,
       });
-      console.log(input);
+
     } else {
       delete input.password;
+      delete input.roleId;
+
       dispatch(updateUser(input.id, input));
+
       Swal.fire({
         position: "top-end",
         icon: "success",
@@ -119,6 +125,7 @@ export const Operarios = () => {
       salary: user.salary,
       password: "password",
       positionId: user.positionId,
+      roleId: "operario",
       projectId: user.projects.length > 0 ? user.projects[0].id : "",
       certificates: [],
     });
@@ -152,10 +159,23 @@ export const Operarios = () => {
   }
   console.log(cantCertificates);
 
+  //Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const [recipesPag, setRecipesPag] = useState(10);
+  const lastRecipe = currentPage * recipesPag;
+  const firstRecipe = lastRecipe - recipesPag;
+
+const handlePag = (value) => {
+    setCurrentPage(value)
+}
+
+let operariosPerPage=operarios.slice(firstRecipe,lastRecipe);
+
   useEffect(() => {
     dispatch(getAllProjects());
     dispatch(getAllCargos());
     dispatch(getAllUsers());
+
   }, [dispatch]);
 
   return (
@@ -171,7 +191,7 @@ export const Operarios = () => {
           <div className="pagetitle">
             <h1>Operarios</h1>
             <nav>
-              {user.role.value === "supervisor" ? (
+              {user.role.value === "supervisor" || user.role.value === "operario" ? (
                 ""
               ) : (
                 <button
@@ -199,72 +219,77 @@ export const Operarios = () => {
           <section className="section">
             <div className="row">
               <div className="col-lg-12">
-                <div className="card">
-                  <div className="card-body">
-                    <div className="table-responsive">
-                      <table className="table">
-                        <thead>
-                          <tr>
-                            <th scope="col">Nombres</th>
-                            <th scope="col">Apellidos</th>
-                            <th scope="col">DNI</th>
-                            <th scope="col">Telf. Contacto</th>
-                            <th scope="col">Contacto de Emergencia</th>
-                            <th scope="col">Telf. Emergencia</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Tipo de Sangre</th>
-                            <th scope="col">Proyecto</th>
-                            <th scope="col">Sueldo</th>
-                            <th scope="col">Acciones</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {operarios &&
-                            operarios.map((el, index) => (
-                              <tr key={index}>
-                                <td>{el.name}</td>
-                                <td>{el.lastName}</td>
-                                <td>{el.dni}</td>
-                                <td>{el.phone}</td>
-                                <td>{el.contactEmergency}</td>
-                                <td>{el.phoneEmergency}</td>
-                                <td>{el.email}</td>
-                                <td>{el.typeBlood}</td>
-                                <td>
-                                  {el.projects.length > 0
-                                    ? el.projects[0].name
-                                    : ""}
-                                </td>
-                                <td>{el.salary}</td>
-                                <td>
-                                  <button
-                                    className="btn btn-warning btn-sm"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#verticalycentered"
-                                    onClick={() => showUser(el.id)}
-                                  >
-                                    <i className="bi bi-pencil-fill"></i>
-                                  </button>
-                                  &nbsp;
-                                  {user.role.value === "supervisor" ? (
-                                    ""
-                                  ) : (
-                                    <button className="btn btn-danger btn-sm ">
-                                      <i
-                                        className="bi bi-trash-fill"
-                                        onClick={() => handleDelete(el.id)}
-                                      ></i>
+                {user.role.value === "operario" ?
+                  <DetailOperario user={userUpdate} showUser={showUser} />
+                  :
+                  <div className="card">
+                    <div className="card-body">
+                      <div className="table-responsive">
+                        <table className="table">
+                          <thead>
+                            <tr>
+                              <th scope="col">Nombres</th>
+                              <th scope="col">Apellidos</th>
+                              <th scope="col">DNI</th>
+                              <th scope="col">Telf. Contacto</th>
+                              <th scope="col">Contacto de Emergencia</th>
+                              <th scope="col">Telf. Emergencia</th>
+                              <th scope="col">Email</th>
+                              <th scope="col">Tipo de Sangre</th>
+                              <th scope="col">Proyecto</th>
+                              <th scope="col">Sueldo</th>
+                              <th scope="col">Acciones</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {operariosPerPage &&
+                              operariosPerPage.map((el, index) => (
+                                <tr key={index}>
+                                  <td>{el.name}</td>
+                                  <td>{el.lastName}</td>
+                                  <td>{el.dni}</td>
+                                  <td>{el.phone}</td>
+                                  <td>{el.contactEmergency}</td>
+                                  <td>{el.phoneEmergency}</td>
+                                  <td>{el.email}</td>
+                                  <td>{el.typeBlood}</td>
+                                  <td>
+                                    {el.projects.length > 0
+                                      ? el.projects[0].name
+                                      : ""}
+                                  </td>
+                                  <td>{el.salary}</td>
+                                  <td>
+                                    <button
+                                      className="btn btn-warning btn-sm"
+                                      data-bs-toggle="modal"
+                                      data-bs-target="#verticalycentered"
+                                      onClick={() => showUser(el.id)}
+                                    >
+                                      <i className="bi bi-pencil-fill"></i>
                                     </button>
-                                  )}
-                                </td>
-                              </tr>
-                            ))}
-                        </tbody>
-                      </table>
+                                    &nbsp;
+                                    {user.role.value === "supervisor" ? (
+                                      ""
+                                    ) : (
+                                      <button className="btn btn-danger btn-sm ">
+                                        <i
+                                          className="bi bi-trash-fill"
+                                          onClick={() => handleDelete(el.id)}
+                                        ></i>
+                                      </button>
+                                    )}
+                                  </td>
+                                </tr>
+                              ))}
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                   </div>
-                </div>
+                }
               </div>
+              <Pagination totalPag={Math.ceil(operarios.length/recipesPag)} handlePag={handlePag} currentPage={currentPage} setCurrentPage={setCurrentPage} />
             </div>
           </section>
         </section>

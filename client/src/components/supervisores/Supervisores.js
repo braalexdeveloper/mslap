@@ -13,11 +13,12 @@ import { getAllProjects } from "../../slices/project/projectSlice";
 import { getAllCargos } from "../../slices/cargo/cargoSlice";
 //import { userSelector } from "../../slices/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { Pagination } from "../pagination/Pagination";
 
 export const Supervisores = () => {
   const { menu } = useMenuToggle();
   const {users} = useSelector((state) => state.userCrud);
-  let supercisores=users.filter(el=>el.role.value==="supervisor");
+  let supervisores=users.filter(el=>el.role.value==="supervisor");
   const {projects} = useSelector((state) => state.project);
   const {cargos} = useSelector((state) => state.cargo);
   //const { user } = useSelector(userSelector);
@@ -93,6 +94,7 @@ export const Supervisores = () => {
       console.log(input);
     } else {
       delete input.password;
+      delete input.roleId;
       dispatch(updateUser(input.id, input));
       Swal.fire({
         position: "top-end",
@@ -127,6 +129,7 @@ export const Supervisores = () => {
       salary: user.salary,
       password:"password",
       positionId: user.positionId,
+      roleId: "supervisor",
       projectId: user.projects[0].id,
       certificates:[]
     });
@@ -151,6 +154,18 @@ export const Supervisores = () => {
       }
     });
   };
+
+  //Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const [recipesPag, setRecipesPag] = useState(10);
+  const lastRecipe = currentPage * recipesPag;
+  const firstRecipe = lastRecipe - recipesPag;
+
+  const handlePag = (value) => {
+    setCurrentPage(value)
+}
+
+let supervisoresPerPage=supervisores.slice(firstRecipe,lastRecipe);
 
   useEffect(() => {
     dispatch(getAllProjects());
@@ -213,8 +228,8 @@ export const Supervisores = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {supercisores &&
-                            supercisores.map((el, index) => (
+                          {supervisoresPerPage &&
+                            supervisoresPerPage.map((el, index) => (
                               <tr key={index}>
                                 <td>{el.name}</td>
                                 <td>{el.lastName}</td>
@@ -252,6 +267,7 @@ export const Supervisores = () => {
                 </div>
               </div>
             </div>
+            <Pagination totalPag={Math.ceil(supervisores.length/recipesPag)} handlePag={handlePag} currentPage={currentPage} setCurrentPage={setCurrentPage} />
           </section>
         </section>
 
