@@ -1,6 +1,4 @@
 const { Router } = require("express");
-const multer = require("multer");
-// const upload = multer({ dest: "../uploads/" });
 const {
   auth,
   validateFile,
@@ -10,18 +8,7 @@ const {
 const userController = require("../controllers/userController");
 const { check } = require("express-validator");
 const router = Router();
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "src/uploads/"); // Carpeta de destino para guardar las imágenes
-  },
-  filename: function (req, file, cb) {
-    const fileName = file.originalname.toLowerCase().split(" ").join("-");
-    cb(null, fileName); // El nombre del archivo será el original
-  },
-});
-
-const upload = multer({ storage });
+const upload = require("../utils/common");
 
 // logueo de usuario
 router.get("/login", auth, userController.login);

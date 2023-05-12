@@ -1,5 +1,4 @@
 const { Router } = require("express");
-const multer = require("multer");
 const { check } = require("express-validator");
 const {
   thereIsUserById,
@@ -11,18 +10,7 @@ const {
 } = require("../utils/validators/db-validators");
 const adminController = require("../controllers/adminController");
 const router = Router();
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "src/uploads/"); // Carpeta de destino para guardar las imágenes
-  },
-  filename: function (req, file, cb) {
-    const fileName = file.originalname.toLowerCase().split(" ").join("-");
-    cb(null, fileName); // El nombre del archivo será el original
-  },
-});
-
-const upload = multer({ storage });
+const upload = require("../utils/common");
 
 /**
  * End-point's del modelo Position
@@ -63,7 +51,7 @@ router.post(
       .not()
       .isEmpty(),
     check("location", "Ingrese ubicación").not().isEmpty(),
-    validateProject
+    validateProject,
   ],
   adminController.createProject
 );
@@ -86,6 +74,7 @@ router.get("/projects", adminController.getAllProjects);
 router.post(
   "/user",
   [
+    upload.array("files"),
     check("dni", "Ingrese dni").not().isEmpty(),
     check("dni", "Mínimo permito 6 digitos").isLength({ min: 6 }),
     check("name", "Ingrese nombres").not().isEmpty(),
@@ -98,7 +87,6 @@ router.post(
     check("email", "Ingrese correo electrónico").not().isEmpty(),
     check("typeBlood", "Ingrese tipo de sangre").not().isEmpty(),
     validateUser,
-    upload.single("file"),
   ],
   adminController.createUser
 );
@@ -110,5 +98,16 @@ router.delete("/user/:id", thereIsUserById, adminController.deleteUser);
 router.get("/user/:id", adminController.getUserById);
 // consultar todos los usuarios
 router.get("/users", adminController.getAllUsers);
-
+/**
+ * End-point's del modelo Certificate
+ */
+// crear certificado
+router.post(
+  "/certificates",
+  [
+    upload.array("certificates"),
+    check("certificates", "Seleccione certificados"),
+  ],
+  adminController.createCertificate
+);
 module.exports = router;

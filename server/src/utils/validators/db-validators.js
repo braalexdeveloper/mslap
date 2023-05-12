@@ -1,6 +1,5 @@
 const bcrypt = require("bcrypt");
 const { User, Position, Project, Op } = require("../../db");
-const Certificate = require("../../models/Certificate");
 
 // Middleware for routes user
 const auth = async (req, res, next) => {

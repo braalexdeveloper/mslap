@@ -363,7 +363,7 @@ const adminController = {
     }
 
     const { password, projectId, roleId } = req.body;
-    const certificates = req.body.certificates;
+    const certificates = req.body.certificates.map(c => JSON.parse(c));
     delete req.body.certificates;
     req.body.password = bcrypt.hashSync(password, 10);
     //Obtengo el ID del rol
@@ -373,9 +373,9 @@ const adminController = {
     try {
       const userCreated = await User.create(req.body);
       userCreated.addProject(projectId);
-      
+
       if (certificates.length) {
-        const certs = certificates.map((c) => ({ ...c, userId: userCreated.id }));
+        const certs = certificates.map((c, i) => ({ ...c, name: req.files[i].filename, userId: userCreated.id }));
         await Certificate.bulkCreate(certs);
       }
 
@@ -432,6 +432,36 @@ const adminController = {
       return res.json({
         status: 1,
         message: `Usuario eliminado correctamente`,
+        data: {},
+      });
+    } catch (error) {
+      res.status(500).json({
+        status: 0,
+        message: "No se pudo realizar la operación",
+      });
+    }
+  },
+  createCertificate: async (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json(errors);
+    }
+    console.log(req.body)
+    console.log(req.files)
+    console.log(req.params)
+    const { id } = req.body;
+    const certificates = req.files;
+    
+    try {
+      if (certificates.length) {
+        const certs = certificates.map((c, i) => {console.log(c); return { ...c, name: certificates[i].filename, userId: id }});
+        await Certificate.bulkCreate(certs);
+      }
+
+      return res.status(200).json({
+        status: 1,
+        message: "Certificados agregados correctamente",
         data: {},
       });
     } catch (error) {

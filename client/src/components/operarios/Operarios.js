@@ -11,7 +11,7 @@ import {
   getAllUsers,
   createUser,
   updateUser,
-  deleteUser
+  deleteUser,
 } from "../../slices/userCrudSlice/userCrudSlice";
 import { getAllProjects } from "../../slices/project/projectSlice";
 import { getAllCargos } from "../../slices/cargo/cargoSlice";
@@ -30,7 +30,7 @@ const newOperator = {
   phoneEmergency: "",
   email: "",
   typeBlood: "",
-  salary: 0,
+  salary: 1,
   password: "",
   positionId: "",
   roleId: "operario",
@@ -70,23 +70,31 @@ export const Operarios = () => {
         [e.target.name]: e.target.value,
       })
     );
-    console.log(input)
+    console.log(input);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    const formData = new FormData();
+    for (const key in input) {
+      formData.append(key, input[key]);
+    }
+    formData.delete("certificates");
+    for (const { name, expiration } of input?.certificates) {
+      formData.append("certificates", JSON.stringify({ name, expiration }));
+      formData.append("files", name);
+    }
     if (action === "create") {
-      dispatch(createUser(input));
+      dispatch(createUser(formData));
 
       Swal.fire({
         position: "top-end",
         icon: "success",
-        title: "Contratista Creado Correctamente!",
+        title: "Opereario Creado Correctamente!",
         showConfirmButton: false,
         timer: 2000,
       });
-
     } else {
       delete input.password;
       delete input.roleId;
@@ -96,7 +104,7 @@ export const Operarios = () => {
       Swal.fire({
         position: "top-end",
         icon: "success",
-        title: "Contratista Actualizado Correctamente!",
+        title: "Operario Actualizado Correctamente!",
         showConfirmButton: false,
         timer: 2000,
       });
@@ -142,6 +150,7 @@ export const Operarios = () => {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Si, eliminar!",
+      cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
         dispatch(deleteUser(id));
@@ -155,9 +164,7 @@ export const Operarios = () => {
   if (input.projectId) {
     let selectedProject = projects.find((el) => el.id === input.projectId);
     cantCertificates = selectedProject?.totalCertificates;
-    console.log(cantCertificates);
   }
-  console.log(cantCertificates);
 
   //Pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -165,17 +172,16 @@ export const Operarios = () => {
   const lastRecipe = currentPage * recipesPag;
   const firstRecipe = lastRecipe - recipesPag;
 
-const handlePag = (value) => {
-    setCurrentPage(value)
-}
+  const handlePag = (value) => {
+    setCurrentPage(value);
+  };
 
-let operariosPerPage=operarios.slice(firstRecipe,lastRecipe);
+  let operariosPerPage = operarios.slice(firstRecipe, lastRecipe);
 
   useEffect(() => {
     dispatch(getAllProjects());
     dispatch(getAllCargos());
     dispatch(getAllUsers());
-
   }, [dispatch]);
 
   return (
@@ -191,7 +197,8 @@ let operariosPerPage=operarios.slice(firstRecipe,lastRecipe);
           <div className="pagetitle">
             <h1>Operarios</h1>
             <nav>
-              {user.role.value === "supervisor" || user.role.value === "operario" ? (
+              {user.role.value === "supervisor" ||
+              user.role.value === "operario" ? (
                 ""
               ) : (
                 <button
@@ -219,9 +226,9 @@ let operariosPerPage=operarios.slice(firstRecipe,lastRecipe);
           <section className="section">
             <div className="row">
               <div className="col-lg-12">
-                {user.role.value === "operario" ?
+                {user.role.value === "operario" ? (
                   <DetailOperario user={userUpdate} showUser={showUser} />
-                  :
+                ) : (
                   <div className="card">
                     <div className="card-body">
                       <div className="table-responsive">
@@ -238,7 +245,9 @@ let operariosPerPage=operarios.slice(firstRecipe,lastRecipe);
                               <th scope="col">Tipo de Sangre</th>
                               <th scope="col">Proyecto</th>
                               <th scope="col">Sueldo</th>
-                              <th scope="col">Acciones</th>
+                              <th scope="col" colSpan={2}>
+                                Acciones
+                              </th>
                             </tr>
                           </thead>
                           <tbody>
@@ -268,7 +277,8 @@ let operariosPerPage=operarios.slice(firstRecipe,lastRecipe);
                                     >
                                       <i className="bi bi-pencil-fill"></i>
                                     </button>
-                                    &nbsp;
+                                  </td>
+                                  <td>
                                     {user.role.value === "supervisor" ? (
                                       ""
                                     ) : (
@@ -287,9 +297,14 @@ let operariosPerPage=operarios.slice(firstRecipe,lastRecipe);
                       </div>
                     </div>
                   </div>
-                }
+                )}
               </div>
-              <Pagination totalPag={Math.ceil(operarios.length/recipesPag)} handlePag={handlePag} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+              <Pagination
+                totalPag={Math.ceil(operarios.length / recipesPag)}
+                handlePag={handlePag}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+              />
             </div>
           </section>
         </section>
