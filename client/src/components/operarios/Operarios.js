@@ -28,7 +28,7 @@ const newOperator = {
   phoneEmergency: "",
   email: "",
   typeBlood: "",
-  salary: 0,
+  salary: 1,
   password: "",
   positionId: "",
   roleId: "operario",
@@ -73,24 +73,32 @@ export const Operarios = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    const formData = new FormData();
+    for (const key in input) {
+      formData.append(key, input[key]);
+    }
+    formData.delete("certificates");
+    for (const { name, expiration } of input?.certificates) {
+      formData.append("certificates", JSON.stringify({ name, expiration }));
+      formData.append("files", name);
+    }
     if (action === "create") {
-      dispatch(createUser(input));
+      dispatch(createUser(formData));
 
       Swal.fire({
         position: "top-end",
         icon: "success",
-        title: "Contratista Creado Correctamente!",
+        title: "Opereario Creado Correctamente!",
         showConfirmButton: false,
         timer: 2000,
       });
-      console.log(input);
     } else {
       delete input.password;
       dispatch(updateUser(input.id, input));
       Swal.fire({
         position: "top-end",
         icon: "success",
-        title: "Contratista Actualizado Correctamente!",
+        title: "Operario Actualizado Correctamente!",
         showConfirmButton: false,
         timer: 2000,
       });
@@ -135,6 +143,7 @@ export const Operarios = () => {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Si, eliminar!",
+      cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
         dispatch(deleteUser(id));
@@ -148,9 +157,7 @@ export const Operarios = () => {
   if (input.projectId) {
     let selectedProject = projects.find((el) => el.id === input.projectId);
     cantCertificates = selectedProject?.totalCertificates;
-    console.log(cantCertificates);
   }
-  console.log(cantCertificates);
 
   useEffect(() => {
     dispatch(getAllProjects());
@@ -215,7 +222,9 @@ export const Operarios = () => {
                             <th scope="col">Tipo de Sangre</th>
                             <th scope="col">Proyecto</th>
                             <th scope="col">Sueldo</th>
-                            <th scope="col">Acciones</th>
+                            <th scope="col" colSpan={2}>
+                              Acciones
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
@@ -245,7 +254,8 @@ export const Operarios = () => {
                                   >
                                     <i className="bi bi-pencil-fill"></i>
                                   </button>
-                                  &nbsp;
+                                </td>
+                                <td>
                                   {user.role.value === "supervisor" ? (
                                     ""
                                   ) : (

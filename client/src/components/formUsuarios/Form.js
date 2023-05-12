@@ -17,7 +17,13 @@ export const Form = ({
   const { user } = useSelector(userSelector);
 
   return (
-    <div className="modal fade" id="verticalycentered" tabIndex="-1">
+    <div
+      className="modal fade"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      id="verticalycentered"
+      tabIndex="-1"
+    >
       <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content">
           <div className="modal-header">
@@ -227,6 +233,8 @@ export const Form = ({
                   value={input.salary}
                   name="salary"
                   id="salary"
+                  min={0}
+                  step={1}
                 />
               </div>
               {action && action === "create" ? (
