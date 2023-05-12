@@ -13,6 +13,7 @@ import { getAllProjects } from "../../slices/project/projectSlice";
 import { getAllCargos } from "../../slices/cargo/cargoSlice";
 //import { userSelector } from "../../slices/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { Pagination } from "../pagination/Pagination";
 
 export const Contratistas = () => {
   const { menu } = useMenuToggle();
@@ -94,6 +95,7 @@ export const Contratistas = () => {
       console.log(input);
     } else {
       delete input.password;
+      delete input.roleId;
       dispatch(updateUser(input.id, input));
       Swal.fire({
         position: "top-end",
@@ -128,6 +130,7 @@ export const Contratistas = () => {
       salary: user.salary,
       password: "password",
       positionId: user.positionId,
+      roleId: "contratista",
       projectId: user.projects[0].id,
       certificates:[]
     });
@@ -152,6 +155,18 @@ export const Contratistas = () => {
       }
     });
   };
+
+  //Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const [recipesPag, setRecipesPag] = useState(10);
+  const lastRecipe = currentPage * recipesPag;
+  const firstRecipe = lastRecipe - recipesPag;
+
+  const handlePag = (value) => {
+    setCurrentPage(value)
+}
+
+let contratistasPerPage=contratistas.slice(firstRecipe,lastRecipe);
 
   useEffect(() => {
     dispatch(getAllProjects());
@@ -217,8 +232,8 @@ export const Contratistas = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {contratistas &&
-                          contratistas.map((el, index) => (
+                        {contratistasPerPage &&
+                          contratistasPerPage.map((el, index) => (
                             <tr key={index}>
                               <td>{el.name}</td>
                               <td>{el.lastName}</td>
@@ -256,6 +271,7 @@ export const Contratistas = () => {
               </div>
             </div>
           </div>
+          <Pagination totalPag={Math.ceil(contratistas.length/recipesPag)} handlePag={handlePag} currentPage={currentPage} setCurrentPage={setCurrentPage} />
         </section>
       </section>
         

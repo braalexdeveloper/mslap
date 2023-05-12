@@ -15,16 +15,16 @@ export const Form = ({
   setInput,
 }) => {
   const { user } = useSelector(userSelector);
-
+  console.log(input);
   return (
     <div className="modal fade" id="verticalycentered" tabIndex="-1">
-      <div className="modal-dialog modal-dialog-centered">
+      <div className="modal-dialog modal-lg modal-dialog-centered">
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title">
               {action && action === "create"
-                ? "Agregar Supervisor"
-                : "Editar Supervisor"}
+                ? "Agregar "+input.roleId
+                : "Editar "+input.roleId}
             </h5>
             <button
               type="button"
@@ -35,7 +35,9 @@ export const Form = ({
           </div>
           <div className="modal-body">
             <form className="row g-3" onSubmit={(e) => handleSubmit(e)}>
-              <div className="col-12">
+              {user.role.value!=="operario" ? 
+              <>
+              <div className="col-6">
                 <label htmlFor="dni" className="form-label">
                   DNI
                 </label>
@@ -56,7 +58,8 @@ export const Form = ({
                   </div>
                 )}
               </div>
-              <div className="col-12">
+             
+              <div className="col-6">
                 <label htmlFor="name" className="form-label">
                   Nombre(s)
                 </label>
@@ -77,7 +80,7 @@ export const Form = ({
                   </div>
                 )}
               </div>
-              <div className="col-12">
+              <div className="col-6">
                 <label htmlFor="lastName" className="form-label">
                   Apellido(s)
                 </label>
@@ -98,7 +101,7 @@ export const Form = ({
                   </div>
                 )}
               </div>
-              <div className="col-12">
+              <div className="col-6">
                 <label htmlFor="birthday" className="form-label">
                   Fecha de Nacimiento
                 </label>
@@ -111,9 +114,11 @@ export const Form = ({
                   id="birthday"
                 />
               </div>
-              <div className="col-12">
+              </>
+               : ''}
+              <div className="col-6">
                 <label htmlFor="phone" className="form-label">
-                  Telefono
+                  Teléfono
                 </label>
                 <input
                   type="text"
@@ -132,7 +137,7 @@ export const Form = ({
                   </div>
                 )}
               </div>
-              <div className="col-12">
+              <div className="col-6">
                 <label htmlFor="contactEmergency" className="form-label">
                   Contacto de Emergencia
                 </label>
@@ -153,7 +158,7 @@ export const Form = ({
                   </div>
                 )}
               </div>
-              <div className="col-12">
+              <div className="col-6">
                 <label htmlFor="phoneEmergency" className="form-label">
                   Telf. de Emergencia
                 </label>
@@ -174,7 +179,7 @@ export const Form = ({
                   </div>
                 )}
               </div>
-              <div className="col-12">
+              <div className="col-6">
                 <label htmlFor="email" className="form-label">
                   Email
                 </label>
@@ -195,7 +200,9 @@ export const Form = ({
                   </div>
                 )}
               </div>
-              <div className="col-12">
+              {user.role.value!=="operario" ? 
+              <>
+              <div className="col-6">
                 <label htmlFor="typeBlood" className="form-label">
                   Tipo de Sangre
                 </label>
@@ -216,7 +223,7 @@ export const Form = ({
                   </div>
                 )}
               </div>
-              <div className="col-12">
+              <div className="col-6">
                 <label htmlFor="salary" className="form-label">
                   Salario
                 </label>
@@ -230,7 +237,7 @@ export const Form = ({
                 />
               </div>
               {action && action === "create" ? (
-                <div className="col-12">
+                <div className="col-6">
                   <label htmlFor="password" className="form-label">
                     Contraseña
                   </label>
@@ -254,7 +261,7 @@ export const Form = ({
               ) : (
                 ""
               )}
-              <div className="col-12">
+              <div className="col-6">
                 <label className="form-label">Cargo</label>
                 <select
                   name="positionId"
@@ -280,7 +287,7 @@ export const Form = ({
                 )}
               </div>
               {action && action === "create" ? (
-                <div className="col-12">
+                <div className="col-6">
                   <label className="form-label">Proyecto</label>
                   <select
                     name="projectId"
@@ -311,7 +318,7 @@ export const Form = ({
               {(user.role.value === "admin" ||
                 user.role.value === "contratista") &&
               cantCertificates > 0 ? (
-                <div className="col-12">
+                <div className="col-6">
                   <Certificates
                     count={cantCertificates}
                     input={input}
@@ -321,6 +328,8 @@ export const Form = ({
               ) : (
                 ""
               )}
+              </>
+              :''}
               <div className="text-center">
                 <button
                   type="submit"
