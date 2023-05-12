@@ -227,7 +227,7 @@ export const Operarios = () => {
             <div className="row">
               <div className="col-lg-12">
                 {user.role.value === "operario" ? (
-                  <DetailOperario user={userUpdate} showUser={showUser} />
+                  <DetailOperario user={user} showUser={showUser} />
                 ) : (
                   <div className="card">
                     <div className="card-body">
