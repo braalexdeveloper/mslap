@@ -4,6 +4,7 @@ import { url_api } from "../../utils/config";
 
 const initialState = {
   users: [],
+  userUpdate: {},
   create: {},
   update: {},
   delete: {},
@@ -16,6 +17,9 @@ export const userCrudSlice = createSlice({
     allUsers: (state, action) => {
       state.users = action.payload.users;
     },
+    getUser: (state, action) => {
+      state.userUpdate = action.payload.user;
+    },
     create: (state, action) => {
       state.create = action.payload.dataCreate;
       state.users = action.payload.users;
@@ -23,18 +27,21 @@ export const userCrudSlice = createSlice({
     update: (state, action) => {
       state.update = action.payload.dataUpdate;
       state.users = action.payload.users;
-    },
-    deleteuser: (state, action) => {
-      state.delete = action.payload.dataDelete;
-      state.users = action.payload.users;
+      state.userUpdate = action.payload.user;
     },
   },
 });
 
-const { allUsers, create, update, deleteuser } = userCrudSlice.actions;
+const { allUsers, create, update, deleteuser, getUser } =
+  userCrudSlice.actions;
 
 const Users = async () => {
   const response = await axios.get(url_api + "/api/admin/users");
+  return response.data.data;
+};
+
+const User = async (id) => {
+  const response = await axios.get(url_api + "/api/admin/user/" + id);
   return response.data.data;
 };
 
@@ -54,9 +61,19 @@ export const createUser = (formData) => async (dispatch) => {
 };
 
 export const updateUser = (id, info) => async (dispatch) => {
-  const response = await axios.put(url_api + "/api/admin/user/" + id, info);
-  let users = await Users();
-  return dispatch(update({ dataUpdate: response.data, users }));
+  try {
+    const response = await axios.put(url_api + "/api/admin/user/" + id, info);
+    let users = await Users();
+    let user = await User(id);
+    return dispatch(update({ dataUpdate: response.data, users, user }));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getUserById = (id) => async (dispatch) => {
+  let user = await User(id);
+  return dispatch(getUser({ user }));
 };
 
 export const deleteUser = (id) => async (dispatch) => {
