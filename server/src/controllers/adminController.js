@@ -363,7 +363,15 @@ const adminController = {
     }
 
     const { password, projectId, roleId } = req.body;
+  
+
+    if(!Array.isArray(req.body.certificates)){
+      req.body.certificates = [req.body.certificates];
+      
+    }
+
     const certificates = req.body.certificates.map(c => JSON.parse(c));
+    
     delete req.body.certificates;
     req.body.password = bcrypt.hashSync(password, 10);
     //Obtengo el ID del rol

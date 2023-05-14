@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { userSelector } from "../../slices/user/userSlice";
 import { validate } from "../formUsuarios/Validate";
 import { Pagination } from "../pagination/Pagination";
+import { Link } from "react-router-dom";
 
 const newOperator = {
   dni: "",
@@ -43,11 +44,16 @@ export const Operarios = () => {
 
   const dispatch = useDispatch();
   const { users, userUpdate } = useSelector((state) => state.userCrud);
-  let operarios = users.filter((el) => el.role.value === "operario");
+  
   const { projects } = useSelector((state) => state.project);
   const { cargos } = useSelector((state) => state.cargo);
   const { user } = useSelector(userSelector);
 
+  let allOperarios = users.filter((el) => el.role.value === "operario");
+  let arrayNameProjects=user.projects.map(el=>el.name)
+  let operarios=user.role.value==="admin" ? allOperarios :allOperarios.filter(el=>arrayNameProjects.includes(el.projects[0].name))
+console.log(arrayNameProjects)
+console.log(operarios)
   const [action, setAction] = useState("create");
   const [errors, setErrors] = useState({});
 
@@ -245,7 +251,7 @@ export const Operarios = () => {
                               <th scope="col">Tipo de Sangre</th>
                               <th scope="col">Proyecto</th>
                               <th scope="col">Sueldo</th>
-                              <th scope="col" colSpan={2}>
+                              <th scope="col" colSpan={3}>
                                 Acciones
                               </th>
                             </tr>
@@ -289,6 +295,10 @@ export const Operarios = () => {
                                         ></i>
                                       </button>
                                     )}
+                                    
+                                  </td>
+                                  <td>
+                                  <Link to={"/dashboard/certificates/"+el.id} className="btn btn-primary btn-sm">Certificados</Link>
                                   </td>
                                 </tr>
                               ))}

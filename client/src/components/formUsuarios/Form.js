@@ -24,7 +24,7 @@ export const Form = ({
       id="verticalycentered"
       tabIndex="-1"
     >
-      <div className="modal-dialog modal-dialog-centered">
+      <div className="modal-dialog modal-lg modal-dialog-centered">
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title">
@@ -327,7 +327,7 @@ export const Form = ({
                   {(user.role.value === "admin" ||
                     user.role.value === "contratista") &&
                   cantCertificates > 0 ? (
-                    <div className="col-6">
+                    <div className="col-12">
                       <Certificates
                         count={cantCertificates}
                         input={input}
