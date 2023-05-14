@@ -1,4 +1,4 @@
-const { Certificate, User,Role } = require("../db");
+const { Certificate, User,Role,Project } = require("../db");
 const { Op } = require("sequelize");
 const nodemailer = require('nodemailer');
 
@@ -27,24 +27,62 @@ const certificateController = {
         }
       });
 
-      //Obteniendo los correos de usuarios admin y contratistas
-      const usuersByRole=await Role.findAll({
-        where:{
-          [Op.or]:[
-            {value:"admin"},
-            {value:"contratista"}
+      const userProjectCertificate=await Certificate.findAll({
+        where:{id},
+        include:[
+        {
+          model:User,
+          include:{
+           model:Project,
+           }
+        }
           ]
-        },
-        include:User
+        
       });
 
-      let emails=usuersByRole.map(element => {
-        return element.users.map(el=>{
-          return el.email
-        })
+const nameOperario=userProjectCertificate[0].user.name+" "+userProjectCertificate[0].user.lastName;
+      const nameProjectOperario=userProjectCertificate[0].user.projects[0].name;
+
+      //Obteniendo los correos de usuarios admin y contratistas
+      const userAdminByRole=await Role.findAll({
+        where:{
+              value:"admin"
+            },
+        include:User
+               
       });
-   
+
+let emailAdmin=userAdminByRole[0].users[0].email;
+
+     const usuersByRole=await Role.findAll({
+        where:{
+              value:"contratista"
+            },
+        include:[
+        {
+           model:User,
+           include:{
+           model:Project,
+           }
+        },
+        
+        ]
+      });
+console.log(usuersByRole)
+
+      let emailsContratistas=usuersByRole[0].users.map(el=>{
+          if(el.projects.map(ele=>ele.name).includes(nameProjectOperario)){
+            return el.email
+           }
+                           
+        })
+
+      let emailRefactor=emailsContratistas.filter(element=>element!=null);
+
+      let emails=[...emailRefactor,emailAdmin];
       
+   
+     
      const transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
         port: 587,
@@ -54,11 +92,18 @@ const certificateController = {
         }
       });
       
+     let plantillaHtml=`
+        <img src='https://media.istockphoto.com/id/1214180883/es/vector/socios-estrechando-la-mano-ilustraci%C3%B3n-vectorial-plana.jpg?s=612x612&w=0&k=20&c=N4sDRetxxdimlm8PT2odo63bL3gi9kT11611SRhHMY8=' />    
+        <h2>Notificación de Observación en MSLAPS</h2>
+        <p>Hola, tienes una nueva observación en algun certificado del operario <b>${nameOperario}</b></p>
+        <a href='http://localhost:3000/' target='_blank'>Iniciar Sesión</a>
+`;
+
       const mailOptions = {
         from:process.env.EMAIL_NODEMAILER,
         to: emails.toString(),
-        subject: 'Notificación de Observación en MSPN',
-        html: "<h2>Notificación Nueva</h2><p>Hola, tienes una nueva observación en algun certificado de un operario</p><a href='http://localhost:3000/' target='_blank'>Inicia sesión para revisar</a>"
+        subject: 'Notificación de Observación en MSLAPS',
+        html:plantillaHtml 
       };
 
       transporter.sendMail(mailOptions, function (error, info) {
@@ -71,7 +116,8 @@ const certificateController = {
 
       res.status(200).json({
         status: 1,
-        message: "Observación Agregada",
+        message: "Observación Agregada"
+                
         })
     } catch (err) {
       res.status(500).json({ err });

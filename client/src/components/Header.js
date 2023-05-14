@@ -13,9 +13,9 @@ export const Header = () => {
 
   const btnMenu = (value) => {
     setMenu(value);
-    console.log(menu);
+   
   };
-  console.log(menu);
+ 
   const logout = (e) => {
     e.preventDefault();
     dispatch(clearDataState());

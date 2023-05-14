@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 // const multer = require("multer");
 // const upload = multer({ dest: "uploads/" });
 const { validationResult } = require("express-validator");
-const { User, Role } = require("../db");
+const { User, Role,Project } = require("../db");
 
 const userController = {
   // Función de login
@@ -17,7 +17,18 @@ const userController = {
 
     try {
       const user = await User.findByPk(id, {
-        include: [Role],
+        include: [
+          {
+            model:Role
+          },
+          {
+            model: Project,
+            through: {
+              attributes: [],
+            }
+          }
+          ],
+        
       });
 
       if (req.query.role !== user.role.value) {

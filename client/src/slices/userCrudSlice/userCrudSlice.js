@@ -5,6 +5,7 @@ import { url_api } from "../../utils/config";
 const initialState = {
   users: [],
   userUpdate: {},
+  userById:{},
   create: {},
   update: {},
   delete: {},
@@ -19,6 +20,7 @@ export const userCrudSlice = createSlice({
     },
     getUser: (state, action) => {
       state.userUpdate = action.payload.user;
+      state.userById = action.payload.user;
     },
     create: (state, action) => {
       state.create = action.payload.dataCreate;
@@ -29,6 +31,10 @@ export const userCrudSlice = createSlice({
       state.users = action.payload.users;
       state.userUpdate = action.payload.user;
     },
+    deleteuser:(state, action)=>{
+      state.users = action.payload.users;
+      state.delete = action.payload.dataDelete;
+    }
   },
 });
 
@@ -79,5 +85,5 @@ export const getUserById = (id) => async (dispatch) => {
 export const deleteUser = (id) => async (dispatch) => {
   const response = await axios.delete(url_api + "/api/admin/user/" + id);
   let users = await Users();
-  return dispatch(deleteuser({ dataUpdate: response.data, users }));
+  return dispatch(deleteuser({ dataDelete: response.data, users }));
 };
