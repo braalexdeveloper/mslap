@@ -1,6 +1,22 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { getUserById } from "../../slices/userCrudSlice/userCrudSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 
 export const DetailOperario = ({ user, showUser }) => {
+  const dispatch=useDispatch();
+  console.log(user)
+  const { userById } = useSelector((state) => state.userCrud);
+   let arrayObservations=userById.certificates.filter(el=>{
+    if(el.observation!==null){
+      return el
+    }
+   })
+   console.log(arrayObservations)
+  useEffect(() => {
+    dispatch(getUserById(user.id))
+}, [])
   return (
     <>
       {/*style="width: 18rem;"*/}
@@ -45,6 +61,14 @@ export const DetailOperario = ({ user, showUser }) => {
           >
             Editar <i className="bi bi-pencil-fill"></i>
           </button>
+          {arrayObservations.length>0 ? 
+          <Link to={"/dashboard/certificates/"+user.id}
+            className="btn btn-danger ms-2 btn-sm"
+            
+          >
+            Tienes Observaciones <i className="bi bi-pencil-fill"></i>
+          </Link>
+          : ""}
         </div>
       </div>
     </>

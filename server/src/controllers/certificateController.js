@@ -93,10 +93,64 @@ console.log(usuersByRole)
       });
       
      let plantillaHtml=`
-        <img src='https://media.istockphoto.com/id/1214180883/es/vector/socios-estrechando-la-mano-ilustraci%C3%B3n-vectorial-plana.jpg?s=612x612&w=0&k=20&c=N4sDRetxxdimlm8PT2odo63bL3gi9kT11611SRhHMY8=' />    
-        <h2>Notificación de Observación en MSLAPS</h2>
-        <p>Hola, tienes una nueva observación en algun certificado del operario <b>${nameOperario}</b></p>
-        <a href='http://localhost:3000/' target='_blank'>Iniciar Sesión</a>
+     <!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style type="text/css">
+    body {
+
+      margin: 0px;
+      padding: 0px;
+      background-color: rgb(194, 193, 193);
+      font-family: Arial, Helvetica, sans-serif;
+
+    }
+
+
+    .container {
+      background-color: rgb(255, 255, 255);
+      width: 60%;
+      margin: 0 auto;
+      text-align: center;
+      padding-bottom: 1rem;
+    }
+
+
+    .btnIniciarSesion {
+      background-color: rgb(21, 52, 138);
+      color: #ffffff;
+      padding: 0.5rem;
+      border-radius: 0.2rem;
+      text-decoration: none;
+    }
+
+    .btnIniciarSesion:hover {
+      background-color: rgb(7, 28, 85);
+      color: azure
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <img
+      src='https://res.cloudinary.com/dwmrbilbo/image/upload/v1684120167/image-5_rrmaj0.png' />
+    <div>
+      <h2>Notificación de Observación en MSLAPS</h2>
+      <p>Hola, tienes una nueva observación en el operario <b>${nameOperario}</b></p>
+      <a href='http://localhost:3000/' class="btnIniciarSesion" target='_blank'>Iniciar Sesión</a>
+    </div>
+
+  </div>
+</body>
+
+</html>
 `;
 
       const mailOptions = {
