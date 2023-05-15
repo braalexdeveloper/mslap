@@ -44,16 +44,19 @@ export const Operarios = () => {
 
   const dispatch = useDispatch();
   const { users, userUpdate } = useSelector((state) => state.userCrud);
-  
+
   const { projects } = useSelector((state) => state.project);
   const { cargos } = useSelector((state) => state.cargo);
   const { user } = useSelector(userSelector);
 
   let allOperarios = users.filter((el) => el.role.value === "operario");
-  let arrayNameProjects=user.projects.map(el=>el.name)
-  let operarios=user.role.value==="admin" ? allOperarios :allOperarios.filter(el=>arrayNameProjects.includes(el.projects[0].name))
-console.log(arrayNameProjects)
-console.log(operarios)
+  let arrayIdProjects = user?.projects?.map((el) => el.id);
+  let operarios =
+    user.role.value === "admin"
+      ? allOperarios
+      : allOperarios?.filter((el) =>
+          arrayIdProjects?.includes(el.projects[0].id)
+        );
   const [action, setAction] = useState("create");
   const [errors, setErrors] = useState({});
 
@@ -182,7 +185,7 @@ console.log(operarios)
     setCurrentPage(value);
   };
 
-  let operariosPerPage = operarios.slice(firstRecipe, lastRecipe);
+  const operariosPerPage = operarios.slice(firstRecipe, lastRecipe);
 
   useEffect(() => {
     dispatch(getAllProjects());
@@ -295,10 +298,14 @@ console.log(operarios)
                                         ></i>
                                       </button>
                                     )}
-                                    
                                   </td>
                                   <td>
-                                  <Link to={"/dashboard/certificates/"+el.id} className="btn btn-primary btn-sm">Certificados</Link>
+                                    <Link
+                                      to={"/dashboard/certificates/" + el.id}
+                                      className="btn btn-primary btn-sm"
+                                    >
+                                      Certificados
+                                    </Link>
                                   </td>
                                 </tr>
                               ))}

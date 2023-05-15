@@ -7,16 +7,21 @@ import { Footer } from "../Footer";
 import { Sidebar } from "../Sidebar";
 import { useDispatch, useSelector } from "react-redux";
 //import { userSelector } from "../../slices/user/userSlice";
-import { getAllCargos,createCargo,deleteCargo,updateCargo} from "../../slices/cargo/cargoSlice";
+import {
+  getAllCargos,
+  createCargo,
+  deleteCargo,
+  updateCargo,
+} from "../../slices/cargo/cargoSlice";
 import { Form } from "./Form";
 
 function validate(input) {
   let errors = {};
-  const pattern = new RegExp('^[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$');
-  if (input.name === '') {
-      errors.name = 'El campo nombre es requerido';
+  const pattern = new RegExp("^[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$");
+  if (input.name === "") {
+    errors.name = "El campo nombre es requerido";
   } else if (!pattern.test(input.name)) {
-      errors.name = 'No se aceptan números'
+    errors.name = "No se aceptan números";
   }
 
   return errors;
@@ -25,7 +30,7 @@ function validate(input) {
 export const Cargos = () => {
   const { menu } = useMenuToggle();
   const dispatch = useDispatch();
-  const {cargos} = useSelector((state) => state.cargo);
+  const { cargos } = useSelector((state) => state.cargo);
 
   const [input, setInput] = useState({ name: "" });
   const [action, setAction] = useState("create");
@@ -38,10 +43,12 @@ export const Cargos = () => {
       [e.target.name]: e.target.value,
     });
 
-    setErrors(validate({
-      ...input,
-      [e.target.name]: e.target.value
-  }))
+    setErrors(
+      validate({
+        ...input,
+        [e.target.name]: e.target.value,
+      })
+    );
   };
 
   const limpiarCampo = () => {
@@ -61,7 +68,6 @@ export const Cargos = () => {
         showConfirmButton: false,
         timer: 2000,
       });
-     
     } else {
       dispatch(updateCargo(input.id, input));
 
@@ -72,11 +78,9 @@ export const Cargos = () => {
         showConfirmButton: false,
         timer: 2000,
       });
-      
     }
     limpiarCampo();
     dispatch(getAllCargos());
-    
   };
 
   const handleDelete = (id) => {
@@ -91,11 +95,10 @@ export const Cargos = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         dispatch(deleteCargo(id));
-       
+
         Swal.fire("Eliminado!", "Cargo eliminado con éxito.", "success");
       }
     });
-    
   };
 
   const showCargo = async (id) => {
@@ -137,7 +140,7 @@ export const Cargos = () => {
                 handleSubmit={handleSubmit}
                 handleChange={handleChange}
                 input={input}
-                action={action} 
+                action={action}
                 errors={errors}
               />
             </nav>
@@ -152,7 +155,9 @@ export const Cargos = () => {
                         <thead>
                           <tr>
                             <th scope="col">Nombre</th>
-                            <th scope="col">Acciones</th>
+                            <th scope="col" colSpan={2}>
+                              Acciones
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
@@ -169,7 +174,8 @@ export const Cargos = () => {
                                   >
                                     <i className="bi bi-pencil-fill"></i>
                                   </button>
-                                  &nbsp;
+                                </td>
+                                <td>
                                   <button
                                     className="btn btn-danger btn-sm "
                                     onClick={() => handleDelete(el.id)}
@@ -188,7 +194,6 @@ export const Cargos = () => {
             </div>
           </section>
         </section>
-
       </main>
       <Footer />
     </>
