@@ -18,6 +18,7 @@ export const cargoSlice = createSlice({
         },
         create: (state, action) => {
             state.create = action.payload.dataCreate
+            state.cargos=action.payload.cargos
         },
         update: (state, action) => {
             state.update = action.payload.dataUpdate
@@ -46,25 +47,18 @@ const Cargos=async()=>{
 
 export const getAllCargos = () => async (dispatch) => {
 
-    const response = await axios.get(URL_API + '/admin/positions');
-    let cargos = new Set(response.data.data.map(el => {
-        return {
-            id: el.id,
-            name: el.name
-        }
-    }).map(JSON.stringify));
+    let cargos=await Cargos();
 
-    let dataCargos = Array.from(cargos).map(JSON.parse)
-
-    dispatch(allCargos({ dataCargos }))
+    dispatch(allCargos({ dataCargos:cargos }))
 };
 
 
 export const createCargo = (cargo) => async (dispatch) => {
     try {
         const response = await axios.post(URL_API + '/admin/position', cargo);
+        let cargos=await Cargos();
        
-        return dispatch(create({ dataCreate: response.data })) 
+        return dispatch(create({ dataCreate: response.data,cargos })) 
     } catch (error) {
         console.log(error)
     }
