@@ -3,6 +3,7 @@ import useMenuToggle from "../../hooks/useMenuToggle";
 import { Header } from "../Header";
 import { Footer } from "../Footer";
 import { Sidebar } from "../Sidebar";
+import { userSelector } from "../../slices/user/userSlice";
 import { getUserById } from "../../slices/userCrudSlice/userCrudSlice";
 import { updateCertificate } from "../../slices/certificate/certificateSlice";
 import { Link, useParams } from 'react-router-dom';
@@ -11,10 +12,11 @@ import { useDispatch, useSelector } from 'react-redux';
 
 export const CertificatesUser = () => {
     const { menu } = useMenuToggle();
-
+    const { user } = useSelector(userSelector);
     const { userById } = useSelector((state) => state.userCrud);
 
     const [input, setInput] = useState({ observation: "" })
+    const [observation, setObservation] = useState("");
 
     const params = useParams();
     const dispatch = useDispatch();
@@ -39,26 +41,26 @@ export const CertificatesUser = () => {
 
     const limpiar = () => {
         setInput({
-            id:"",
+            id: "",
             observation: ""
         })
-       
+
     }
-  
+
     const insertIdObservacion = (id) => {
         setInput({
             ...input,
             id
         })
-       
+
     }
-    
+
     const handleObservacion = (e) => {
         setInput({
             ...input,
             observation: e.target.value
         })
-     }
+    }
 
     const submitObservacion = (e) => {
         e.preventDefault();
@@ -82,7 +84,8 @@ export const CertificatesUser = () => {
             >
                 <section className="section dashboard">
                     <div className="pagetitle">
-                        <h1>Certificados de {userById.name + " " + userById.lastName}</h1>
+
+                        <h1>{user.role.value === "operario" ? "Observaciones" : "Certificados de " + userById.name + " " + userById.lastName}</h1>
 
                     </div>
                     <section className="section">
@@ -105,32 +108,35 @@ export const CertificatesUser = () => {
                                                 </thead>
                                                 <tbody>
                                                     {arrayCertificates.map((el, index) => (
-                                                        <tr key={index}>
-                                                            <td><Link to={"http://localhost:3001/"+el.name} target='_blank'>{el.name}</Link></td>
-                                                            <td>{el.expiration}</td>
-                                                            <td><span className={"btn " + (el.daysExpiration === 0 ? "btn-danger" : el.daysExpiration <= 10 ? "btn-warning" : "btn-success") + " btn-sm "} style={{ width: 100 }}>{el.daysExpiration === 0 ? "Caducado" : el.daysExpiration <= 10 ? "Por Caducar" : el.status}</span>
+                                                        user.role.value === "operario" && el.observation === null ? "" :
+                                                            <tr key={index}>
+                                                                <td><Link to={"http://localhost:3001/" + el.name} target='_blank'>{el.name}</Link></td>
+                                                                <td>{el.expiration}</td>
+                                                                <td><span className={"btn " + (el.daysExpiration === 0 ? "btn-danger" : el.daysExpiration <= 10 ? "btn-warning" : "btn-success") + " btn-sm "} style={{ width: 100 }}>{el.daysExpiration === 0 ? "Caducado" : el.daysExpiration <= 10 ? "Por Caducar" : el.status}</span>
 
-                                                            </td>
-                                                            <td>
-                                                                <button
-                                                                    className="btn btn-warning btn-sm me-2"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#agregarObservation" onClick={() => insertIdObservacion(el.id)}
-                                                                >
-                                                                    <i className="bi bi-plus-lg"></i>
-                                                                </button>
-                                                                {/*
-                                                                <button
-                                                                    className="btn btn-primary btn-sm"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#verticalycentered" 
-                                                                >
-                                                                    ver
-                                                                </button>
-                                                                 */}
-                                                            </td>
+                                                                </td>
+                                                                <td>
+                                                                    {user.role.value === "supervisor" ?
+                                                                        <button
+                                                                            className="btn btn-warning btn-sm me-2"
+                                                                            data-bs-toggle="modal"
+                                                                            data-bs-target="#agregarObservation" onClick={() => insertIdObservacion(el.id)}
+                                                                        >
+                                                                            <i className="bi bi-pencil-fill"></i>
+                                                                        </button> : ""}
+                                                                    {el.observation !== null ?
+                                                                        <button
+                                                                            className="btn btn-primary btn-sm"
+                                                                            data-bs-toggle="modal"
+                                                                            data-bs-target="#verObservacion"
+                                                                            onClick={() => setObservation(el.observation)}
+                                                                        >
+                                                                            ver
+                                                                        </button>
+                                                                        : "No hay observación"}
+                                                                </td>
 
-                                                        </tr>
+                                                            </tr>
                                                     ))}
 
 
@@ -159,7 +165,7 @@ export const CertificatesUser = () => {
 
                                         <label className='col-form-label'>Escriba la Observación</label>
                                         <textarea name='observacion' value={input.observation} onChange={(e) => handleObservacion(e)} className='form-control'></textarea>
-                                    </div>{input.observation}
+                                    </div>
                                     <div className="modal-footer">
                                         <button type="button" className="btn btn-secondary" onClick={() => limpiar()} data-bs-dismiss="modal">Close</button>
                                         <button type="submit" className="btn btn-primary">Enviar</button>
@@ -168,6 +174,25 @@ export const CertificatesUser = () => {
                             </div>
                         </div>
                     </div>
+
+
+                    <div class="modal fade" id="verObservacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Observación</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    {observation}
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
 
                 </section>
             </main>
