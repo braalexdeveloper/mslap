@@ -184,7 +184,7 @@ export const Projects = () => {
                             <th scope="col">Fecha Finalización</th>
                             <th scope="col">N° Certificados</th>
                             <th scope="col">Ubicación</th>
-                            <th scope="col">Acciones</th>
+                            <th scope="col" colSpan={2}>Acciones</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -210,10 +210,11 @@ export const Projects = () => {
                                     data-bs-toggle="modal"
                                     data-bs-target="#verticalycentered"
                                     onClick={() => showProject(el.id)}
-                                  >
+                                    >
                                     <i className="bi bi-pencil-fill"></i>
                                   </button>
-                                  &nbsp;
+                                </td>
+                                <td>
                                   <button
                                     className="btn btn-danger btn-sm "
                                     onClick={() => handleDelete(el.id)}

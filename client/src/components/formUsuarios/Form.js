@@ -15,7 +15,7 @@ export const Form = ({
   setInput,
 }) => {
   const { user } = useSelector(userSelector);
-  console.log(input);
+
   return (
     <div
       className="modal fade"
