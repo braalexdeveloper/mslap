@@ -8,7 +8,12 @@ import { Sidebar } from "../Sidebar";
 
 import { Form } from "../formUsuarios/Form";
 import { validate } from "../formUsuarios/Validate";
-import { getAllUsers,createUser,updateUser, deleteUser } from "../../slices/userCrudSlice/userCrudSlice";
+import {
+  getAllUsers,
+  createUser,
+  updateUser,
+  deleteUser,
+} from "../../slices/userCrudSlice/userCrudSlice";
 import { getAllProjects } from "../../slices/project/projectSlice";
 import { getAllCargos } from "../../slices/cargo/cargoSlice";
 //import { userSelector } from "../../slices/user/userSlice";
@@ -18,10 +23,10 @@ import { Search } from "../search/Search";
 
 export const Contratistas = () => {
   const { menu } = useMenuToggle();
-  const {users} = useSelector((state) => state.userCrud);
- let contratistas=users.filter(el=>el.role.value==="contratista");
-  const {projects} = useSelector((state) => state.project);
-  const {cargos} = useSelector((state) => state.cargo);
+  const { users } = useSelector((state) => state.userCrud);
+  let contratistas = users.filter((el) => el.role.value === "contratista");
+  const { projects } = useSelector((state) => state.project);
+  const { cargos } = useSelector((state) => state.cargo);
   //const { user } = useSelector(userSelector);
   const dispatch = useDispatch();
   const [action, setAction] = useState("create");
@@ -42,7 +47,7 @@ export const Contratistas = () => {
     positionId: "",
     roleId: "contratista",
     projectId: "",
-    certificates:[]
+    certificates: [],
   });
 
   const [search, setSearch] = useState("");
@@ -62,12 +67,12 @@ export const Contratistas = () => {
       [e.target.name]: e.target.value,
     });
 
-    setErrors(validate({
-      ...input,
-      [e.target.name]: e.target.value
-    }))
-
-    
+    setErrors(
+      validate({
+        ...input,
+        [e.target.name]: e.target.value,
+      })
+    );
   };
 
   const limpiarCampo = () => {
@@ -86,7 +91,7 @@ export const Contratistas = () => {
       positionId: "",
       roleId: "contratista",
       projectId: "",
-      certificates:[]
+      certificates: [],
     });
     setAction("create");
   };
@@ -118,7 +123,6 @@ export const Contratistas = () => {
       });
     }
     limpiarCampo();
-    
   };
 
   const showUser = async (id) => {
@@ -144,7 +148,7 @@ export const Contratistas = () => {
       positionId: user.positionId,
       roleId: "contratista",
       projectId: user.projects[0].id,
-      certificates:[]
+      certificates: [],
     });
     setAction("edit");
     setErrors({});
@@ -175,18 +179,16 @@ export const Contratistas = () => {
   const firstRecipe = lastRecipe - recipesPag;
 
   const handlePag = (value) => {
-    setCurrentPage(value)
-}
+    setCurrentPage(value);
+  };
 
-let contratistasPerPage=contratistas.slice(firstRecipe,lastRecipe);
+  const contratistasPerPage = contratistas.slice(firstRecipe, lastRecipe);
 
   useEffect(() => {
     dispatch(getAllProjects());
     dispatch(getAllCargos());
     dispatch(getAllUsers());
   }, [dispatch]);
-
- 
 
   return (
     <>
@@ -199,6 +201,7 @@ let contratistasPerPage=contratistas.slice(firstRecipe,lastRecipe);
       >
         {/*user.role.value && user.role.value!=="admin" ? <h1>No tienes acceso</h1> :*/}
         <section className="section dashboard">
+
         <div className="pagetitle">
           <h1>Contratistas</h1>
           <nav>
@@ -280,16 +283,19 @@ let contratistasPerPage=contratistas.slice(firstRecipe,lastRecipe);
                           ))}
                       </tbody>
                     </table>
+</div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <Pagination totalPag={Math.ceil(contratistas.length/recipesPag)} handlePag={handlePag} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+            <Pagination
+              totalPag={Math.ceil(contratistas.length / recipesPag)}
+              handlePag={handlePag}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
+          </section>
         </section>
-      </section>
-        
-        
       </main>
       <Footer />
     </>

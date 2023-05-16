@@ -8,7 +8,12 @@ import { Sidebar } from "../Sidebar";
 
 import { Form } from "../formUsuarios/Form";
 import { validate } from "../formUsuarios/Validate";
-import { getAllUsers,createUser,updateUser, deleteUser } from "../../slices/userCrudSlice/userCrudSlice";
+import {
+  getAllUsers,
+  createUser,
+  updateUser,
+  deleteUser,
+} from "../../slices/userCrudSlice/userCrudSlice";
 import { getAllProjects } from "../../slices/project/projectSlice";
 import { getAllCargos } from "../../slices/cargo/cargoSlice";
 //import { userSelector } from "../../slices/user/userSlice";
@@ -18,12 +23,12 @@ import { Search } from "../search/Search";
 
 export const Supervisores = () => {
   const { menu } = useMenuToggle();
-  const {users} = useSelector((state) => state.userCrud);
-  let supervisores=users.filter(el=>el.role.value==="supervisor");
-  const {projects} = useSelector((state) => state.project);
-  const {cargos} = useSelector((state) => state.cargo);
+  const { users } = useSelector((state) => state.userCrud);
+  let supervisores = users.filter((el) => el.role.value === "supervisor");
+  const { projects } = useSelector((state) => state.project);
+  const { cargos } = useSelector((state) => state.cargo);
   //const { user } = useSelector(userSelector);
- 
+
   const dispatch = useDispatch();
   const [action, setAction] = useState("create");
   const [errors, setErrors] = useState({});
@@ -43,7 +48,7 @@ export const Supervisores = () => {
     positionId: "",
     roleId: "supervisor",
     projectId: "",
-    certificates:[]
+    certificates: [],
   });
 
   const [search, setSearch] = useState("");
@@ -63,10 +68,12 @@ export const Supervisores = () => {
       [e.target.name]: e.target.value,
     });
 
-    setErrors(validate({
-      ...input,
-      [e.target.name]: e.target.value
-    }))
+    setErrors(
+      validate({
+        ...input,
+        [e.target.name]: e.target.value,
+      })
+    );
   };
 
   const limpiarCampo = () => {
@@ -85,7 +92,7 @@ export const Supervisores = () => {
       positionId: "",
       roleId: "supervisor",
       projectId: "",
-      certificates:[]
+      certificates: [],
     });
     setAction("create");
   };
@@ -117,7 +124,6 @@ export const Supervisores = () => {
       });
     }
     limpiarCampo();
-    
   };
 
   const showUser = async (id) => {
@@ -139,11 +145,11 @@ export const Supervisores = () => {
       email: user.email,
       typeBlood: user.typeBlood,
       salary: user.salary,
-      password:"password",
+      password: "password",
       positionId: user.positionId,
       roleId: "supervisor",
       projectId: user.projects[0].id,
-      certificates:[]
+      certificates: [],
     });
     setAction("edit");
     setErrors({});
@@ -174,10 +180,10 @@ export const Supervisores = () => {
   const firstRecipe = lastRecipe - recipesPag;
 
   const handlePag = (value) => {
-    setCurrentPage(value)
-}
+    setCurrentPage(value);
+  };
 
-let supervisoresPerPage=supervisores.slice(firstRecipe,lastRecipe);
+  const supervisoresPerPage = supervisores.slice(firstRecipe, lastRecipe);
 
   useEffect(() => {
     dispatch(getAllProjects());
@@ -202,7 +208,8 @@ let supervisoresPerPage=supervisores.slice(firstRecipe,lastRecipe);
               <button
                 className="btn btn-success mt-2 "
                 data-bs-toggle="modal"
-                data-bs-target="#verticalycentered" onClick={() => limpiarCampo()}
+                data-bs-target="#verticalycentered"
+                onClick={() => limpiarCampo()}
               >
                 <i className="bi bi-plus-lg"></i> Crear Nuevo
               </button>
@@ -212,7 +219,7 @@ let supervisoresPerPage=supervisores.slice(firstRecipe,lastRecipe);
                 input={input}
                 action={action}
                 Projects={projects}
-                Cargos={cargos} 
+                Cargos={cargos}
                 errors={errors}
               />
             </nav>
@@ -237,7 +244,9 @@ let supervisoresPerPage=supervisores.slice(firstRecipe,lastRecipe);
                             <th scope="col">Tipo de Sangre</th>
                             <th scope="col">Proyecto</th>
                             <th scope="col">Sueldo</th>
+
                             <th scope="col" colSpan={2}>Acciones</th>
+
                           </tr>
                         </thead>
                         <tbody>
@@ -252,7 +261,11 @@ let supervisoresPerPage=supervisores.slice(firstRecipe,lastRecipe);
                                 <td>{el.phoneEmergency}</td>
                                 <td>{el.email}</td>
                                 <td>{el.typeBlood}</td>
-                                <td>{el.projects.length > 0 ? el.projects[0].name : ''}</td>
+                                <td>
+                                  {el.projects.length > 0
+                                    ? el.projects[0].name
+                                    : ""}
+                                </td>
                                 <td>{el.salary}</td>
                                 <td>
                                   <button
@@ -263,8 +276,10 @@ let supervisoresPerPage=supervisores.slice(firstRecipe,lastRecipe);
                                   >
                                     <i className="bi bi-pencil-fill"></i>
                                   </button>
+
                                   </td>
                                   <td>
+
                                   <button className="btn btn-danger btn-sm ">
                                     <i
                                       className="bi bi-trash-fill"
@@ -281,10 +296,14 @@ let supervisoresPerPage=supervisores.slice(firstRecipe,lastRecipe);
                 </div>
               </div>
             </div>
-            <Pagination totalPag={Math.ceil(supervisores.length/recipesPag)} handlePag={handlePag} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+            <Pagination
+              totalPag={Math.ceil(supervisores.length / recipesPag)}
+              handlePag={handlePag}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
           </section>
         </section>
-
       </main>
       <Footer />
     </>

@@ -51,6 +51,7 @@ export const Operarios = () => {
   const { user } = useSelector(userSelector);
 
   let allOperarios = users.filter((el) => el.role.value === "operario");
+
   let arrayNameProjects = user.projects.map(el => el.name)
   let operarios = user.role.value === "admin" ? allOperarios : allOperarios.filter(el => arrayNameProjects.includes(el.projects[0].name))
 
@@ -64,6 +65,7 @@ export const Operarios = () => {
   if (search !== "") {
     operarios = operarios.filter(el => el.dni === search);
   }
+
 
   const [action, setAction] = useState("create");
   const [errors, setErrors] = useState({});
@@ -193,7 +195,7 @@ export const Operarios = () => {
     setCurrentPage(value);
   };
 
-  let operariosPerPage = operarios.slice(firstRecipe, lastRecipe);
+  const operariosPerPage = operarios.slice(firstRecipe, lastRecipe);
 
   useEffect(() => {
     dispatch(getAllProjects());
@@ -306,6 +308,7 @@ export const Operarios = () => {
                                         onClick={() => handleDelete(el.id)}
                                       ></i>
                                     </button>
+
                                   )}
 
                                 </td>
@@ -316,6 +319,8 @@ export const Operarios = () => {
                             ))}
                         </tbody>
                       </table>
+
+                                
                     </div>
                   </div>
                 </div>
