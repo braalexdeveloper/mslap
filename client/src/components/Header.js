@@ -13,21 +13,18 @@ export const Header = () => {
 
   const btnMenu = (value) => {
     setMenu(value);
-   
   };
- 
+
   const logout = (e) => {
     e.preventDefault();
     dispatch(clearDataState());
     navigate("/");
-  }
+  };
 
- 
-   /*if(!isLogin){
+  /*if(!isLogin){
      navigate("/");
    }*/
-  
-  
+
   return (
     <header
       id="header"

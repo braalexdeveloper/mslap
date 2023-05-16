@@ -20,6 +20,7 @@ import { userSelector } from "../../slices/user/userSlice";
 import { validate } from "../formUsuarios/Validate";
 import { Pagination } from "../pagination/Pagination";
 import { Link } from "react-router-dom";
+import { url_api } from "../../utils/config";
 
 const newOperator = {
   dni: "",
@@ -49,9 +50,9 @@ export const Operarios = () => {
   const { cargos } = useSelector((state) => state.cargo);
   const { user } = useSelector(userSelector);
 
-  let allOperarios = users.filter((el) => el.role.value === "operario");
-  let arrayIdProjects = user?.projects?.map((el) => el.id);
-  let operarios =
+  const allOperarios = users.filter((el) => el.role.value === "operario");
+  const arrayIdProjects = user?.projects?.map((el) => el.id);
+  const operarios =
     user.role.value === "admin"
       ? allOperarios
       : allOperarios?.filter((el) =>
@@ -79,7 +80,6 @@ export const Operarios = () => {
         [e.target.name]: e.target.value,
       })
     );
-    console.log(input);
   };
 
   const handleSubmit = (e) => {
@@ -122,9 +122,7 @@ export const Operarios = () => {
   };
 
   const showUser = async (id) => {
-    const response = await axios.get(
-      "http://localhost:3001/api/admin/user/" + id
-    );
+    const response = await axios.get(`${url_api}/api/admin/user/${id}`);
     let user = response.data.data;
     let fechaNacimiento = user.birthday.split("T");
 
@@ -171,7 +169,7 @@ export const Operarios = () => {
 
   let cantCertificates = 0;
   if (input.projectId) {
-    let selectedProject = projects.find((el) => el.id === input.projectId);
+    const selectedProject = projects.find((el) => el.id === input.projectId);
     cantCertificates = selectedProject?.totalCertificates;
   }
 

@@ -19,6 +19,7 @@ import { getAllCargos } from "../../slices/cargo/cargoSlice";
 //import { userSelector } from "../../slices/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Pagination } from "../pagination/Pagination";
+import { url_api } from "../../utils/config";
 
 export const Contratistas = () => {
   const { menu } = useMenuToggle();
@@ -114,9 +115,7 @@ export const Contratistas = () => {
   };
 
   const showUser = async (id) => {
-    const response = await axios.get(
-      "http://localhost:3001/api/admin/user/" + id
-    );
+    const response = await axios.get(`${url_api}/api/admin/user/${id}`);
     let user = response.data.data;
     let fechaNacimiento = user.birthday.split("T");
 
@@ -230,7 +229,9 @@ export const Contratistas = () => {
                             <th scope="col">Tipo de Sangre</th>
                             <th scope="col">Proyecto</th>
                             <th scope="col">Sueldo</th>
-                            <th scope="col" colSpan={2}>Acciones</th>
+                            <th scope="col" colSpan={2}>
+                              Acciones
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
@@ -257,7 +258,7 @@ export const Contratistas = () => {
                                     data-bs-toggle="modal"
                                     data-bs-target="#verticalycentered"
                                     onClick={() => showUser(el.id)}
-                                    >
+                                  >
                                     <i className="bi bi-pencil-fill"></i>
                                   </button>
                                 </td>

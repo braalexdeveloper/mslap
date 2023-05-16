@@ -14,6 +14,7 @@ import {
   updateCargo,
 } from "../../slices/cargo/cargoSlice";
 import { Form } from "./Form";
+import { url_api } from "../../utils/config";
 
 function validate(input) {
   let errors = {};
@@ -102,9 +103,7 @@ export const Cargos = () => {
   };
 
   const showCargo = async (id) => {
-    const response = await axios.get(
-      "http://localhost:3001/api/admin/position/" + id
-    );
+    const response = await axios.get(`${url_api}/api/admin/position/${id}`);
     setInput(response.data.data);
     setAction("edit");
     setErrors({});
