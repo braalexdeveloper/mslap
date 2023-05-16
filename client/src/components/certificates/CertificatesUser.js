@@ -183,7 +183,6 @@ export const CertificatesUser = () => {
               </div>
             </div>
           </section>
-
           <div
             className="modal fade"
             id="agregarObservation"
@@ -235,32 +234,31 @@ export const CertificatesUser = () => {
               </div>
             </div>
           </div>
-
           <div
-            class="modal fade"
+            className="modal fade"
             id="verObservacion"
-            tabindex="-1"
+            tabIndex="-1"
             aria-labelledby="exampleModalLabel"
             aria-hidden="true"
           >
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="exampleModalLabel">
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h1 className="modal-title fs-5" id="exampleModalLabel">
                     Observación
                   </h1>
                   <button
                     type="button"
-                    class="btn-close"
+                    className="btn-close"
                     data-bs-dismiss="modal"
                     aria-label="Close"
                   ></button>
                 </div>
-                <div class="modal-body">{observation}</div>
-                <div class="modal-footer">
+                <div className="modal-body">{observation}</div>
+                <div className="modal-footer">
                   <button
                     type="button"
-                    class="btn btn-danger"
+                    className="btn btn-danger"
                     data-bs-dismiss="modal"
                   >
                     Close
