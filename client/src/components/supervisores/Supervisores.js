@@ -19,6 +19,7 @@ import { getAllCargos } from "../../slices/cargo/cargoSlice";
 //import { userSelector } from "../../slices/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Pagination } from "../pagination/Pagination";
+import { Search } from "../search/Search";
 import { url_api } from "../../utils/config";
 
 const newProject = {
@@ -52,6 +53,16 @@ export const Supervisores = () => {
   const [errors, setErrors] = useState({});
 
   const [input, setInput] = useState(newProject);
+
+  const [search, setSearch] = useState("");
+
+  const handleSearch = (e) => {
+    setSearch(e.target.value)
+  }
+
+  if (search !== "") {
+    supervisores = supervisores.filter(el => el.dni === search);
+  }
 
   const handleChange = (e) => {
     setInput({
@@ -195,6 +206,7 @@ export const Supervisores = () => {
                 errors={errors}
               />
             </nav>
+            <Search handleSearch={handleSearch} />
           </div>
           <section className="section">
             <div className="row">
@@ -215,9 +227,9 @@ export const Supervisores = () => {
                             <th scope="col">Tipo de Sangre</th>
                             <th scope="col">Proyecto</th>
                             <th scope="col">Sueldo</th>
-                            <th scope="col" colSpan={2}>
-                              Acciones
-                            </th>
+
+                            <th scope="col" colSpan={2}>Acciones</th>
+
                           </tr>
                         </thead>
                         <tbody>
@@ -247,8 +259,10 @@ export const Supervisores = () => {
                                   >
                                     <i className="bi bi-pencil-fill"></i>
                                   </button>
-                                </td>
-                                <td>
+
+                                  </td>
+                                  <td>
+
                                   <button className="btn btn-danger btn-sm ">
                                     <i
                                       className="bi bi-trash-fill"

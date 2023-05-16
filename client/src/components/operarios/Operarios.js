@@ -21,6 +21,7 @@ import { validate } from "../formUsuarios/Validate";
 import { Pagination } from "../pagination/Pagination";
 import { Link } from "react-router-dom";
 import { url_api } from "../../utils/config";
+import { Search } from "../search/Search";
 
 const newOperator = {
   dni: "",
@@ -51,13 +52,25 @@ export const Operarios = () => {
   const { user } = useSelector(userSelector);
 
   const allOperarios = users.filter((el) => el.role.value === "operario");
-  const arrayIdProjects = user?.projects?.map((el) => el.id);
-  const operarios =
+
+  const arrayNameProjects = user.projects.map((el) => el.name);
+  let operarios =
     user.role.value === "admin"
       ? allOperarios
-      : allOperarios?.filter((el) =>
-          arrayIdProjects?.includes(el.projects[0].id)
+      : allOperarios.filter((el) =>
+          arrayNameProjects.includes(el.projects[0].name)
         );
+
+  const [search, setSearch] = useState("");
+
+  const handleSearch = (e) => {
+    setSearch(e.target.value);
+  };
+
+  if (search !== "") {
+    operarios = operarios.filter((el) => el.dni === search);
+  }
+
   const [action, setAction] = useState("create");
   const [errors, setErrors] = useState({});
 
@@ -229,6 +242,7 @@ export const Operarios = () => {
                 setInput={setInput}
               />
             </nav>
+            <Search handleSearch={handleSearch} />
           </div>
           <section className="section">
             <div className="row">

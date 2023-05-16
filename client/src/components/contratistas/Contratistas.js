@@ -20,6 +20,7 @@ import { getAllCargos } from "../../slices/cargo/cargoSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Pagination } from "../pagination/Pagination";
 import { url_api } from "../../utils/config";
+import { Search } from "../search/Search";
 
 export const Contratistas = () => {
   const { menu } = useMenuToggle();
@@ -49,6 +50,17 @@ export const Contratistas = () => {
     projectId: "",
     certificates: [],
   });
+
+  const [search, setSearch] = useState("");
+
+  const handleSearch = (e) => {
+    setSearch(e.target.value)
+
+  }
+
+  if (search !== "") {
+    contratistas = contratistas.filter(el => el.dni === search);
+  }
 
   const handleChange = (e) => {
     setInput({
@@ -188,93 +200,88 @@ export const Contratistas = () => {
       >
         {/*user.role.value && user.role.value!=="admin" ? <h1>No tienes acceso</h1> :*/}
         <section className="section dashboard">
-          <div className="pagetitle">
-            <h1>Contratistas</h1>
-            <nav>
-              <button
-                className="btn btn-success mt-2 "
-                data-bs-toggle="modal"
-                data-bs-target="#verticalycentered"
-                onClick={() => limpiarCampo()}
-              >
-                <i className="bi bi-plus-lg"></i> Crear Nuevo
-              </button>
-              <Form
-                handleSubmit={handleSubmit}
-                handleChange={handleChange}
-                input={input}
-                action={action}
-                Projects={projects}
-                Cargos={cargos}
-                errors={errors}
-              />
-            </nav>
-          </div>
-          <section className="section">
-            <div className="row">
-              <div className="col-lg-12">
-                <div className="card">
-                  <div className="card-body">
-                    <div className="table-responsive">
-                      <table className="table">
-                        <thead>
-                          <tr>
-                            <th scope="col">Nombres</th>
-                            <th scope="col">Apellidos</th>
-                            <th scope="col">DNI</th>
-                            <th scope="col">Telf. Contacto</th>
-                            <th scope="col">Contacto de Emergencia</th>
-                            <th scope="col">Telf. Emergencia</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Tipo de Sangre</th>
-                            <th scope="col">Proyecto</th>
-                            <th scope="col">Sueldo</th>
-                            <th scope="col" colSpan={2}>
-                              Acciones
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {contratistasPerPage &&
-                            contratistasPerPage.map((el, index) => (
-                              <tr key={index}>
-                                <td>{el.name}</td>
-                                <td>{el.lastName}</td>
-                                <td>{el.dni}</td>
-                                <td>{el.phone}</td>
-                                <td>{el.contactEmergency}</td>
-                                <td>{el.phoneEmergency}</td>
-                                <td>{el.email}</td>
-                                <td>{el.typeBlood}</td>
-                                <td>
-                                  {el.projects.length > 0
-                                    ? el.projects[0].name
-                                    : ""}
-                                </td>
-                                <td>{el.salary}</td>
-                                <td>
-                                  <button
-                                    className="btn btn-warning btn-sm"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#verticalycentered"
-                                    onClick={() => showUser(el.id)}
-                                  >
-                                    <i className="bi bi-pencil-fill"></i>
-                                  </button>
+        <div className="pagetitle">
+          <h1>Contratistas</h1>
+          <nav>
+            <button
+              className="btn btn-success mt-2 "
+              data-bs-toggle="modal"
+              data-bs-target="#verticalycentered"
+              onClick={() => limpiarCampo()}
+            >
+              <i className="bi bi-plus-lg"></i> Crear Nuevo
+            </button>
+            <Form
+              handleSubmit={handleSubmit}
+              handleChange={handleChange}
+              input={input}
+              action={action}
+              Projects={projects}
+              Cargos={cargos} 
+              errors={errors}
+            />
+          </nav>
+          <Search handleSearch={handleSearch} />
+        </div>
+        <section className="section">
+          <div className="row">
+            <div className="col-lg-12">
+              <div className="card">
+                <div className="card-body">
+                  <div className="table-responsive">
+                    <table className="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">Nombres</th>
+                          <th scope="col">Apellidos</th>
+                          <th scope="col">DNI</th>
+                          <th scope="col">Telf. Contacto</th>
+                          <th scope="col">Contacto de Emergencia</th>
+                          <th scope="col">Telf. Emergencia</th>
+                          <th scope="col">Email</th>
+                          <th scope="col">Tipo de Sangre</th>
+                          <th scope="col">Proyecto</th>
+                          <th scope="col">Sueldo</th>
+                          <th scope="col" colSpan={2}>Acciones</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {contratistasPerPage &&
+                          contratistasPerPage.map((el, index) => (
+                            <tr key={index}>
+                              <td>{el.name}</td>
+                              <td>{el.lastName}</td>
+                              <td>{el.dni}</td>
+                              <td>{el.phone}</td>
+                              <td>{el.contactEmergency}</td>
+                              <td>{el.phoneEmergency}</td>
+                              <td>{el.email}</td>
+                              <td>{el.typeBlood}</td>
+                              <td>{el.projects.length > 0 ? el.projects[0].name : ''}</td>
+                              <td>{el.salary}</td>
+                              <td>
+                                <button
+                                  className="btn btn-warning btn-sm"
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#verticalycentered"
+                                  onClick={() => showUser(el.id)}
+                                >
+                                  <i className="bi bi-pencil-fill"></i>
+                                </button>
                                 </td>
                                 <td>
-                                  <button className="btn btn-danger btn-sm ">
-                                    <i
-                                      className="bi bi-trash-fill"
-                                      onClick={() => handleDelete(el.id)}
-                                    ></i>
-                                  </button>
-                                </td>
-                              </tr>
-                            ))}
-                        </tbody>
-                      </table>
-                    </div>
+                                <button className="btn btn-danger btn-sm ">
+                                  <i
+                                    className="bi bi-trash-fill"
+                                    onClick={() => handleDelete(el.id)}
+                                  ></i>
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                      </tbody>
+                    </table>
+</div>
                   </div>
                 </div>
               </div>

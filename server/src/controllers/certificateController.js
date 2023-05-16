@@ -95,14 +95,22 @@ const certificateController = {
       });
 
       let plantillaHtml = `
-     <!DOCTYPE html>
-<html lang="en">
-
+    <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!--[if gte mso 9]>
+<xml>
+  <o:OfficeDocumentSettings>
+    <o:AllowPNG/>
+    <o:PixelsPerInch>96</o:PixelsPerInch>
+  </o:OfficeDocumentSettings>
+</xml>
+<![endif]-->
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <meta name="x-apple-disable-message-reformatting">
+  <!--[if !mso]><!--><meta http-equiv="X-UA-Compatible" content="IE=edge"><!--<![endif]-->
+  <title></title>
   <style type="text/css">
     body {
 
@@ -113,7 +121,6 @@ const certificateController = {
 
     }
 
-
     .container {
       background-color: rgb(255, 255, 255);
       width: 60%;
@@ -122,10 +129,9 @@ const certificateController = {
       padding-bottom: 1rem;
     }
 
-
     .btnIniciarSesion {
       background-color: rgb(21, 52, 138);
-      color: #ffffff;
+      color: azure;
       padding: 0.5rem;
       border-radius: 0.2rem;
       text-decoration: none;
@@ -140,18 +146,15 @@ const certificateController = {
 
 <body>
   <div class="container">
-
     <img
       src='https://res.cloudinary.com/dwmrbilbo/image/upload/v1684120167/image-5_rrmaj0.png' />
     <div>
       <h2>Notificación de Observación en MSLAPS</h2>
-      <p>Hola, tienes una nueva observación en el operario <b>${nameOperario}</b></p>
+      <p>Hola, tienes una nueva observación en el operario <b>${nameOperario} con DNI: ${userProjectCertificate[0].user.dni}</b></p>
       <a href='http://localhost:3000/' class="btnIniciarSesion" target='_blank'>Iniciar Sesión</a>
     </div>
-
   </div>
 </body>
-
 </html>
 `;
 
