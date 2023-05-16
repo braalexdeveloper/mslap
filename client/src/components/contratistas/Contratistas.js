@@ -14,6 +14,7 @@ import { getAllCargos } from "../../slices/cargo/cargoSlice";
 //import { userSelector } from "../../slices/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Pagination } from "../pagination/Pagination";
+import { Search } from "../search/Search";
 
 export const Contratistas = () => {
   const { menu } = useMenuToggle();
@@ -43,6 +44,17 @@ export const Contratistas = () => {
     projectId: "",
     certificates:[]
   });
+
+  const [search, setSearch] = useState("");
+
+  const handleSearch = (e) => {
+    setSearch(e.target.value)
+
+  }
+
+  if (search !== "") {
+    contratistas = contratistas.filter(el => el.dni === search);
+  }
 
   const handleChange = (e) => {
     setInput({
@@ -208,6 +220,7 @@ let contratistasPerPage=contratistas.slice(firstRecipe,lastRecipe);
               errors={errors}
             />
           </nav>
+          <Search handleSearch={handleSearch} />
         </div>
         <section className="section">
           <div className="row">
@@ -228,7 +241,7 @@ let contratistasPerPage=contratistas.slice(firstRecipe,lastRecipe);
                           <th scope="col">Tipo de Sangre</th>
                           <th scope="col">Proyecto</th>
                           <th scope="col">Sueldo</th>
-                          <th scope="col">Acciones</th>
+                          <th scope="col" colSpan={2}>Acciones</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -254,7 +267,8 @@ let contratistasPerPage=contratistas.slice(firstRecipe,lastRecipe);
                                 >
                                   <i className="bi bi-pencil-fill"></i>
                                 </button>
-                                &nbsp;
+                                </td>
+                                <td>
                                 <button className="btn btn-danger btn-sm ">
                                   <i
                                     className="bi bi-trash-fill"

@@ -12,8 +12,8 @@ export const Footer = () => {
         className="footer mb-5"
         style={{ marginLeft: menu ? "" : "0px" }}
       >
-        <div className="row text-center">
-          <div className="col">
+        <div className="text-center">
+        <div className="col">
             <Link to="to:0998113580" className="contact-me">
               <i className="bi bi-phone">&nbsp;</i>
               <span>0998113580</span>
