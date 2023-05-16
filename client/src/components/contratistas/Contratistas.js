@@ -19,6 +19,7 @@ import { getAllCargos } from "../../slices/cargo/cargoSlice";
 //import { userSelector } from "../../slices/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Pagination } from "../pagination/Pagination";
+import { url_api } from "../../utils/config";
 import { Search } from "../search/Search";
 
 export const Contratistas = () => {
@@ -126,9 +127,7 @@ export const Contratistas = () => {
   };
 
   const showUser = async (id) => {
-    const response = await axios.get(
-      "http://localhost:3001/api/admin/user/" + id
-    );
+    const response = await axios.get(`${url_api}/api/admin/user/${id}`);
     let user = response.data.data;
     let fechaNacimiento = user.birthday.split("T");
 
@@ -201,7 +200,6 @@ export const Contratistas = () => {
       >
         {/*user.role.value && user.role.value!=="admin" ? <h1>No tienes acceso</h1> :*/}
         <section className="section dashboard">
-
         <div className="pagetitle">
           <h1>Contratistas</h1>
           <nav>

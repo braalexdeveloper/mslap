@@ -9,6 +9,7 @@ import { updateCertificate } from "../../slices/certificate/certificateSlice";
 import { Link, useParams } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
+import { url_api } from "../../utils/config";
 
 export const CertificatesUser = () => {
   const { menu } = useMenuToggle();
@@ -117,7 +118,7 @@ export const CertificatesUser = () => {
                               <tr key={index}>
                                 <td>
                                   <Link
-                                    to={"http://localhost:3001/" + el.name}
+                                    to={`${url_api}/${el.name}`}
                                     target="_blank"
                                   >
                                     {el.name}

@@ -2,11 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/img/logo.png";
-import {
-  userSelector,
-  login,
-  clearInfo,
-} from "../../slices/user/userSlice";
+import { userSelector, login, clearInfo } from "../../slices/user/userSlice";
 import { showAlertLogin, showAlertNormal } from "../../utils/showAlert";
 import { validateLogin } from "../../utils/validation";
 
@@ -28,10 +24,8 @@ export const Login = () => {
     if (status === 1) {
       await showAlertLogin(message, "", "success");
       dispatch(clearInfo());
-   
-        navigate("/dashboard/projects");
-      
-      
+
+      navigate("/dashboard/projects");
     } else if (status === 0) {
       showAlertNormal(message, "", "error");
     }
@@ -173,4 +167,3 @@ export const Login = () => {
     </main>
   );
 };
-
