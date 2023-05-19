@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { changeImageProfile, userSelector } from "../../slices/user/userSlice";
+import { changeImageProfile, clearInfo, userSelector } from "../../slices/user/userSlice";
 import { showAlertNormal, showAlertWithTimer } from "../../utils/showAlert";
 import { validateProfileImage } from "../../utils/validation";
 
@@ -20,7 +20,7 @@ export const FormChangeImage = () => {
     if (status === 1) {
       await showAlertWithTimer(message, "", "success");
     } else if (status === 0) {
-      showAlertNormal(message, "", "error");
+      await showAlertNormal(message, "", "error");
     }
   }, [status, message]);
 
@@ -28,8 +28,9 @@ export const FormChangeImage = () => {
     validateAccess();
     return () => {
       clearInputs();
+      dispatch(clearInfo());
     };
-  }, [validateAccess]);
+  }, [dispatch, validateAccess]);
 
   useEffect(() => {
     setError(validateProfileImage({ ...file }));
