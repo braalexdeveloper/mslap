@@ -9,7 +9,7 @@ export const Footer = () => {
     <>
       <footer
         id="footer"
-        className="footer mb-5"
+        className="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top text-center footer mb-5" 
         style={{ marginLeft: menu ? "" : "0px" }}
       >
         <div className="text-center">
