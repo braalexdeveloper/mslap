@@ -56,7 +56,7 @@ module.exports = (sequelize) => {
       },
       image: {
         type: DataTypes.STRING,
-        defaultValue: "foto-perfil-default.jpg"
+        defaultValue: "foto-perfil-default.png"
       }
     },
     {

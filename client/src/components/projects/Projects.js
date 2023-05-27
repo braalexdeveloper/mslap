@@ -6,33 +6,28 @@ import { Header } from "../Header";
 import { Footer } from "../Footer";
 import { Sidebar } from "../Sidebar";
 //import { userSelector } from "../../slices/user/userSlice";
-import {
-  getAllProjects,
-  createProject,
-  deleteProject,
-  updateProject,
-} from "../../slices/project/projectSlice";
+import { getAllProjects,createProject,  deleteProject,  updateProject } from "../../slices/project/projectSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Form } from "./Form";
 import { url_api } from "../../utils/config";
 
 function validate(input) {
   let errors = {};
-  const pattern = new RegExp("^[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$");
-  if (input.name === "") {
-    errors.name = "El campo nombre es requerido";
+  const pattern = new RegExp('^[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$');
+  if (input.name === '') {
+      errors.name = 'El campo nombre es requerido';
   } else if (!pattern.test(input.name)) {
-    errors.name = "No se aceptan números";
+      errors.name = 'No se aceptan números'
   }
 
   if (!input.dateStart) {
-    errors.dateStart = "La fecha de inicio es obligatorio";
+      errors.dateStart = 'La fecha de inicio es obligatorio'
   } else if (!input.dateEnd) {
-    errors.dateEnd = "La fecha de finalización es obligatorio";
-  } else if (!input.totalCertificates || input.totalCertificates < 1) {
-    errors.totalCertificates = "Este campo no acepta valores menor a 1";
+      errors.dateEnd = 'La fecha de finalización es obligatorio'
+  } else if (!input.totalCertificates || input.totalCertificates<1) {
+      errors.totalCertificates = 'Este campo no acepta valores menor a 1'
   } else if (!input.location) {
-    errors.location = "Este campo es obligatorio";
+      errors.location = 'Este campo es obligatorio'
   }
 
   return errors;
@@ -41,7 +36,7 @@ function validate(input) {
 export const Projects = () => {
   const { menu } = useMenuToggle();
   const [action, setAction] = useState("create");
-  const { projects } = useSelector((state) => state.project);
+  const {projects} = useSelector(state => state.project);
   const dispatch = useDispatch();
   const [errors, setErrors] = useState({});
   //const { user } = useSelector(userSelector);
@@ -59,12 +54,10 @@ export const Projects = () => {
       [e.target.name]: e.target.value,
     });
 
-    setErrors(
-      validate({
-        ...input,
-        [e.target.name]: e.target.value,
-      })
-    );
+    setErrors(validate({
+      ...input,
+      [e.target.name]: e.target.value
+  }));
   };
 
   const limpiarCampo = () => {
@@ -101,7 +94,7 @@ export const Projects = () => {
         timer: 2000,
       });
     }
-
+   
     limpiarCampo();
   };
 
@@ -124,7 +117,9 @@ export const Projects = () => {
   };
 
   const showProject = async (id) => {
-    const response = await axios.get(`${url_api}/api/admin/project/${id}`);
+    const response = await axios.get(
+      url_api+"/api/admin/project/" + id
+    );
 
     let fechaStart = response.data.data.dateStart.split("T");
     let fechaEnd = response.data.data.dateEnd.split("T");
@@ -154,7 +149,7 @@ export const Projects = () => {
         className="main"
         style={{ marginLeft: menu ? "" : "0px" }}
       >
-        {/*user.role.value && user.role.value!=="admin" ? <h1>No tienes acceso</h1> :*/}
+         {/*user.role.value && user.role.value!=="admin" ? <h1>No tienes acceso</h1> :*/}
         <section className="section dashboard">
           <div className="pagetitle">
             <h1>Projects</h1>
@@ -171,7 +166,7 @@ export const Projects = () => {
                 handleSubmit={handleSubmit}
                 handleChange={handleChange}
                 input={input}
-                action={action}
+                action={action} 
                 errors={errors}
               />
             </nav>
@@ -190,9 +185,7 @@ export const Projects = () => {
                             <th scope="col">Fecha Finalización</th>
                             <th scope="col">N° Certificados</th>
                             <th scope="col">Ubicación</th>
-                            <th scope="col" colSpan={2}>
-                              Acciones
-                            </th>
+                            <th scope="col" colSpan={2}>Acciones</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -218,7 +211,7 @@ export const Projects = () => {
                                     data-bs-toggle="modal"
                                     data-bs-target="#verticalycentered"
                                     onClick={() => showProject(el.id)}
-                                  >
+                                    >
                                     <i className="bi bi-pencil-fill"></i>
                                   </button>
                                 </td>
@@ -241,6 +234,7 @@ export const Projects = () => {
             </div>
           </section>
         </section>
+
       </main>
       <Footer />
     </>

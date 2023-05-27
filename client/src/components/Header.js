@@ -13,18 +13,21 @@ export const Header = () => {
 
   const btnMenu = (value) => {
     setMenu(value);
+   
   };
-
+ 
   const logout = (e) => {
     e.preventDefault();
     dispatch(clearDataState());
     navigate("/");
-  };
+  }
 
-  /*if(!isLogin){
+ 
+   /*if(!isLogin){
      navigate("/");
    }*/
-
+  
+  
   return (
     <header
       id="header"
@@ -51,7 +54,7 @@ export const Header = () => {
         )}
       </div>
       <div className="logo text-center w-100">
-        <span>Gestión de Documentos</span>
+        <span>PANEL DE {user?.role.value.toUpperCase()}</span>
       </div>
       <nav className="header-nav">
         <ul className="d-flex align-items-center">

@@ -5,18 +5,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 
 export const DetailOperario = ({ user, showUser }) => {
-  const dispatch = useDispatch();
+  const dispatch=useDispatch();
+  console.log(user)
   const { userById } = useSelector((state) => state.userCrud);
-  const arrayObservations = userById.certificates.filter((el) => {
-    if (el.observation !== null) {
-      return el;
-    } else return false;
-  });
-
+   let arrayObservations=userById.certificates.filter(el=>{
+    if(el.observation!==null){
+      return el
+    }
+   })
+   console.log(arrayObservations)
   useEffect(() => {
-    dispatch(getUserById(user.id));
-  }, [dispatch, user.id]);
-
+    dispatch(getUserById(user.id))
+}, [])
   return (
     <>
       {/*style="width: 18rem;"*/}
@@ -61,16 +61,14 @@ export const DetailOperario = ({ user, showUser }) => {
           >
             Editar <i className="bi bi-pencil-fill"></i>
           </button>
-          {arrayObservations.length > 0 ? (
-            <Link
-              to={"/dashboard/certificates/" + user.id}
-              className="btn btn-danger ms-2 btn-sm"
-            >
-              Tienes Observaciones <i className="bi bi-pencil-fill"></i>
-            </Link>
-          ) : (
-            ""
-          )}
+          {arrayObservations.length>0 ? 
+          <Link to={"/dashboard/certificates/"+user.id}
+            className="btn btn-danger ms-2 btn-sm"
+            
+          >
+            Tienes Observaciones <i className="bi bi-pencil-fill"></i>
+          </Link>
+          : ""}
         </div>
       </div>
     </>

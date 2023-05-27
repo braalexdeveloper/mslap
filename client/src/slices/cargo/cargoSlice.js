@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-const URL_API = "http://localhost:3001/api";
+import { url_api } from "../../utils/config";
+const URL_API = url_api+"/api" || "http://localhost:3001/api";
 
 const initialState = {
     cargos: [],

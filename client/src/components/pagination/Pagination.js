@@ -6,7 +6,7 @@ export const Pagination = ({
   currentPage,
   setCurrentPage,
 }) => {
-  const numPage = [];
+  let numPage = [];
   for (let i = 1; i <= totalPag; i++) {
     numPage.push(i);
   }

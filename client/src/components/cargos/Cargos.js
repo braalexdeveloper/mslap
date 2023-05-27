@@ -7,6 +7,7 @@ import { Footer } from "../Footer";
 import { Sidebar } from "../Sidebar";
 import { useDispatch, useSelector } from "react-redux";
 //import { userSelector } from "../../slices/user/userSlice";
+import { url_api } from "../../utils/config";
 import {
   getAllCargos,
   createCargo,
@@ -14,7 +15,6 @@ import {
   updateCargo,
 } from "../../slices/cargo/cargoSlice";
 import { Form } from "./Form";
-import { url_api } from "../../utils/config";
 
 function validate(input) {
   let errors = {};
@@ -103,7 +103,9 @@ export const Cargos = () => {
   };
 
   const showCargo = async (id) => {
-    const response = await axios.get(`${url_api}/api/admin/position/${id}`);
+    const response = await axios.get(
+      url_api+"/api/admin/position/" + id
+    );
     setInput(response.data.data);
     setAction("edit");
     setErrors({});
@@ -154,7 +156,7 @@ export const Cargos = () => {
                         <thead>
                           <tr>
                             <th scope="col">Nombre</th>
-                            <th scope="col" colSpan={2}>
+                            <th scope="col">
                               Acciones
                             </th>
                           </tr>
@@ -173,10 +175,10 @@ export const Cargos = () => {
                                   >
                                     <i className="bi bi-pencil-fill"></i>
                                   </button>
-                                </td>
-                                <td>
+                                
+                                
                                   <button
-                                    className="btn btn-danger btn-sm "
+                                    className="btn btn-danger btn-sm ms-2"
                                     onClick={() => handleDelete(el.id)}
                                   >
                                     <i className="bi bi-trash-fill"></i>

@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { url_api } from "../../utils/config";
 
 const initialState = {
     projects: [],
@@ -7,7 +8,7 @@ const initialState = {
     update: {},
     delete: {}
 }
-const URL_API = "http://localhost:3001/api";
+const URL_API = url_api+"/api" || "http://localhost:3001/api";
 
 export const projectSlice = createSlice({
     name: "project",

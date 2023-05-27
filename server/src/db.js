@@ -4,7 +4,29 @@ const fs = require("fs");
 const path = require("path");
 const { dbUser, dbPassword, dbHost, dbName, dbPort } = require("./utils/config/index");
 
-const sequelize = new Sequelize(
+let sequelize=process.env.NODE_ENV=== "production" 
+? new Sequelize({
+  database:dbName,
+  dialect:"postgres",
+  host:dbHost,
+  port:dbPort,
+  username:dbUser,
+  password:dbPassword,
+  pool:{
+    max:3,
+    min:1,
+    idle:10000,
+  },
+  dialectOptions:{
+    ssl:{
+      require:true,
+      rejectUnauthorized:false
+    },
+    keepAlive:true,
+  },
+  ssl:true,
+})
+: new Sequelize(
   `postgres://${dbUser}:${dbPassword}@${dbHost}:${dbPort}/${dbName}`,
   {
     logging: false, // set to console.log to see the raw SQL queries
@@ -63,8 +85,8 @@ Role.hasMany(User);
 User.belongsTo(Role);
 
 //cargar los roles en la tabla Role
-let roles=["admin","contratista","supervisor","operario"];
-roles.forEach(async el => await Role.findOrCreate({ where: { value: el } }));
+//let roles=["admin","contratista","supervisor","operario"];
+//roles.forEach(async el => await Role.findOrCreate({ where: { value: el } }));
 
 module.exports = {
   ...sequelize.models,

@@ -22,24 +22,6 @@ import { Pagination } from "../pagination/Pagination";
 import { Search } from "../search/Search";
 import { url_api } from "../../utils/config";
 
-const newProject = {
-  dni: "",
-  name: "",
-  lastName: "",
-  birthday: "",
-  phone: "",
-  contactEmergency: "",
-  phoneEmergency: "",
-  email: "",
-  typeBlood: "",
-  salary: 0,
-  password: "",
-  positionId: "",
-  roleId: "supervisor",
-  projectId: "",
-  certificates: [],
-};
-
 export const Supervisores = () => {
   const { menu } = useMenuToggle();
   const { users } = useSelector((state) => state.userCrud);
@@ -52,12 +34,29 @@ export const Supervisores = () => {
   const [action, setAction] = useState("create");
   const [errors, setErrors] = useState({});
 
-  const [input, setInput] = useState(newProject);
+  const [input, setInput] = useState({
+    dni: "",
+    name: "",
+    lastName: "",
+    birthday: "",
+    phone: "",
+    contactEmergency: "",
+    phoneEmergency: "",
+    email: "",
+    typeBlood: "",
+    salary: 0,
+    password: "",
+    positionId: "",
+    roleId: "supervisor",
+    projectId: "",
+    certificates: [],
+  });
 
   const [search, setSearch] = useState("");
 
   const handleSearch = (e) => {
     setSearch(e.target.value)
+
   }
 
   if (search !== "") {
@@ -79,7 +78,23 @@ export const Supervisores = () => {
   };
 
   const limpiarCampo = () => {
-    setInput(newProject);
+    setInput({
+      dni: "",
+      name: "",
+      lastName: "",
+      birthday: "",
+      phone: "",
+      contactEmergency: "",
+      phoneEmergency: "",
+      email: "",
+      typeBlood: "",
+      salary: 0,
+      password: "",
+      positionId: "",
+      roleId: "supervisor",
+      projectId: "",
+      certificates: [],
+    });
     setAction("create");
   };
 
@@ -96,6 +111,7 @@ export const Supervisores = () => {
         showConfirmButton: false,
         timer: 2000,
       });
+      console.log(input);
     } else {
       delete input.password;
       delete input.roleId;
@@ -112,8 +128,10 @@ export const Supervisores = () => {
   };
 
   const showUser = async (id) => {
-    const response = await axios.get(`${url_api}/api/admin/user/${id}`);
-    const user = response.data.data;
+    const response = await axios.get(
+      url_api+"/api/admin/user/" + id
+    );
+    let user = response.data.data;
     let fechaNacimiento = user.birthday.split("T");
 
     setInput({

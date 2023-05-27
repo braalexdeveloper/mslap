@@ -7,9 +7,9 @@ import { userSelector } from "../../slices/user/userSlice";
 import { getUserById } from "../../slices/userCrudSlice/userCrudSlice";
 import { updateCertificate } from "../../slices/certificate/certificateSlice";
 import { Link, useParams } from "react-router-dom";
+import { url_api } from "../../utils/config";
 
 import { useDispatch, useSelector } from "react-redux";
-import { url_api } from "../../utils/config";
 
 export const CertificatesUser = () => {
   const { menu } = useMenuToggle();
@@ -77,6 +77,10 @@ export const CertificatesUser = () => {
     limpiar();
   };
 
+  useEffect(()=>{
+   dispatch(getUserById(idUser))
+  },[])
+
   return (
     <>
       <Header />
@@ -110,7 +114,7 @@ export const CertificatesUser = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {arrayCertificates.map((el, index) =>
+                          {arrayCertificates?.map((el, index) =>
                             user.role.value === "operario" &&
                             el.observation === null ? (
                               ""
@@ -118,7 +122,7 @@ export const CertificatesUser = () => {
                               <tr key={index}>
                                 <td>
                                   <Link
-                                    to={`${url_api}/${el.name}`}
+                                    to={url_api+"/" + el.name}
                                     target="_blank"
                                   >
                                     {el.name}
