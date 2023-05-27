@@ -2,6 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://mslap.consulfinhn.tech/",
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
     "@redux-devtools/extension": "^3.2.5",
