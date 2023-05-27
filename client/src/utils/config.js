@@ -1,1 +1,1 @@
-export const url_api = process.env.REACT_APP_URL_API || "http://localhost:3001";
+export const url_api = process.env.REACT_APP_URL_API || "https://mslap-back.consulfinhn.tech";
