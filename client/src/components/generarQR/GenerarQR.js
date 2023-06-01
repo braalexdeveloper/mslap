@@ -23,7 +23,6 @@ export const GenerarQR = () => {
   Contacto de Emergencia: ${user?.contactEmergency || NA}
   Teléfono de Emergencia: ${user?.phoneEmergency || NA}
   Correo: ${user?.email || NA}
-  Sueldo: ${user?.salary || NA}
   `
   return (
     <>

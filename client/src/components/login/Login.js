@@ -2,13 +2,10 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/img/logo.png";
-import {
-  userSelector,
-  login,
-  clearInfo,
-} from "../../slices/user/userSlice";
+import { userSelector, login, clearInfo } from "../../slices/user/userSlice";
 import { showAlertLogin, showAlertNormal } from "../../utils/showAlert";
 import { validateLogin } from "../../utils/validation";
+import "./style.css";
 
 const data = {
   username: "",
@@ -28,10 +25,8 @@ export const Login = () => {
     if (status === 1) {
       await showAlertLogin(message, "", "success");
       dispatch(clearInfo());
-   
-        navigate("/dashboard/projects");
-      
-      
+
+      navigate("/dashboard/projects");
     } else if (status === 0) {
       showAlertNormal(message, "", "error");
     }
@@ -162,6 +157,12 @@ export const Login = () => {
                           Ingresar
                         </button>
                       </div>
+                      <div className="col-12">
+                        <span className="fw-light fst-italic">
+                          En caso de olvidar su clave, favor contactarse con el
+                          administrador
+                        </span>
+                      </div>
                     </form>
                   </div>
                 </div>
@@ -173,4 +174,3 @@ export const Login = () => {
     </main>
   );
 };
-
