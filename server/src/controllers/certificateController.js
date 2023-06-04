@@ -16,6 +16,29 @@ const certificateController = {
     }
 
   },
+  validateCertificate:async(req,res)=>{
+    try {
+     const { id } = req.params;
+      const { isValid } = req.body;
+
+      await Certificate.update({ isValid }, {
+        where: {
+          id
+        }
+      });
+
+      res.status(200).json({
+        status: 1,
+        message: "Se valido Certificado"
+                
+        })
+
+      } catch (err) {
+      res.status(500).json({ err });
+      console.log(err)
+    }
+
+  },
   addObservation: async (req, res) => {
     try {
       const { id } = req.params;

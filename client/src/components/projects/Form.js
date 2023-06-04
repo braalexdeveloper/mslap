@@ -6,7 +6,7 @@ export const Form = ({ handleChange, handleSubmit, input, action, errors }) => {
             <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title">{action && action === "create" ? "Agregar Project" : "Editar Project"}</h5>
+                        <h5 className="modal-title">{action && action === "create" ? "Agregar Proyecto" : "Editar Proyecto"}</h5>
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body">
@@ -14,7 +14,7 @@ export const Form = ({ handleChange, handleSubmit, input, action, errors }) => {
                         <form className="row g-3" onSubmit={(e) => handleSubmit(e)}>
 
                             <div className="col-12">
-                                <label htmlFor="name" className="form-label">Name</label>
+                                <label htmlFor="name" className="form-label">Nombre<span className='text-danger'>*</span></label>
                                 <input type="text" name="name" onChange={(e) => handleChange(e)} className="form-control" id="name" value={input.name} />
                                 {errors.name && (
                                     <div className='alert alert-danger alert-dismissible fade show my-2' role="alert">
@@ -26,7 +26,7 @@ export const Form = ({ handleChange, handleSubmit, input, action, errors }) => {
 
 
                             <div className="col-12">
-                                <label htmlFor="dateStart" className="form-label">Fecha de Inicio</label>
+                                <label htmlFor="dateStart" className="form-label">Fecha de Inicio<span className='text-danger'>*</span></label>
                                 <input type="date" name="dateStart" onChange={(e) => handleChange(e)} className="form-control" id="dateStart" value={input.dateStart} />
                                 {errors.dateStart && (
                                 <div className='alert alert-danger alert-dismissible fade show my-2' role="alert">
@@ -36,7 +36,7 @@ export const Form = ({ handleChange, handleSubmit, input, action, errors }) => {
                             </div>
 
                             <div className="col-12">
-                                <label htmlFor="dateEnd" className="form-label">Fecha de Finalización</label>
+                                <label htmlFor="dateEnd" className="form-label">Fecha de Finalización<span className='text-danger'>*</span></label>
                                 <input type="date" name="dateEnd" onChange={(e) => handleChange(e)} className="form-control" id="dateEnd" value={input.dateEnd} />
                                 {errors.dateEnd && (
                                 <div className='alert alert-danger alert-dismissible fade show my-2' role="alert">
@@ -47,7 +47,7 @@ export const Form = ({ handleChange, handleSubmit, input, action, errors }) => {
 
 
                             <div className="col-12">
-                                <label htmlFor="totalCertificates" className="form-label">N° Certificados</label>
+                                <label htmlFor="totalCertificates" className="form-label">N° Certificados<span className='text-danger'>*</span></label>
                                 <input type="number" name="totalCertificates" onChange={(e) => handleChange(e)} className="form-control" id="totalCertificates" value={input.totalCertificates} />
                                 {errors.totalCertificates && (
                                 <div className='alert alert-danger alert-dismissible fade show my-2' role="alert">
@@ -58,7 +58,7 @@ export const Form = ({ handleChange, handleSubmit, input, action, errors }) => {
 
 
                             <div className="col-12">
-                                <label htmlFor="location" className="form-label">Ubicación</label>
+                                <label htmlFor="location" className="form-label">Ubicación<span className='text-danger'>*</span></label>
                                 <input type="text" className="form-control" onChange={(e) => handleChange(e)} name="location" id="location" value={input.location} />
                                 {errors.location && (
                                 <div className='alert alert-danger alert-dismissible fade show my-2' role="alert">

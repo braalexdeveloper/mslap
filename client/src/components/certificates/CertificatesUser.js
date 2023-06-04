@@ -5,7 +5,7 @@ import { Footer } from "../Footer";
 import { Sidebar } from "../Sidebar";
 import { userSelector } from "../../slices/user/userSlice";
 import { getUserById } from "../../slices/userCrudSlice/userCrudSlice";
-import { updateCertificate } from "../../slices/certificate/certificateSlice";
+import { updateCertificate,validateCertificate } from "../../slices/certificate/certificateSlice";
 import { Link, useParams } from "react-router-dom";
 import { url_api } from "../../utils/config";
 
@@ -15,9 +15,11 @@ export const CertificatesUser = () => {
   const { menu } = useMenuToggle();
   const { user } = useSelector(userSelector);
   const { userById } = useSelector((state) => state.userCrud);
+ 
 
-  const [input, setInput] = useState({ observation: "" });
+  const [input, setInput] = useState({ observation: ""});
   const [observation, setObservation] = useState("");
+  const [certificateValidate,setCertificateValidate]=useState(false)
 
   const { idUser } = useParams();
   const dispatch = useDispatch();
@@ -53,7 +55,7 @@ export const CertificatesUser = () => {
   const limpiar = () => {
     setInput({
       id: "",
-      observation: "",
+      observation: ""
     });
   };
 
@@ -77,9 +79,19 @@ export const CertificatesUser = () => {
     limpiar();
   };
 
+  const validate=async(id,value)=>{
+
+   dispatch(validateCertificate(id,value))
+   setCertificateValidate(true)   
+  }
+
+
+
+
   useEffect(()=>{
    dispatch(getUserById(idUser))
-  },[])
+   setCertificateValidate(false)
+  },[dispatch,certificateValidate])
 
   return (
     <>
@@ -130,24 +142,33 @@ export const CertificatesUser = () => {
                                 </td>
                                 <td>{el.expiration}</td>
                                 <td>
+                                  {!el.isValid ? 
+                                  <>
+                                  <span className="btn btn-outline-success disabled btn-sm">Por validar</span>
+                                  {user.role.value === "admin" || user.role.value === "supervisor" ? 
+                                  <button  type="button" onClick={()=>validate(el.id,true)} className="btn btn btn-outline-success  ms-2 btn-sm"><i className="bi bi-check-lg"></i></button>
+                                  :""}
+                                  </>
+                                 :
                                   <span
                                     className={
                                       "btn " +
-                                      (el.daysExpiration === 0
+                                      (el.daysExpiration <= 0
                                         ? "btn-danger"
                                         : el.daysExpiration <= 10
                                         ? "btn-warning"
                                         : "btn-success") +
-                                      " btn-sm "
+                                      " btn-sm"
                                     }
                                     style={{ width: 100 }}
                                   >
-                                    {el.daysExpiration === 0
+                                    {el.daysExpiration <= 0
                                       ? "Caducado"
                                       : el.daysExpiration <= 10
                                       ? "Por Caducar"
                                       : el.status}
                                   </span>
+                                  }
                                 </td>
                                 <td>
                                   {user.role.value === "supervisor" ? (

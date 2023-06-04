@@ -407,6 +407,8 @@ const adminController = {
     }
 
     const { id } = req.params;
+    const { password } = req.body;
+    req.body.password = bcrypt.hashSync(password, 10);
 
     try {
       await User.update(req.body, { where: { id } });

@@ -18,7 +18,7 @@ import { CertificatesUser } from "./components/certificates/CertificatesUser";
 function App() {
   const { user,isLogin } = useSelector(userSelector); 
   return (
-    <div className="App">
+    <div className="App" id="appbg">
       <Routes>
         <Route exact path="/" element={<Login />} />
 

@@ -55,6 +55,7 @@ export const Supervisores = () => {
   const [search, setSearch] = useState("");
 
   const handleSearch = (e) => {
+    e.preventDefault();
     setSearch(e.target.value)
 
   }
@@ -113,7 +114,7 @@ export const Supervisores = () => {
       });
       console.log(input);
     } else {
-      delete input.password;
+      
       delete input.roleId;
       dispatch(updateUser(input.id, input));
       Swal.fire({
@@ -146,7 +147,7 @@ export const Supervisores = () => {
       email: user.email,
       typeBlood: user.typeBlood,
       salary: user.salary,
-      password: "password",
+      password: user.password,
       positionId: user.positionId,
       roleId: "supervisor",
       projectId: user.projects[0].id,
@@ -237,7 +238,7 @@ export const Supervisores = () => {
                           <tr>
                             <th scope="col">Nombres</th>
                             <th scope="col">Apellidos</th>
-                            <th scope="col">DNI</th>
+                            <th scope="col">DNI/Cédula</th>
                             <th scope="col">Telf. Contacto</th>
                             <th scope="col">Contacto de Emergencia</th>
                             <th scope="col">Telf. Emergencia</th>

@@ -8,7 +8,7 @@ export const DetailOperario = ({ user, showUser }) => {
   const dispatch=useDispatch();
   console.log(user)
   const { userById } = useSelector((state) => state.userCrud);
-   let arrayObservations=userById.certificates.filter(el=>{
+   let arrayObservations=userById.certificates?.filter(el=>{
     if(el.observation!==null){
       return el
     }
@@ -61,7 +61,7 @@ export const DetailOperario = ({ user, showUser }) => {
           >
             Editar <i className="bi bi-pencil-fill"></i>
           </button>
-          {arrayObservations.length>0 ? 
+          {arrayObservations?.length>0 ? 
           <Link to={"/dashboard/certificates/"+user.id}
             className="btn btn-danger ms-2 btn-sm"
             

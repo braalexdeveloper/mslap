@@ -36,6 +36,10 @@ export const Certificates = ({ count = 1, setInput, input }) => {
   return (
     <div className="col">
       <label className="form-label">Certificados</label>
+      <div className="d-flex justify-content-around mb-2">
+        <span className="text-danger">Tamaño de archivo max. 1MB</span>
+        <span className="text-primary">Fecha de Expiración</span>
+      </div>
       {arrayInput}
     </div>
   );
