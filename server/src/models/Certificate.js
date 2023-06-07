@@ -26,6 +26,10 @@ module.exports = (sequelize) => {
       observation: {
         type: DataTypes.TEXT,
       },
+      isValid:{
+        type:DataTypes.BOOLEAN,
+        defaultValue:false
+      }
     },
     {
       timestamps: false,

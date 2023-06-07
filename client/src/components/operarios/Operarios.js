@@ -54,11 +54,45 @@ export const Operarios = () => {
   let allOperarios = users.filter((el) => el.role.value === "operario");
 
   let arrayNameProjects = user.projects.map(el => el.name)
-  let operarios = user.role.value === "admin" ? allOperarios : allOperarios.filter(el => arrayNameProjects.includes(el.projects[0].name))
+  let dataFilter = user.role.value === "admin" ? allOperarios : allOperarios.filter(el => arrayNameProjects.includes(el.projects[0].name))
+
+  const dateCurrent = new Date();
+  
+  function difference(date1, date2) {
+    const date1utc = Date.UTC(
+      date1.getFullYear(),
+      date1.getMonth(),
+      date1.getDate()
+    );
+    const date2utc = Date.UTC(
+      date2.getFullYear(),
+      date2.getMonth(),
+      date2.getDate()
+    );
+    let day = 1000 * 60 * 60 * 24;
+    return (date2utc - date1utc) / day;
+  }
+
+  let operarios = dataFilter.map(el => {
+    return {
+      ...el,
+      certificates: el.certificates?.map(element => {
+        const dateExpiration = new Date(element.expiration);
+        dateExpiration.setMinutes(
+          dateExpiration.getMinutes() + dateExpiration.getTimezoneOffset()
+        );
+        return difference(dateCurrent, dateExpiration)
+
+
+      })
+    }
+  })
+  console.log(operarios)
 
   const [search, setSearch] = useState("");
 
   const handleSearch = (e) => {
+    e.preventDefault();
     setSearch(e.target.value)
 
   }
@@ -116,7 +150,7 @@ export const Operarios = () => {
         timer: 2000,
       });
     } else {
-      delete input.password;
+      
       delete input.roleId;
 
       dispatch(updateUser(input.id, input));
@@ -134,7 +168,7 @@ export const Operarios = () => {
 
   const showUser = async (id) => {
     const response = await axios.get(
-      url_api+"/api/admin/user/" + id
+      url_api + "/api/admin/user/" + id
     );
     let user = response.data.data;
     let fechaNacimiento = user.birthday.split("T");
@@ -151,7 +185,7 @@ export const Operarios = () => {
       email: user.email,
       typeBlood: user.typeBlood,
       salary: user.salary,
-      password: "password",
+      password:user.password,
       positionId: user.positionId,
       roleId: "operario",
       projectId: user.projects.length > 0 ? user.projects[0].id : "",
@@ -242,101 +276,103 @@ export const Operarios = () => {
                 setInput={setInput}
               />
             </nav>
-            <Search handleSearch={handleSearch}/>
-        </div>
-        <section className="section">
-          <div className="row">
-            <div className="col-lg-12">
-              {user.role.value === "operario" ? (
-                <DetailOperario user={user} showUser={showUser} />
-              ) : (
-                <div className="card">
-                  <div className="card-body">
-                    <div className="table-responsive">
-                      <table className="table">
-                        <thead>
-                          <tr>
-                            <th scope="col">Nombres</th>
-                            <th scope="col">Apellidos</th>
-                            <th scope="col">DNI</th>
-                            <th scope="col">Telf. Contacto</th>
-                            <th scope="col">Contacto de Emergencia</th>
-                            <th scope="col">Telf. Emergencia</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Tipo de Sangre</th>
-                            <th scope="col">Proyecto</th>
-                            <th scope="col">Sueldo</th>
-                            <th scope="col" colSpan={3}>
-                              Acciones
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {operariosPerPage &&
-                            operariosPerPage.map((el, index) => (
-                              <tr key={index}>
-                                <td>{el.name}</td>
-                                <td>{el.lastName}</td>
-                                <td>{el.dni}</td>
-                                <td>{el.phone}</td>
-                                <td>{el.contactEmergency}</td>
-                                <td>{el.phoneEmergency}</td>
-                                <td>{el.email}</td>
-                                <td>{el.typeBlood}</td>
-                                <td>
-                                  {el.projects.length > 0
-                                    ? el.projects[0].name
-                                    : ""}
-                                </td>
-                                <td>{el.salary}</td>
-                                <td>
-                                  <button
-                                    className="btn btn-warning btn-sm"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#verticalycentered"
-                                    onClick={() => showUser(el.id)}
-                                  >
-                                    <i className="bi bi-pencil-fill"></i>
-                                  </button>
-                                </td>
-                                <td>
-                                  {user.role.value === "supervisor" ? (
-                                    ""
-                                  ) : (
-                                    <button className="btn btn-danger btn-sm ">
-                                      <i
-                                        className="bi bi-trash-fill"
-                                        onClick={() => handleDelete(el.id)}
-                                      ></i>
+            {user.role.value !== "operario" ?
+            <Search handleSearch={handleSearch} />
+            : ""}
+          </div>
+          <section className="section">
+            <div className="row">
+              <div className="col-lg-12">
+                {user.role.value === "operario" ? (
+                  <DetailOperario user={user} showUser={showUser} />
+                ) : (
+                  <div className="card">
+                    <div className="card-body">
+                      <div className="table-responsive">
+                        <table className="table">
+                          <thead>
+                            <tr>
+                              <th scope="col">Nombres</th>
+                              <th scope="col">Apellidos</th>
+                              <th scope="col">DNI/Cédula</th>
+                              <th scope="col">Telf. Contacto</th>
+                              <th scope="col">Contacto de Emergencia</th>
+                              <th scope="col">Telf. Emergencia</th>
+                              <th scope="col">Email</th>
+                              <th scope="col">Tipo de Sangre</th>
+                              <th scope="col">Proyecto</th>
+                              <th scope="col">Sueldo</th>
+                              <th scope="col" colSpan={3}>
+                                Acciones
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {operariosPerPage &&
+                              operariosPerPage.map((el, index) => (
+                                <tr key={index}>
+                                  <td>{el.name}</td>
+                                  <td>{el.lastName}</td>
+                                  <td>{el.dni}</td>
+                                  <td>{el.phone}</td>
+                                  <td>{el.contactEmergency}</td>
+                                  <td>{el.phoneEmergency}</td>
+                                  <td>{el.email}</td>
+                                  <td>{el.typeBlood}</td>
+                                  <td>
+                                    {el.projects.length > 0
+                                      ? el.projects[0].name
+                                      : ""}
+                                  </td>
+                                  <td>{el.salary}</td>
+                                  <td>
+                                    <button
+                                      className="btn btn-warning btn-sm"
+                                      data-bs-toggle="modal"
+                                      data-bs-target="#verticalycentered"
+                                      onClick={() => showUser(el.id)}
+                                    >
+                                      <i className="bi bi-pencil-fill"></i>
                                     </button>
+                                  </td>
+                                  <td>
+                                    {user.role.value === "supervisor" ? (
+                                      ""
+                                    ) : (
+                                      <button className="btn btn-danger btn-sm ">
+                                        <i
+                                          className="bi bi-trash-fill"
+                                          onClick={() => handleDelete(el.id)}
+                                        ></i>
+                                      </button>
 
-                                  )}
+                                    )}
 
-                                </td>
-                                <td>
-                                  <Link to={"/dashboard/certificates/" + el.id} className="btn btn-primary btn-sm">Certificados</Link>
-                                </td>
-                              </tr>
-                            ))}
-                        </tbody>
-                      </table>
+                                  </td>
+                                  <td>
+                                    <Link to={"/dashboard/certificates/" + el.id} className={"btn"+(el.certificates.some(el=>el<=0) ? " btn-danger" : el.certificates.some(el=>el<=10) ? " btn-warning" : " btn-primary")+"  btn-sm"}>Certificados</Link>
+                                  </td>
+                                </tr>
+                              ))}
+                          </tbody>
+                        </table>
 
-                                
+
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
+              <Pagination
+                totalPag={Math.ceil(operarios.length / recipesPag)}
+                handlePag={handlePag}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+              />
             </div>
-            <Pagination
-              totalPag={Math.ceil(operarios.length / recipesPag)}
-              handlePag={handlePag}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-            />
-          </div>
+          </section>
         </section>
-      </section>
-    </main >
+      </main >
       <Footer />
     </>
   );

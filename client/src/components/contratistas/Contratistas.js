@@ -53,6 +53,7 @@ export const Contratistas = () => {
   const [search, setSearch] = useState("");
 
   const handleSearch = (e) => {
+    e.preventDefault();
     setSearch(e.target.value)
 
   }
@@ -111,7 +112,7 @@ export const Contratistas = () => {
       });
       console.log(input);
     } else {
-      delete input.password;
+      
       delete input.roleId;
       dispatch(updateUser(input.id, input));
       Swal.fire({
@@ -144,7 +145,7 @@ export const Contratistas = () => {
       email: user.email,
       typeBlood: user.typeBlood,
       salary: user.salary,
-      password: "password",
+      password: user.password,
       positionId: user.positionId,
       roleId: "contratista",
       projectId: user.projects[0].id,
@@ -236,7 +237,7 @@ export const Contratistas = () => {
                         <tr>
                           <th scope="col">Nombres</th>
                           <th scope="col">Apellidos</th>
-                          <th scope="col">DNI</th>
+                          <th scope="col">DNI/Cédula</th>
                           <th scope="col">Telf. Contacto</th>
                           <th scope="col">Contacto de Emergencia</th>
                           <th scope="col">Telf. Emergencia</th>

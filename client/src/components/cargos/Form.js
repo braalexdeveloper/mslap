@@ -13,7 +13,7 @@ export const Form = ({handleChange,handleSubmit,input,action,errors}) => {
 
                         <form className="row g-3" onSubmit={(e) => handleSubmit(e)} >
                             <div className="col-12">
-                                <label htmlFor="name" className="form-label">Nombre</label>
+                                <label htmlFor="name" className="form-label">Nombre<span className='text-danger'>*</span></label>
                                 <input type="text" onChange={(e) => handleChange(e)} className="form-control" name='name' value={input.name}   />
                                 {errors.name && (
                                 <div className='alert alert-danger alert-dismissible fade show my-2' role="alert">

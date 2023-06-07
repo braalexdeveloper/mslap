@@ -16,6 +16,11 @@ export const Form = ({
 }) => {
   const { user } = useSelector(userSelector);
 
+  const projectsUser = user.projects.map(el => {
+    return el.name
+  })
+  console.log(user)
+  console.log(projectsUser)
   return (
     <div
       className="modal fade"
@@ -45,7 +50,7 @@ export const Form = ({
                 <>
                   <div className="col-6">
                     <label htmlFor="dni" className="form-label">
-                      DNI
+                      DNI/Cédula<span className='text-danger'>*</span>
                     </label>
                     <input
                       type="text"
@@ -66,7 +71,7 @@ export const Form = ({
                   </div>
                   <div className="col-6">
                     <label htmlFor="name" className="form-label">
-                      Nombre(s)
+                      Nombre(s)<span className='text-danger'>*</span>
                     </label>
                     <input
                       type="text"
@@ -87,7 +92,7 @@ export const Form = ({
                   </div>
                   <div className="col-6">
                     <label htmlFor="lastName" className="form-label">
-                      Apellido(s)
+                      Apellido(s)<span className='text-danger'>*</span>
                     </label>
                     <input
                       type="text"
@@ -108,7 +113,7 @@ export const Form = ({
                   </div>
                   <div className="col-6">
                     <label htmlFor="birthday" className="form-label">
-                      Fecha de Nacimiento
+                      Fecha de Nacimiento<span className='text-danger'>*</span>
                     </label>
                     <input
                       type="date"
@@ -125,7 +130,7 @@ export const Form = ({
               )}
               <div className="col-6">
                 <label htmlFor="phone" className="form-label">
-                  Teléfono
+                  Teléfono<span className='text-danger'>*</span>
                 </label>
                 <input
                   type="text"
@@ -146,7 +151,7 @@ export const Form = ({
               </div>
               <div className="col-6">
                 <label htmlFor="contactEmergency" className="form-label">
-                  Contacto de Emergencia
+                  Contacto de Emergencia<span className='text-danger'>*</span>
                 </label>
                 <input
                   type="text"
@@ -167,7 +172,7 @@ export const Form = ({
               </div>
               <div className="col-6">
                 <label htmlFor="phoneEmergency" className="form-label">
-                  Telf. de Emergencia
+                  Telf. de Emergencia<span className='text-danger'>*</span>
                 </label>
                 <input
                   type="text"
@@ -188,7 +193,7 @@ export const Form = ({
               </div>
               <div className="col-6">
                 <label htmlFor="email" className="form-label">
-                  Email
+                  Email<span className='text-danger'>*</span>
                 </label>
                 <input
                   type="email"
@@ -211,7 +216,7 @@ export const Form = ({
                 <>
                   <div className="col-6">
                     <label htmlFor="typeBlood" className="form-label">
-                      Tipo de Sangre
+                      Tipo de Sangre<span className='text-danger'>*</span>
                     </label>
                     <input
                       type="text"
@@ -245,33 +250,31 @@ export const Form = ({
                       step={1}
                     />
                   </div>
-                  {action && action === "create" ? (
-                    <div className="col-6">
-                      <label htmlFor="password" className="form-label">
-                        Contraseña
-                      </label>
-                      <input
-                        type="password"
-                        className="form-control"
-                        onChange={(e) => handleChange(e)}
-                        value={input.password}
-                        name="password"
-                        id="password"
-                      />
-                      {errors.password && (
-                        <div
-                          className="alert alert-danger alert-dismissible fade show my-2"
-                          role="alert"
-                        >
-                          <span>{errors.password}</span>
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    ""
-                  )}
+
                   <div className="col-6">
-                    <label className="form-label">Cargo</label>
+                    <label htmlFor="password" className="form-label">
+                      Contraseña<span className='text-danger'>*</span>
+                    </label>
+                    <input
+                      type="password"
+                      className="form-control"
+                      onChange={(e) => handleChange(e)}
+                      value={input.password}
+                      name="password"
+                      id="password"
+                    />
+                    {errors.password && (
+                      <div
+                        className="alert alert-danger alert-dismissible fade show my-2"
+                        role="alert"
+                      >
+                        <span>{errors.password}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="col-6">
+                    <label className="form-label">Cargo<span className='text-danger'>*</span></label>
                     <select
                       name="positionId"
                       className="form-control"
@@ -297,7 +300,7 @@ export const Form = ({
                   </div>
                   {action && action === "create" ? (
                     <div className="col-6">
-                      <label className="form-label">Proyecto</label>
+                      <label className="form-label">Proyecto<span className='text-danger'>*</span></label>
                       <select
                         name="projectId"
                         className="form-control"
@@ -307,10 +310,18 @@ export const Form = ({
                         <option>Selecciona un Proyecto</option>
                         {Projects &&
                           Projects.map((el, index) => (
-                            <option key={index} value={el.id}>
-                              {el.name}
-                            </option>
-                          ))}
+                            projectsUser.length < 1 ?
+                              <option key={index} value={el.id}>
+                                {el.name}
+                              </option>
+                              :
+                              projectsUser.includes(el.name) ? <option key={index} value={el.id}>
+                                {el.name}
+                              </option>
+                                : ""
+                          )
+
+                          )}
                       </select>
                       {errors.projectId && (
                         <div
@@ -326,7 +337,7 @@ export const Form = ({
                   )}
                   {(user.role.value === "admin" ||
                     user.role.value === "contratista") &&
-                  cantCertificates > 0 ? (
+                    cantCertificates > 0 ? (
                     <div className="col-12">
                       <Certificates
                         count={cantCertificates}

@@ -1,7 +1,8 @@
 import React from "react";
 import Places from "../map/MapGoogle";
 
-export const Form = ({ handleChange, handleSubmit, input, setInput, action, errors }) => {
+export const Form = (props) => {
+  const { handleChange, handleSubmit, input, setInput, action, errors } = props;
   return (
     <div className="modal fade" id="verticalycentered" tabIndex="-1">
       <div className="modal-dialog modal-dialog-centered">

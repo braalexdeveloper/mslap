@@ -16,11 +16,7 @@ function validate(input) {
   const pattern = new RegExp('^[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$');
   if (input.name === '') {
       errors.name = 'El campo nombre es requerido';
-  } else if (!pattern.test(input.name)) {
-      errors.name = 'No se aceptan números'
-  }
-
-  if (!input.dateStart) {
+  }else if (!input.dateStart) {
       errors.dateStart = 'La fecha de inicio es obligatorio'
   } else if (!input.dateEnd) {
       errors.dateEnd = 'La fecha de finalización es obligatorio'
