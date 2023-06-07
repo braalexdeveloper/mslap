@@ -60,7 +60,7 @@ export const Login = () => {
   };
 
   return (
-    <main>
+    <main id="login">
       <div className="container">
         <section className="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
           <div className="container">

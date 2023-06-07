@@ -12,7 +12,7 @@ export const Footer = () => {
         className="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top text-center footer mb-5"
         style={{ marginLeft: menu ? "" : "0px" }}
       >
-        <div div className="col">
+        <div className="col">
           <Link to="to:0998113580" className="contact-me">
             <i className="bi bi-phone">&nbsp;</i>
             <span>0998113580</span>

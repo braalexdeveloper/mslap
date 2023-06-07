@@ -166,6 +166,7 @@ export const Projects = () => {
                 handleSubmit={handleSubmit}
                 handleChange={handleChange}
                 input={input}
+                setInput={setInput}
                 action={action} 
                 errors={errors}
               />

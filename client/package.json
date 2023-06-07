@@ -4,6 +4,8 @@
   "private": true,
   "homepage": "http://mslap.consulfinhn.tech/",
   "dependencies": {
+    "@headlessui/react": "^1.7.15",
+    "@react-google-maps/api": "^2.18.1",
     "@redux-devtools/extension": "^3.2.5",
     "@reduxjs/toolkit": "^1.9.5",
     "@testing-library/jest-dom": "^5.16.5",
@@ -11,7 +13,7 @@
     "@testing-library/user-event": "^14.4.3",
     "axios": "^1.4.0",
     "dotenv": "^16.0.3",
-    "google-map-react": "^2.2.1",
+    "npm": "^9.6.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-qr-code": "^2.0.11",
@@ -22,6 +24,7 @@
     "redux-thunk": "^2.4.2",
     "sweetalert2": "^11.7.3",
     "swr": "^2.1.5",
+    "use-places-autocomplete": "^4.0.0",
     "web-vitals": "^3.3.1"
   },
   "scripts": {
