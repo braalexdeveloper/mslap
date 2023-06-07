@@ -295,7 +295,7 @@ const adminController = {
           },
           {
             model: Certificate,
-          }
+          },
         ],
       });
 
@@ -339,7 +339,7 @@ const adminController = {
           },
           {
             model: Certificate,
-          }
+          },
         ],
       });
 
@@ -363,27 +363,29 @@ const adminController = {
     }
 
     const { password, projectId, roleId } = req.body;
-  
 
-    if(!Array.isArray(req.body.certificates)){
+    if (!Array.isArray(req.body.certificates)) {
       req.body.certificates = [req.body.certificates];
-      
     }
 
-    const certificates = req.body.certificates.map(c => JSON.parse(c));
-    
+    const certificates = req.body.certificates.map((c) => JSON.parse(c));
+
     delete req.body.certificates;
     req.body.password = bcrypt.hashSync(password, 10);
     //Obtengo el ID del rol
     const role = await Role.findOne({ where: { value: roleId } });
     req.body.roleId = role.id;
-    
+
     try {
       const userCreated = await User.create(req.body);
       userCreated.addProject(projectId);
 
       if (certificates.length) {
-        const certs = certificates.map((c, i) => ({ ...c, name: req.files[i].filename, userId: userCreated.id }));
+        const certs = certificates.map((c, i) => ({
+          ...c,
+          name: req.files[i].filename,
+          userId: userCreated.id,
+        }));
         await Certificate.bulkCreate(certs);
       }
 
@@ -457,15 +459,16 @@ const adminController = {
     if (!errors.isEmpty()) {
       return res.status(400).json(errors);
     }
-    console.log(req.body)
-    console.log(req.files)
-    console.log(req.params)
+
     const { id } = req.body;
     const certificates = req.files;
-    
+
     try {
       if (certificates.length) {
-        const certs = certificates.map((c, i) => {console.log(c); return { ...c, name: certificates[i].filename, userId: id }});
+        const certs = certificates.map((c, i) => {
+          console.log(c);
+          return { ...c, name: certificates[i].filename, userId: id };
+        });
         await Certificate.bulkCreate(certs);
       }
 

@@ -1,6 +1,7 @@
 const { Certificate, User, Role, Project } = require("../db");
 const { Op } = require("sequelize");
 const nodemailer = require("nodemailer");
+const { email, password } = require("../utils/config/index");
 
 const certificateController = {
   getObservation: async (req, res) => {
@@ -112,8 +113,8 @@ const certificateController = {
         host: "smtp.gmail.com",
         port: 587,
         auth: {
-          user: process.env.EMAIL_NODEMAILER,
-          pass: process.env.PASSWORD,
+          user: email,
+          pass: password,
         },
       });
 
@@ -182,7 +183,7 @@ const certificateController = {
 `;
 
       const mailOptions = {
-        from: process.env.EMAIL_NODEMAILER,
+        from: email,
         to: emails.toString(),
         subject: "Notificación de Observación en MSLAPS",
         html: plantillaHtml,
