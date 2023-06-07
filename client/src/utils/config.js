@@ -1,4 +1,4 @@
-export const url_api = process.env.REACT_APP_URL_API || "http://localhost:3001";
+export const url_api = process.env.REACT_APP_URL_API || "https://mslap-back.consulfinhn.tech";
 export const mapKey =
   process.env.REACT_APP_GOOGLE_API_KEY ||
   "AIzaSyDMJQtEx_9637e-pyfXePjCEqo3rSFuXeg";
