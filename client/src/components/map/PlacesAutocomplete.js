@@ -6,11 +6,11 @@ import usePlacesAutocomplete, {
 import { Combobox, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 
-import { validateProject } from "../../utils/validation";
 import { url_place } from "../../utils/config";
+import { validateProject } from "../../utils/validation";
 
 export const PlacesAutocomplete = (props) => {
-  const { loaded, map, setMap, setInput, setErrors } = props;
+  const { loaded, map, setMap, input, setInput, setErrors } = props;
   const {
     ready,
     value,
@@ -28,15 +28,15 @@ export const PlacesAutocomplete = (props) => {
       ...map,
       currentLocation: { lat, lng },
     });
-    setInput((prevInput) => ({
-      ...prevInput,
+    setInput({
+      ...input,
       location: `${url_place}${lat},${lat},${map.zoom}z?entry=ttu`,
-    }));
+    });
     setErrors(
-      validateProject((prevInput) => ({
-        ...prevInput,
+      validateProject({
+        ...input,
         location: `${url_place}${lat},${lng},${map.zoom}z?entry=ttu`,
-      }))
+      })
     );
   };
 

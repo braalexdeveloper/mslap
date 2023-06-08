@@ -120,8 +120,7 @@ export const Form = (props) => {
                   Ubicación
                 </label>
                 {/* <input type="text" className="form-control" onChange={(e) => handleChange(e)} name="location" id="location" value={input.location} /> */}
-                {/* <Map /> */}
-                <Places setInput={setInput} setErrors={setErrors} />
+                <Places input={input} setInput={setInput} setErrors={setErrors} />
                 {errors.location && (
                   <div
                     className="alert alert-danger alert-dismissible fade show my-2"

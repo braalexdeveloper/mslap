@@ -34,7 +34,6 @@ export const Projects = () => {
 
   const handleChange = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
-
     setErrors(validateProject({ ...input, [e.target.name]: e.target.value }));
   };
 

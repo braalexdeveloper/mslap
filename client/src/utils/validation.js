@@ -142,8 +142,8 @@ export const validateOperator = (input) => {
 // validar formulario crear proyecto
 export const validateProject = (input) => {
   let errors = {};
-  
-  if (input.name === "") {
+
+  if (!input.name) {
     errors.name = "El campo nombre es requerido";
   } else if (!input.dateStart) {
     errors.dateStart = "La fecha de inicio es obligatorio";
@@ -156,4 +156,4 @@ export const validateProject = (input) => {
   }
 
   return errors;
-}
+};

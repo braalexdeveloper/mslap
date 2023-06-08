@@ -8,7 +8,7 @@ const initialState = {
     update: {},
     delete: {}
 }
-const URL_API = url_api+"/api" || "http://localhost:3001/api";
+const URL_API = `${url_api}/api` || "http://localhost:3001/api";
 
 export const projectSlice = createSlice({
     name: "project",
@@ -36,7 +36,7 @@ const { allProjects, create, update, deleteproject } = projectSlice.actions;
 
 //Projects
 const Projects = async () => {
-    const response = await axios.get(URL_API + '/admin/projects');
+    const response = await axios.get(`${URL_API}/admin/projects`);
     let projects = response.data.data.map(el => {
         let fechaStart = el.dateStart.split('T');
         let fechaEnd = el.dateEnd.split('T');
@@ -61,20 +61,20 @@ export const getAllProjects = () => async (dispatch) => {
 }
 
 export const createProject = (project) => async (dispatch) => {
-    const response = await axios.post(URL_API + '/admin/project', project);
+    const response = await axios.post(`${URL_API}/admin/project`, project);
     let projects = await Projects();
     return dispatch(create({ dataCreate: response.data,projects }))
 }
 
 
 export const updateProject = (id, info) => async (dispatch) => {
-    const response = await axios.put(URL_API + '/admin/project/' + id, info);
+    const response = await axios.put(`${URL_API}/admin/project/${id}`, info);
     let projects = await Projects();
     return dispatch(update({ dataUpdate: response.data,projects }))
 }
 
 export const deleteProject = (id) => async (dispatch) => {
-    const response = await axios.delete(URL_API + '/admin/project/' + id);
+    const response = await axios.delete(`${URL_API}/admin/project/` + id);
     let projects=await Projects();
     return dispatch(deleteproject({ dataDelete: response.data,projects }))
 }

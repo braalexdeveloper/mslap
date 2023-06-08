@@ -50,6 +50,9 @@ router.post(
     check("totalCertificates", "Ingrese número de certificados")
       .not()
       .isEmpty(),
+    check("totalCertificates", "Número certificados mayor que 0 ").isLength({
+      min: 1,
+    }),
     check("location", "Ingrese ubicación").not().isEmpty(),
     validateProject,
   ],

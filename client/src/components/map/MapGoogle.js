@@ -1,11 +1,11 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 import "./globals.css";
 import { mapKey } from "../../utils/config";
 import { PlacesAutocomplete } from "./PlacesAutocomplete";
 
-import { validateProject } from "../../utils/validation";
 import { url_place } from "../../utils/config";
+import { validateProject } from "../../utils/validation";
 
 export default function Places(props) {
   const { isLoaded } = useLoadScript({
@@ -23,10 +23,13 @@ const newMap = {
   zoom: 13,
 };
 
-const MapContainer = ({ setInput, setErrors }) => {
-  const mapRef = useRef(null);
+const MapContainer = ({ input, setInput, setErrors }) => {
   const [map, setMap] = useState(newMap);
   const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    onLoad();
+  }, [input?.location]);
 
   const onLoad = () => {
     navigator.geolocation.getCurrentPosition(
@@ -43,15 +46,15 @@ const MapContainer = ({ setInput, setErrors }) => {
             lng: longitude,
           },
         });
-        setInput((prevInput) => ({
-          ...prevInput,
+        setInput({
+          ...input,
           location: `${url_place}${latitude},${longitude},${map.zoom}z?entry=ttu`,
-        }));
+        });
         setErrors(
-          validateProject((prevInput) => ({
-            ...prevInput,
+          validateProject({
+            ...input,
             location: `${url_place}${latitude},${longitude},${map.zoom}z?entry=ttu`,
-          }))
+          })
         );
         setLoaded(true);
       },
@@ -69,15 +72,15 @@ const MapContainer = ({ setInput, setErrors }) => {
       ...map,
       currentLocation: { lat, lng },
     });
-    setInput((prevInput) => ({
-      ...prevInput,
+    setInput({
+      ...input,
       location: `${url_place}${lat},${lng},${map.zoom}z?entry=ttu`,
-    }));
+    });
     setErrors(
-      validateProject((prevInput) => ({
-        ...prevInput,
+      validateProject({
+        ...input,
         location: `${url_place}${lat},${lng},${map.zoom}z?entry=ttu`,
-      }))
+      })
     );
   };
 
@@ -86,7 +89,6 @@ const MapContainer = ({ setInput, setErrors }) => {
       <GoogleMap
         zoom={map?.zoom}
         center={map?.currentLocation}
-        ref={mapRef}
         mapContainerClassName="map-container"
         onLoad={onLoad}
         onClick={handleClick}
@@ -96,6 +98,7 @@ const MapContainer = ({ setInput, setErrors }) => {
             loaded={loaded}
             map={map}
             setMap={setMap}
+            input={input}
             setInput={setInput}
             setErrors={setErrors}
           />
