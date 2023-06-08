@@ -139,3 +139,21 @@ export const validateOperator = (input) => {
 
   return errors;
 };
+// validar formulario crear proyecto
+export const validateProject = (input) => {
+  let errors = {};
+  
+  if (input.name === "") {
+    errors.name = "El campo nombre es requerido";
+  } else if (!input.dateStart) {
+    errors.dateStart = "La fecha de inicio es obligatorio";
+  } else if (!input.dateEnd) {
+    errors.dateEnd = "La fecha de finalización es obligatorio";
+  } else if (!input.totalCertificates || input.totalCertificates < 1) {
+    errors.totalCertificates = "Este campo no acepta valores inferioes a 1";
+  } else if (!input.location) {
+    errors.location = "Este campo es obligatorio";
+  }
+
+  return errors;
+}

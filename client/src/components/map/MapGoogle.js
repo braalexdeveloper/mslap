@@ -4,6 +4,7 @@ import "./globals.css";
 import { mapKey } from "../../utils/config";
 import { PlacesAutocomplete } from "./PlacesAutocomplete";
 
+import { validateProject } from "../../utils/validation";
 import { url_place } from "../../utils/config";
 
 export default function Places(props) {
@@ -22,8 +23,7 @@ const newMap = {
   zoom: 13,
 };
 
-const MapContainer = (props) => {
-  const { input, setInput } = props;
+const MapContainer = ({ setInput, setErrors }) => {
   const mapRef = useRef(null);
   const [map, setMap] = useState(newMap);
   const [loaded, setLoaded] = useState(false);
@@ -43,10 +43,16 @@ const MapContainer = (props) => {
             lng: longitude,
           },
         });
-        setInput({
-          ...input,
+        setInput((prevInput) => ({
+          ...prevInput,
           location: `${url_place}${latitude},${longitude},${map.zoom}z?entry=ttu`,
-        });
+        }));
+        setErrors(
+          validateProject((prevInput) => ({
+            ...prevInput,
+            location: `${url_place}${latitude},${longitude},${map.zoom}z?entry=ttu`,
+          }))
+        );
         setLoaded(true);
       },
       (error) => console.log(error),
@@ -63,10 +69,16 @@ const MapContainer = (props) => {
       ...map,
       currentLocation: { lat, lng },
     });
-    setInput({
-      ...input,
+    setInput((prevInput) => ({
+      ...prevInput,
       location: `${url_place}${lat},${lng},${map.zoom}z?entry=ttu`,
-    });
+    }));
+    setErrors(
+      validateProject((prevInput) => ({
+        ...prevInput,
+        location: `${url_place}${lat},${lng},${map.zoom}z?entry=ttu`,
+      }))
+    );
   };
 
   return (
@@ -78,14 +90,14 @@ const MapContainer = (props) => {
         mapContainerClassName="map-container"
         onLoad={onLoad}
         onClick={handleClick}
-        // onZoomChanged={() => setMap({...map, zoom: (map?.zoom + 1)})}
       >
         <div className="places-container">
           <PlacesAutocomplete
             loaded={loaded}
             map={map}
             setMap={setMap}
-            {...props}
+            setInput={setInput}
+            setErrors={setErrors}
           />
         </div>
         {map?.currentLocation && (
@@ -94,7 +106,6 @@ const MapContainer = (props) => {
             title={`Lat: ${map?.currentLocation?.lat}, Lng: ${map?.currentLocation?.lng}`}
           />
         )}
-        {console.log(input?.location)}
       </GoogleMap>
     </>
   );

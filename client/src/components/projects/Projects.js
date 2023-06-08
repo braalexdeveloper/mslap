@@ -1,69 +1,45 @@
 import React, { useEffect, useState } from "react";
-import useMenuToggle from "../../hooks/useMenuToggle";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import Swal from "sweetalert2";
+import useMenuToggle from "../../hooks/useMenuToggle";
 import { Header } from "../Header";
 import { Footer } from "../Footer";
 import { Sidebar } from "../Sidebar";
-//import { userSelector } from "../../slices/user/userSlice";
-import { getAllProjects,createProject,  deleteProject,  updateProject } from "../../slices/project/projectSlice";
-import { useDispatch, useSelector } from "react-redux";
 import { Form } from "./Form";
+import {
+  getAllProjects,
+  createProject,
+  deleteProject,
+  updateProject,
+} from "../../slices/project/projectSlice";
+import { validateProject } from "../../utils/validation";
 import { url_api } from "../../utils/config";
 
-function validate(input) {
-  let errors = {};
-  const pattern = new RegExp('^[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$');
-  if (input.name === '') {
-      errors.name = 'El campo nombre es requerido';
-  }else if (!input.dateStart) {
-      errors.dateStart = 'La fecha de inicio es obligatorio'
-  } else if (!input.dateEnd) {
-      errors.dateEnd = 'La fecha de finalización es obligatorio'
-  } else if (!input.totalCertificates || input.totalCertificates<1) {
-      errors.totalCertificates = 'Este campo no acepta valores menor a 1'
-  } else if (!input.location) {
-      errors.location = 'Este campo es obligatorio'
-  }
-
-  return errors;
-}
+const newInput = {
+  name: "",
+  dateStart: "",
+  dateEnd: "",
+  totalCertificates: 1,
+  location: "",
+};
 
 export const Projects = () => {
   const { menu } = useMenuToggle();
   const [action, setAction] = useState("create");
-  const {projects} = useSelector(state => state.project);
+  const { projects } = useSelector((state) => state.project);
   const dispatch = useDispatch();
   const [errors, setErrors] = useState({});
-  //const { user } = useSelector(userSelector);
-  const [input, setInput] = useState({
-    name: "",
-    dateStart: "",
-    dateEnd: "",
-    totalCertificates: 0,
-    location: "",
-  });
+  const [input, setInput] = useState(newInput);
 
   const handleChange = (e) => {
-    setInput({
-      ...input,
-      [e.target.name]: e.target.value,
-    });
+    setInput({ ...input, [e.target.name]: e.target.value });
 
-    setErrors(validate({
-      ...input,
-      [e.target.name]: e.target.value
-  }));
+    setErrors(validateProject({ ...input, [e.target.name]: e.target.value }));
   };
 
   const limpiarCampo = () => {
-    setInput({
-      name: "",
-      dateStart: "",
-      dateEnd: "",
-      totalCertificates: 0,
-      location: "",
-    });
+    setInput(newInput);
     setAction("create");
   };
 
@@ -90,7 +66,7 @@ export const Projects = () => {
         timer: 2000,
       });
     }
-   
+
     limpiarCampo();
   };
 
@@ -113,9 +89,7 @@ export const Projects = () => {
   };
 
   const showProject = async (id) => {
-    const response = await axios.get(
-      url_api+"/api/admin/project/" + id
-    );
+    const response = await axios.get(url_api + "/api/admin/project/" + id);
 
     let fechaStart = response.data.data.dateStart.split("T");
     let fechaEnd = response.data.data.dateEnd.split("T");
@@ -145,7 +119,7 @@ export const Projects = () => {
         className="main"
         style={{ marginLeft: menu ? "" : "0px" }}
       >
-         {/*user.role.value && user.role.value!=="admin" ? <h1>No tienes acceso</h1> :*/}
+        {/*user.role.value && user.role.value!=="admin" ? <h1>No tienes acceso</h1> :*/}
         <section className="section dashboard">
           <div className="pagetitle">
             <h1>Projects</h1>
@@ -163,8 +137,9 @@ export const Projects = () => {
                 handleChange={handleChange}
                 input={input}
                 setInput={setInput}
-                action={action} 
+                action={action}
                 errors={errors}
+                setErrors={setErrors}
               />
             </nav>
           </div>
@@ -182,7 +157,9 @@ export const Projects = () => {
                             <th scope="col">Fecha Finalización</th>
                             <th scope="col">N° Certificados</th>
                             <th scope="col">Ubicación</th>
-                            <th scope="col" colSpan={2}>Acciones</th>
+                            <th scope="col" colSpan={2}>
+                              Acciones
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
@@ -208,7 +185,7 @@ export const Projects = () => {
                                     data-bs-toggle="modal"
                                     data-bs-target="#verticalycentered"
                                     onClick={() => showProject(el.id)}
-                                    >
+                                  >
                                     <i className="bi bi-pencil-fill"></i>
                                   </button>
                                 </td>
@@ -231,7 +208,6 @@ export const Projects = () => {
             </div>
           </section>
         </section>
-
       </main>
       <Footer />
     </>

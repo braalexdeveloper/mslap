@@ -2,7 +2,15 @@ import React from "react";
 import Places from "../map/MapGoogle";
 
 export const Form = (props) => {
-  const { handleChange, handleSubmit, input, setInput, action, errors } = props;
+  const {
+    handleChange,
+    handleSubmit,
+    input,
+    setInput,
+    action,
+    errors,
+    setErrors,
+  } = props;
   return (
     <div className="modal fade" id="verticalycentered" tabIndex="-1">
       <div className="modal-dialog modal-dialog-centered">
@@ -24,7 +32,7 @@ export const Form = (props) => {
             <form className="row g-3" onSubmit={(e) => handleSubmit(e)}>
               <div className="col-12">
                 <label htmlFor="name" className="form-label">
-                  Name
+                  Nombre
                 </label>
                 <input
                   type="text"
@@ -96,6 +104,7 @@ export const Form = (props) => {
                   className="form-control"
                   id="totalCertificates"
                   value={input.totalCertificates}
+                  min={1}
                 />
                 {errors.totalCertificates && (
                   <div
@@ -112,7 +121,7 @@ export const Form = (props) => {
                 </label>
                 {/* <input type="text" className="form-control" onChange={(e) => handleChange(e)} name="location" id="location" value={input.location} /> */}
                 {/* <Map /> */}
-                <Places input={input} setInput={setInput} />
+                <Places setInput={setInput} setErrors={setErrors} />
                 {errors.location && (
                   <div
                     className="alert alert-danger alert-dismissible fade show my-2"

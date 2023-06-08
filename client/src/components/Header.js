@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import useMenuToggle from "../hooks/useMenuToggle";
 import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import logo from "../assets/img/logo.png";
+import useMenuToggle from "../hooks/useMenuToggle";
 import { clearDataState, userSelector } from "../slices/user/userSlice";
 import { url_api } from "../utils/config";
 
@@ -38,7 +39,7 @@ export const Header = () => {
           to="/dashboard/projects"
           className="logo d-flex align-items-center"
         >
-          <img src="assets/img/logo.png" alt="" />
+          <img src={logo} alt="" />
           <span className="d-none d-lg-block">MSLAPS</span>
         </Link>
         {menu ? (
