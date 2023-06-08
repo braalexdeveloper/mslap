@@ -2,7 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://mslap.consulfinhn.tech/",
+  "homepage": "https://mslap.consulfinhn.tech",
   "dependencies": {
     "@headlessui/react": "^1.7.15",
     "@react-google-maps/api": "^2.18.1",
