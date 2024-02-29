@@ -26,23 +26,24 @@ module.exports = (sequelize) => {
       },
       phone: {
         type: DataTypes.BIGINT,
-        allowNull: false,
+        allowNull: true,
       },
       contactEmergency: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       phoneEmergency: {
         type: DataTypes.BIGINT,
-        allowNull: false,
+        allowNull: true,
       },
       email: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique:true
       },
       typeBlood: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       salary: {
         type: DataTypes.DOUBLE,
