@@ -5,7 +5,7 @@ const { port } = require("./src/utils/config/index");
 const bcrypt=require("bcrypt");
 
 //Syncing all the models at once.
-conn.sync({ force:true }).then(async() => {
+conn.sync({ force:false }).then(async() => {
   //cargar los roles en la tabla Role
 let roles=["admin","contratista","supervisor","operario"];
 roles.forEach(async el => await Role.findOrCreate({ where: { value: el } }));
