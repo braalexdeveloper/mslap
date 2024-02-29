@@ -121,7 +121,7 @@ export const Projects = () => {
         {/*user.role.value && user.role.value!=="admin" ? <h1>No tienes acceso</h1> :*/}
         <section className="section dashboard">
           <div className="pagetitle">
-            <h1>Projects</h1>
+            <h1>Proyectos</h1>
             <nav>
               <button
                 className="btn btn-success mt-2 "

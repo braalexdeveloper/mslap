@@ -141,27 +141,12 @@ export const Operarios = () => {
     }
     if (action === "create") {
       dispatch(createUser(formData));
-
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "Opereario Creado Correctamente!",
-        showConfirmButton: false,
-        timer: 2000,
-      });
+    
     } else {
       
       delete input.roleId;
-
       dispatch(updateUser(input.id, input));
-
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "Operario Actualizado Correctamente!",
-        showConfirmButton: false,
-        timer: 2000,
-      });
+     
     }
     limpiarCampo();
   };

@@ -20,7 +20,7 @@ app.name = "API";
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "uploads")));
 app.use(express.json());
-app.use(cors({ origin: "https://mslap.consulfinhn.tech" }));
+app.use(cors({ origin: "*" }));
 app.use(cookieParser());
 app.use(logger("dev"));
 

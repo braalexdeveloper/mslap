@@ -246,13 +246,13 @@ export const CertificatesUser = () => {
                   <div className="modal-footer">
                     <button
                       type="button"
-                      className="btn btn-secondary"
+                      className="btn btn-danger"
                       onClick={() => limpiar()}
                       data-bs-dismiss="modal"
                     >
                       Close
                     </button>
-                    <button type="submit" className="btn btn-primary">
+                    <button type="submit" disabled={input.observation=="" ? true : false} className="btn btn-primary">
                       Enviar
                     </button>
                   </div>

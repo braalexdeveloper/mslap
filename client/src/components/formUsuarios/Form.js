@@ -336,7 +336,7 @@ export const Form = ({
                     ""
                   )}
                   {(user.role.value === "admin" ||
-                    user.role.value === "contratista") &&
+                    user.role.value === "contratista") && action==="create" &&
                     cantCertificates > 0 ? (
                     <div className="col-12">
                       <Certificates

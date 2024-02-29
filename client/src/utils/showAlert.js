@@ -46,3 +46,14 @@ export const showAlertNormal = (
     allowOutsideClick: false,
   });
 };
+
+
+export const showAlertGenerico=(titulo,tipo)=>{
+ return Swal.fire({
+    position: "top-end",
+    icon: tipo,
+    title:titulo,
+    showConfirmButton: false,
+    timer: 2000,
+  });
+}

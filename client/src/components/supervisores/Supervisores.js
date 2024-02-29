@@ -105,25 +105,11 @@ export const Supervisores = () => {
     if (action === "create") {
       dispatch(createUser(input));
 
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "Contratista Creado Correctamente!",
-        showConfirmButton: false,
-        timer: 2000,
-      });
-      console.log(input);
     } else {
       
       delete input.roleId;
       dispatch(updateUser(input.id, input));
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "Contratista Actualizado Correctamente!",
-        showConfirmButton: false,
-        timer: 2000,
-      });
+     
     }
     limpiarCampo();
   };

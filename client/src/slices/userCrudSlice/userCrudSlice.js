@@ -1,6 +1,7 @@
 import axios from "axios";
 import { createSlice } from "@reduxjs/toolkit";
 import { url_api } from "../../utils/config";
+import { showAlertGenerico } from "../../utils/showAlert";
 
 // Estado inicial del slice
 const initialState = {
@@ -70,8 +71,10 @@ export const createUser = (formData) => async (dispatch) => {
   try {
     const response = await axios.post(`${url_api}/api/admin/user`, formData);
     let users = await Users();
+    showAlertGenerico("Creado con Éxito!","success");
     return dispatch(create({ dataCreate: response.data, users }));
   } catch (error) {
+    showAlertGenerico("Error al Registrar","error");
     console.log(error);
   }
 };
@@ -82,8 +85,10 @@ export const updateUser = (id, info) => async (dispatch) => {
     const response = await axios.put(url_api + "/api/admin/user/" + id, info);
     let users = await Users();
     let user = await User(id);
+    showAlertGenerico("Actualizado con Éxito!","success");
     return dispatch(update({ dataUpdate: response.data, users, user }));
   } catch (error) {
+    showAlertGenerico("Error al Actualizar","error");
     console.log(error);
   }
 };

@@ -13,3 +13,5 @@ roles.forEach(async el => await Role.findOrCreate({ where: { value: el } }));
     console.log(`Servidor escuchando en el puerto ${port}`); // eslint-disable-line no-console
   });
 });
+
+
