@@ -25,7 +25,7 @@ module.exports = (sequelize) => {
         type: DataTypes.DATE,
       },
       phone: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.STRING,
         allowNull: true,
       },
       contactEmergency: {
