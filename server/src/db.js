@@ -7,7 +7,7 @@ const { dbUser, dbPassword, dbHost, dbName, dbPort } = require("./utils/config/i
 let sequelize=process.env.NODE_ENV=== "production" 
 ? new Sequelize({
   database:dbName,
-  dialect:"mysql",
+  dialect:"postgres",
   host:dbHost,
   port:dbPort,
   username:dbUser,
@@ -27,7 +27,7 @@ let sequelize=process.env.NODE_ENV=== "production"
   ssl:true,
 })
 : new Sequelize(
-  `mysql://${dbUser}:${dbPassword}@${dbHost}:${dbPort}/${dbName}`,
+  `postgres://${dbUser}:${dbPassword}@${dbHost}:${dbPort}/${dbName}`,
   {
     logging: false, // set to console.log to see the raw SQL queries
     native: false, // lets Sequelize know we can use pg-native for ~30% more speed
